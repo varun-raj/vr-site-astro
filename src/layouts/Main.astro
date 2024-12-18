@@ -1,0 +1,39 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  meta: {
+    title: string;
+    description: string;
+  };
+}
+
+const { meta } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <ClientRouter />
+    <BaseHead title={meta.title} description={meta.description} />
+  </head>
+  <body class="flex h-full flex-col bg-zinc-50 dark:bg-zinc-900">
+    <div
+      class="w-full px-3 text-gray-700 antialiased md:px-3 dark:text-gray-400"
+    >
+      <div
+        class="mx-auto flex h-screen max-w-screen-md flex-col justify-between"
+      >
+        <Header />
+        <main class="mb-auto py-5">
+          <slot />
+        </main>
+
+        <Footer />
+      </div>
+    </div>
+  </body>
+</html>

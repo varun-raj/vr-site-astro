@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Apple Macbook Air M1, 8GB",
+    "category": "Devices & Instruments",
+    "description": "My goto tool for development, design, and everything in between.",
+    "url": "https://www.apple.com/in/macbook-air-m1/",
+    "icon": "💻"
+  },
+  {
+    "name": "iPhone 11",
+    "category": "Devices & Instruments",
+    "description": "The device I rely on for communication, entertainment, and everything in between.",
+    "url": "https://www.apple.com/by/iphone-11/",
+    "icon": "📱"
+  },
+  {
+    "name": "Kindle Paperwhite, Gen 10",
+    "category": "Devices & Instruments",
+    "description": "Read Read Read. I love reading books and Kindle is my goto device for that.",
+    "url": "https://www.amazon.in/All-New-Kindle-Paperwhite-10th-Built/dp/B077454Z99/",
+    "icon": "📖"
+  },
+  {
+    "name": "Apple Airpods Pro",
+    "category": "Devices & Instruments",
+    "description": "Music, Podcasts, Business calls, and everything else",
+    "url": "https://www.apple.com/in/airpods-pro/",
+    "icon": "🎧"
+  },
+  {
+    "name": "LG 29\" Ultrawide Monitor - 29WL500-B",
+    "category": "Devices & Instruments",
+    "description": "The monitor I fell in love with, the wide angle setup helps me to focus on multiple things at once.",
+    "url": "https://www.lg.com/in/monitors/lg-29wl500-b",
+    "icon": "🖥"
+  },
+  {
+    "name": "Cursor",
+    "category": "Development",
+    "description": "Cursor is a code editor that is designed to be more efficient and productive.",
+    "url": "https://www.cursor.com/",
+    "icon": "/assets/images/cursor.png"
+  },
+  {
+    "name": "Obsidian",
+    "category": "Productivity",
+    "description": "Obsidian is a powerful knowledge base that works on top of a local folder of plain text Markdown files.",
+    "url": "https://obsidian.md/",
+    "icon": "/assets/images/obsidian.png"
+  },
+  {
+    "name": "Postman",
+    "category": "Development",
+    "description": "Postman is a user-friendly API testing and development platform that simplifies the process of building and testing APIs.",
+    "url": "https://www.postman.com/",
+    "icon": "/assets/images/postman.webp"
+  },
+  {
+    "name": "iTerm2",
+    "category": "Development",
+    "description": "A terminal emulator for macOS that provides advanced features such as split panes, search, autocomplete, and mouse support.",
+    "url": "https://iterm2.com/",
+    "icon": "/assets/images/iterm2.png"
+  },
+  {
+    "name": "TablePlus",
+    "category": "Development",
+    "description": "A modern, native, and powerful GUI tool for managing relational databases, with support for a wide range of databases and advanced features such as SSH tunneling, SSL encryption, and query profiling.",
+    "url": "https://tableplus.com/",
+    "icon": "/assets/images/tableplus.png"
+  },
+  {
+    "name": "Google Chrome",
+    "category": "Productivity",
+    "description": "A fast, secure, and user-friendly web browser that supports a wide range of extensions and features such as tab management, autofill, and bookmarks.",
+    "url": "https://www.google.com/chrome/",
+    "icon": "/assets/images/chrome.png"
+  },
+  {
+    "name": "Raycast",
+    "category": "Productivity",
+    "description": "A productivity app for macOS that provides quick access to your favorite tools and commands, with support for integrations such as Jira, GitHub, and Google Drive.",
+    "url": "https://raycast.com/",
+    "icon": "/assets/images/raycast.png"
+  },
+  {
+    "name": "Logi Options+",
+    "category": "Productivity",
+    "description": "A powerful app that allows you to customize and optimize the settings of your Logitech devices, with support for features such as gesture control, cursor speed, and button mapping.",
+    "url": "https://support.logi.com/hc/en-us/articles/360025298453-Logitech-Options",
+    "icon": "/assets/images/logioptions.webp"
+  },
+  {
+    "name": "Telegram",
+    "category": "Communication",
+    "description": "Telegram is a cloud-based instant messaging app that allows users to send text messages, voice messages, and files of any type (documents, photos, videos, etc.) to other users.",
+    "url": "https://telegram.org/",
+    "icon": "/assets/images/telegram.png"
+  },
+  {
+    "name": "Discord",
+    "category": "Communication",
+    "description": "Discord is a popular communication app designed for gamers that allows users to join voice and text chat channels and connect with other players.",
+    "url": "https://discord.com/",
+    "icon": "/assets/images/discord.png"
+  },
+  {
+    "name": "Slack",
+    "category": "Communication",
+    "description": "Slack is a popular communication app that allows users to send messages, make calls, and share files.",
+    "url": "https://slack.com/",
+    "icon": "/assets/images/slack.png"
+  },
+  {
+    "name": "Zoom",
+    "category": "Communication",
+    "description": "Zoom is a video conferencing app that allows users to host and join virtual meetings, webinars, and online events.",
+    "url": "https://zoom.us/",
+    "icon": "/assets/images/zoom.webp"
+  },
+  {
+    "name": "Iruve",
+    "category": "Preferences",
+    "description": "Iruve is a screen color temperature management tool that allows users to adjust the color temperature of their display to reduce eye strain and improve sleep quality.",
+    "url": "https://iruve.app/",
+    "icon": "/assets/images/iruve.png"
+  },
+  {
+    "name": "DaVinci Resolve",
+    "category": "Multimedia",
+    "description": "DaVinci Resolve is a professional video editing software that includes advanced color correction tools, visual effects, and audio post-production capabilities.",
+    "url": "https://www.blackmagicdesign.com/products/davinciresolve/",
+    "icon": "/assets/images/davinciresolve.png"
+  },
+  {
+    "name": "IINA",
+    "category": "Multimedia",
+    "description": "IINA is a free, open-source multimedia player for macOS that supports a wide range of video and audio formats and includes features such as customizable playback speed and subtitle support.",
+    "url": "https://iina.io/",
+    "icon": "/assets/images/iina.png"
+  },
+  {
+    "name": "Handbrake",
+    "category": "Multimedia",
+    "description": "Handbrake is a free, open-source video transcoding software that allows users to convert video files from one format to another and adjust video quality settings.",
+    "url": "https://handbrake.fr/",
+    "icon": "/assets/images/handbrake.png"
+  },
+  {
+    "name": "Blender",
+    "category": "Hobby",
+    "description": "Blender is a free, open-source 3D creation suite that includes features such as modeling, rigging, animation, simulation, rendering, and motion tracking.",
+    "url": "https://www.blender.org/",
+    "icon": "/assets/images/blender.webp"
+  },
+  {
+    "name": "Plex",
+    "category": "Homelab",
+    "description": "Plex is a media server software that allows users to stream and manage their media content across multiple devices.",
+    "url": "https://www.plex.tv/",
+    "icon": "/assets/images/plex.png"
+  },
+  {
+    "name": "Immich",
+    "category": "Homelab",
+    "description": "Immich is a self-hosted photo and video backup solution that allows users to store and manage their media content in a private and secure environment.",
+    "url": "https://immich.app/",
+    "icon": "/assets/images/immich.png"
+  }
+]

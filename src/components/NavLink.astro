@@ -1,0 +1,39 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import clsx from 'clsx';
+
+interface Props {
+  href: string;
+  isExact?: boolean;
+  class?: string;
+}
+
+const { href, isExact = false, class: className, ...props } = Astro.props;
+const { pathname } = Astro.url;
+
+const isActive = isExact 
+  ? pathname === href
+  : pathname.includes(href.toString());
+
+const target = typeof href === 'string' && href.startsWith('http') 
+  ? '_blank' 
+  : undefined;
+---
+
+<a
+  href={href}
+  target={target}
+  class={clsx(
+    'plain relative block p-2 px-3 text-sm transition',
+    isActive
+      ? 'text-primary'
+      : 'hover:text-gray-500 dark:hover:text-gray-400',
+    className
+  )}
+  {...props}
+>
+  <slot />
+  {isActive && (
+    <span class="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-primary/0 via-primary/40 to-teal-500/0 dark:from-primary/0 dark:via-primary/40 dark:to-primary/0"></span>
+  )}
+</a>

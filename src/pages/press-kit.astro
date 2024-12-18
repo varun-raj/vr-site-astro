@@ -1,0 +1,36 @@
+---
+import PKBiography from "../components/pressKit/PKBiography.astro";
+import PKPhotos from "../components/pressKit/PKPhotos.astro";
+import PKSocialLinks from "../components/pressKit/PKSocialLinks.astro";
+import Title from "../components/ui/Title.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+---
+
+<Main
+  meta={{
+    title: `Press Kit | ${AppConfig.title}`,
+    description: AppConfig.description,
+  }}
+>
+  <div class="">
+    <div class="mb-10">
+      <Title title="Press Kit" level={1} className="text-5xl" />
+      <p class="">
+        Please use the following assets when writing about me or my work.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-20">
+      <section class="flex flex-col gap-3">
+        <PKPhotos />
+      </section>
+      <section class="flex flex-col gap-3">
+        <PKSocialLinks />
+      </section>
+      <section class="flex flex-col gap-3">
+        <PKBiography />
+      </section>
+    </div>
+  </div>
+</Main>

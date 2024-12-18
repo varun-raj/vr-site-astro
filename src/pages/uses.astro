@@ -1,0 +1,44 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import ToolItem from "../components/uses/ToolItem.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+import { groupToArray } from "../lib/utils";
+import tools from "../content/tools.json";
+
+const groupedTools = groupToArray(tools, "category");
+---
+
+<Main
+  meta={{
+    title: `Tools | ${AppConfig.title}`,
+    description: AppConfig.description,
+  }}
+>
+  <div class="pb-8 pt-16">
+    <PageHeader
+      title="Tools I use"
+      emoji="⚒️"
+      description="A list of tools I use to get things done."
+    />
+
+    <div class="mt-10 flex flex-col space-y-10">
+      {
+        groupedTools.map((group) => (
+          <div>
+            <div>
+              <h2 class="mb-5 py-3 font-mono font-bold text-primary dark:text-primary">
+                {group.label}
+              </h2>
+            </div>
+            <div class="flex flex-col space-y-4 pl-5">
+              {group.items.map((tool) => (
+                <ToolItem tool={tool} />
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Main>

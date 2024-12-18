@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets";
+
+const { tool } = Astro.props;
+
+const isAssetURL = (url: string) => {
+  return url.startsWith('https://') || url.startsWith('/');
+}
+---
+
+<div class="flex flex-col justify-start space-y-2 rounded-lg">
+  <div class="flex items-center space-x-2">
+    {!!(tool.icon && isAssetURL(tool.icon)) && (
+      <Image
+        src={tool.icon}
+        width={15}
+        height={15}
+        alt={tool.name}
+        class="max-h-[15px] max-w-[15px]"
+        loading="lazy"
+      />
+    )}
+    {!!(tool.icon && !isAssetURL(tool.icon)) && <span>{tool.icon}</span>}
+    <a href={tool.url} class="plain hover-arrow">
+      <h3 class="text-base font-normal dark:text-gray-100">
+        {tool.name}
+      </h3>
+    </a>
+  </div>
+  <p class="text-xs font-normal text-gray-500 dark:text-gray-400">
+    {tool.description}
+  </p>
+</div>

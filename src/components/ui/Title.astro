@@ -1,0 +1,21 @@
+---
+import clsx from 'clsx';
+
+interface Props {
+  title: string;
+  level: number;
+  className: string;
+}
+
+const { title, level, className } = Astro.props;
+const Tag = `h${level}`;
+---
+
+<Tag
+  className={clsx(
+    "mb-2  font-bold text-gray-900 dark:text-gray-200",
+    className
+  )}
+>
+  {title}
+</Tag>

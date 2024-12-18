@@ -1,0 +1,21 @@
+---
+interface Props {
+  emoji?: string;
+  title: string;
+  description?: string;
+}
+
+const { emoji, title, description } = Astro.props;
+---
+
+<div class="text-left">
+  <h1 class="mb-2 text-5xl font-bold text-gray-900 dark:text-gray-200">
+    {emoji && (
+      <span role="img" aria-label="Hi">
+        {emoji}
+      </span>
+    )}
+    {emoji ? ' ' : ''}{title}
+  </h1>
+  {description && <h2 class="text-xl font-normal">{description}</h2>}
+</div>
