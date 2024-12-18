@@ -1,10 +1,8 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Main from "../layouts/Main.astro";
 import { AppConfig } from "../config/AppConfig";
+import SocialLinks from "../components/shared/SocialLinks.astro";
+import HomePageBlogSection from "../components/home/HomePageBlogSection.astro";
 ---
 
 <Main
@@ -48,6 +46,6 @@ import { AppConfig } from "../config/AppConfig";
     </p>
   </div>
 
-  <!-- <HomePageBlogSection /> -->
-  <!-- <SocialLinks /> -->
+  <HomePageBlogSection />
+  <SocialLinks />
 </Main>

@@ -1,0 +1,42 @@
+---
+import { ArrowRight } from "@phosphor-icons/react";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { format } from "date-fns";
+
+const allPosts = (await getCollection("blog"))
+
+const posts = allPosts.sort(
+  (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 3);
+
+
+---
+
+<div class="my-24">
+  <h2 class="text-sm font-mono font-semibold uppercase text-zinc-400 dark:text-zinc-600 ">
+    Writings
+  </h2>
+  <div class="my-4 space-y-4">
+    {posts.map((post: CollectionEntry<"blog">) => (
+      <div class="flex items-center justify-between rounded-lg ">
+        <a
+          class="plain text-md !no-underline hover:text-primary"
+          href={`/blog/${post.id}`}
+        >
+          {post.data.title}
+        </a>
+        <time datetime={post.data.pubDate} class="font-mono text-xxs">
+          {format(post.data.pubDate, 'LLLL d, yyyy')}
+        </time>
+      </div>
+    ))}
+  </div>
+  <a
+    class="plain flex items-center font-mono text-xs !no-underline hover:text-primary"
+    href="/blog"
+  >
+    View all posts
+    <ArrowRight className="size-4" />
+  </a>
+</div>
