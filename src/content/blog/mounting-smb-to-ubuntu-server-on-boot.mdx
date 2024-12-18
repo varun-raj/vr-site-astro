@@ -16,19 +16,19 @@ So for binding my NAS SMB Share to my Ubuntu Server on boot, I had to do followi
 
 Run the following command to install cifs-utils in the primary home server.
 
-```bash
+```zsh title="Terminal" showLineNumbers=false
 sudo apt-get update
 sudo apt-get install cifs-utils
 ```
 
 2. Create a credentials file
 
-```bash
-sudo nano /etc/samba/credentials # It can be any path.
+```zsh title="Terminal" showLineNumbers=false
+sudo nano /etc/samba/.credentials # It can be any path.
 ```
 And add the following line to the file.
 
-```bash
+```zsh title=".credentials" showLineNumbers
 username=<NAS_USERNAME>
 password=<NAS_PASSWORD>
 domain=<NAS_DOMAIN> # Usually it is WORKGROUP
@@ -36,18 +36,21 @@ domain=<NAS_DOMAIN> # Usually it is WORKGROUP
 
 3. Create a mount point
 
-```bash
+```zsh title="Terminal" showLineNumbers=false
 sudo mkdir -p /mnt/nas # It can be any path you want the storage media to be mounted to
 ```
 
 4. Add the mount point to fstab
 
-```bash
+```zsh title="Terminal" showLineNumbers=false
 sudo nano /etc/fstab
 ```
 And add the following line to the file.
 
-```bash
+```zsh title="/etc/fstab" showLineNumbers=false
+# ... previous lines
+
+# Add the following line to the file
 //<NAS_IP_ADDRESS>/<SMB_SHARE_NAME> /mnt/nas cifs credentials=/etc/samba/credentials,uid=1000,gid=1000,x-systemd.automount 0 0
 ```
 
@@ -56,7 +59,7 @@ Replace `<NAS_IP_ADDRESS>/<SMB_SHARE_NAME>` with the IP address of your NAS serv
 
 5. Mount the SMB Share
 
-```bash
+```zsh title="Terminal" showLineNumbers=false
 sudo mount -a
 ```
 
@@ -66,7 +69,7 @@ Once the server reboots, the SMB Share should be mounted to the mount point you 
 
 Check the mount point by running the following command.
 
-```bash
+```zsh title="Terminal" showLineNumbers=false
 df -h
 ```
 
