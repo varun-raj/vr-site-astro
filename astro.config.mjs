@@ -14,7 +14,7 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://varunraj.in",
   integrations: [
     expressiveCode({
       plugins: [pluginLineNumbers()],
