@@ -1,5 +1,122 @@
 [
   {
+    "title": "The Inmate",
+    "link": "https://www.goodreads.com/review/show/7110164937?utm_medium=api&utm_source=rss",
+    "pubDate": "Sun, 22 Dec 2024 18:28:50 -0800",
+    "isbn": [
+      "172829617X",
+      "1420519425",
+      "9781420519426",
+      "9798835444670",
+      "9781728296173",
+      "9781464221385",
+      "1464221383"
+    ],
+    "author_name": [
+      "Freida McFadden"
+    ],
+    "book_description": "There are three rules Brooke Sullivan must follow as a new nurse practitioner at a men's maximum-security:<br />1) Treat all prisoners with respect. <br />2) Never reveal any personal information. <br />3) Never EVER become too friendly with the inmates.<br /><br />But none of the staff at the prison knows Brooke has already broken the rules. Nobody knows about her intimate connection to Shane Nelson, one of the penitentiary's most notorious and dangerous inmates. And they certainly don't know that Shane was Brooke's high school sweetheart―the star quarterback who is now spending the rest of his life in prison for a series of grisly murders. Or that Brooke's testimony was what put him there. <br /><br />But Shane knows. And he will never forget.",
+    "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1653271523l/61149872._SY475_.jpg",
+    "book_published": "2022",
+    "average_rating": "4.04",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/61149872-the-inmate?utm_medium=api&amp;utm_source=rss\"><img alt=\"The Inmate\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1653271523l/61149872._SY75_.jpg\" /></a><br/>\n                                      author: Freida McFadden<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 4.04<br/>\n                                      book published: 2022<br/>\n                                      rating: 4<br/>\n                                      read at: 2024/12/23<br/>\n                                      date added: 2024/12/22<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "contentSnippet": "",
+    "guid": "https://www.goodreads.com/review/show/7110164937?utm_medium=api&utm_source=rss",
+    "isoDate": "2024-12-23T02:28:50.000Z",
+    "author_key": [
+      "OL7461926A"
+    ],
+    "cover_edition_key": "OL49372821M",
+    "cover_i": 14421781,
+    "ddc": [
+      "813.6"
+    ],
+    "ebook_access": "no_ebook",
+    "ebook_count_i": 0,
+    "edition_count": 4,
+    "edition_key": [
+      "OL53367786M",
+      "OL50713621M",
+      "OL50637517M",
+      "OL49372821M"
+    ],
+    "first_publish_year": 2022,
+    "has_fulltext": false,
+    "key": "/works/OL36525897W",
+    "language": [
+      "eng"
+    ],
+    "last_modified_i": 1723948014,
+    "lcc": [
+      "PS-3613.00000000.C4365I56 2024"
+    ],
+    "public_scan_b": false,
+    "publish_date": [
+      "2024",
+      "2022"
+    ],
+    "publish_year": [
+      2024,
+      2022
+    ],
+    "publisher": [
+      "Cengage Gale",
+      "Freida McFadden",
+      "Sourcebooks, Incorporated"
+    ],
+    "seed": [
+      "/books/OL53367786M",
+      "/books/OL50713621M",
+      "/books/OL50637517M",
+      "/books/OL49372821M",
+      "/works/OL36525897W",
+      "/authors/OL7461926A",
+      "/subjects/nyt:combined-print-and-e-book-fiction=2024-03-24",
+      "/subjects/new_york_times_bestseller"
+    ],
+    "title_sort": "The Inmate",
+    "title_suggest": "The Inmate",
+    "type": "work",
+    "id_amazon": [
+      "B0B3RFRP41"
+    ],
+    "subject": [
+      "nyt:combined-print-and-e-book-fiction=2024-03-24",
+      "New York Times bestseller"
+    ],
+    "ratings_average": 5,
+    "ratings_sortable": 2.4036636,
+    "ratings_count": 1,
+    "ratings_count_1": 0,
+    "ratings_count_2": 0,
+    "ratings_count_3": 0,
+    "ratings_count_4": 0,
+    "ratings_count_5": 1,
+    "readinglog_count": 98,
+    "want_to_read_count": 89,
+    "currently_reading_count": 3,
+    "already_read_count": 6,
+    "publisher_facet": [
+      "Cengage Gale",
+      "Freida McFadden",
+      "Sourcebooks, Incorporated"
+    ],
+    "subject_facet": [
+      "New York Times bestseller",
+      "nyt:combined-print-and-e-book-fiction=2024-03-24"
+    ],
+    "_version_": 1815544546956673000,
+    "lcc_sort": "PS-3613.00000000.C4365I56 2024",
+    "author_facet": [
+      "OL7461926A Freida McFadden"
+    ],
+    "subject_key": [
+      "new_york_times_bestseller",
+      "nytcombined-print-and-e-book-fiction2024-03-24"
+    ],
+    "ddc_sort": "813.6"
+  },
+  {
     "title": "Ward D",
     "link": "https://www.goodreads.com/review/show/7090055965?utm_medium=api&utm_source=rss",
     "pubDate": "Mon, 16 Dec 2024 09:19:46 -0800",
@@ -8,8 +125,8 @@
     "book_description": "Medical student Amy Brenner is <b>spending the night on a locked psychiatric ward.</b><br /><br />Amy has been dreading her evening working on Ward D, the hospital’s inpatient mental health unit. There are very specific reasons why she never wanted to do this required overnight rotation.<b> Reasons nobody can ever find out</b>.<br /><br />And as the hours tick by, Amy grows increasingly convinced <b>something terrible is happening</b> within these tightly secured walls. When patients and staff start to vanish without a trace, it becomes clear that <b>everyone on the unit is in grave danger</b>.<br /><br />Amy’s worst nightmare was spending the night on Ward D.<br /><br /><b>And now she might never escape.</b><br />",
     "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1678127541l/123193218._SY475_.jpg",
     "book_published": "2023",
-    "average_rating": "3.99",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/123193218-ward-d?utm_medium=api&amp;utm_source=rss\"><img alt=\"Ward D\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1678127541l/123193218._SY75_.jpg\" /></a><br/>\n                                      author: Freida McFadden<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.99<br/>\n                                      book published: 2023<br/>\n                                      rating: 4<br/>\n                                      read at: 2024/12/16<br/>\n                                      date added: 2024/12/16<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "average_rating": "3.98",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/123193218-ward-d?utm_medium=api&amp;utm_source=rss\"><img alt=\"Ward D\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1678127541l/123193218._SY75_.jpg\" /></a><br/>\n                                      author: Freida McFadden<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.98<br/>\n                                      book published: 2023<br/>\n                                      rating: 4<br/>\n                                      read at: 2024/12/16<br/>\n                                      date added: 2024/12/16<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/7090055965?utm_medium=api&utm_source=rss",
     "isoDate": "2024-12-16T17:19:46.000Z"
@@ -74,8 +191,8 @@
     "book_description": "<b>She thought he was the perfect husband. Now she’s running for her life.</b><br /><br />On the surface, Amy and Jason have the perfect marriage, but Amy is trapped in a nightmare with a controlling, violent husband. Then on a short cruise without Jason, Amy befriends Liz, a young woman travelling alone on her way to meet her birth mother for the first time. Liz looks so much like Amy that they could be sisters.<br /><br />When Amy regains consciousness after a terrible accident that takes the lives of many passengers, she finds that because of a mix-up in personal effects, everyone believes she is Liz. Only she knows it is Liz who has gone missing, presumed dead. Now, Amy has to make the most important decision of her life: tell the truth and return to a life of fear or become Liz for a while, until she figures out an escape plan.<br /><br />But as Amy settles into Liz’s life, she finds that not everyone believes all the lies.<br /><br /><b>And she is only one mistake away from paying the price.</b>",
     "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1600729339l/55422036._SY475_.jpg",
     "book_published": "2020",
-    "average_rating": "3.94",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/55422036-all-the-lies?utm_medium=api&amp;utm_source=rss\"><img alt=\"All the Lies\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1600729339l/55422036._SY75_.jpg\" /></a><br/>\n                                      author: Nicola Sanders<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.94<br/>\n                                      book published: 2020<br/>\n                                      rating: 4<br/>\n                                      read at: 2024/08/05<br/>\n                                      date added: 2024/08/04<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "average_rating": "3.93",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/55422036-all-the-lies?utm_medium=api&amp;utm_source=rss\"><img alt=\"All the Lies\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1600729339l/55422036._SY75_.jpg\" /></a><br/>\n                                      author: Nicola Sanders<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.93<br/>\n                                      book published: 2020<br/>\n                                      rating: 4<br/>\n                                      read at: 2024/08/05<br/>\n                                      date added: 2024/08/04<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/6729161833?utm_medium=api&utm_source=rss",
     "isoDate": "2024-08-04T19:04:17.000Z",
@@ -967,10 +1084,10 @@
     "isbn": "0802158749",
     "author_name": "Claire Keegan",
     "book_description": "It is 1985 in a small Irish town. During the weeks leading up to Christmas, Bill Furlong, a coal merchant and family man faces into his busiest season. Early one morning, while delivering an order to the local convent, Bill makes a discovery which forces him to confront both his past and the complicit silences of a town controlled by the church. <br /><br />Already an international bestseller, Small Things Like These is a deeply affecting story of hope, quiet heroism, and empathy from one of our most critically lauded and iconic writers.",
-    "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1627655660l/58662236._SX318_.jpg",
+    "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1734631773l/58662236._SX318_.jpg",
     "book_published": "2021",
     "average_rating": "4.17",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/58662236-small-things-like-these?utm_medium=api&amp;utm_source=rss\"><img alt=\"Small Things Like These\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1627655660l/58662236._SX50_.jpg\" /></a><br/>\n                                      author: Claire Keegan<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 4.17<br/>\n                                      book published: 2021<br/>\n                                      rating: 2<br/>\n                                      read at: 2023/07/04<br/>\n                                      date added: 2023/11/28<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/58662236-small-things-like-these?utm_medium=api&amp;utm_source=rss\"><img alt=\"Small Things Like These\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1734631773l/58662236._SX50_.jpg\" /></a><br/>\n                                      author: Claire Keegan<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 4.17<br/>\n                                      book published: 2021<br/>\n                                      rating: 2<br/>\n                                      read at: 2023/07/04<br/>\n                                      date added: 2023/11/28<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/5667179012?utm_medium=api&utm_source=rss",
     "isoDate": "2023-11-28T15:54:51.000Z"
@@ -1044,8 +1161,8 @@
     "book_description": "<b><i>The Keeper of Stories</i> meets <i>The Lost Apothecary</i> in this evocative and charming novel full of mystery and secrets.</b><br /><br /><i>‘The thing about books,’ she said ‘is that they help you to imagine a life bigger and better than you could ever dream of.’</i><br /><br /><b>On a quiet street in Dublin, a lost bookshop is waiting to be found…</b><br /><br />For too long, Opaline, Martha and Henry have been the side characters in their own lives.<br /><br />But when a vanishing bookshop casts its spell, these three unsuspecting strangers will discover that their own stories are every bit as extraordinary as the ones found in the pages of their beloved books. And by unlocking the secrets of the shelves, they find themselves transported to a world of wonder… where nothing is as it seems.",
     "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1721406796l/65137920._SY475_.jpg",
     "book_published": "2023",
-    "average_rating": "4.07",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/65137920-the-lost-bookshop?utm_medium=api&amp;utm_source=rss\"><img alt=\"The Lost Bookshop\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1721406796l/65137920._SY75_.jpg\" /></a><br/>\n                                      author: Evie  Woods<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 4.07<br/>\n                                      book published: 2023<br/>\n                                      rating: 5<br/>\n                                      read at: 2023/10/19<br/>\n                                      date added: 2023/11/28<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "average_rating": "4.06",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/65137920-the-lost-bookshop?utm_medium=api&amp;utm_source=rss\"><img alt=\"The Lost Bookshop\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1721406796l/65137920._SY75_.jpg\" /></a><br/>\n                                      author: Evie  Woods<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 4.06<br/>\n                                      book published: 2023<br/>\n                                      rating: 5<br/>\n                                      read at: 2023/10/19<br/>\n                                      date added: 2023/11/28<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/5919401708?utm_medium=api&utm_source=rss",
     "isoDate": "2023-11-28T15:54:40.000Z"
@@ -1059,8 +1176,8 @@
     "book_description": "Ellingham Academy is a famous private school in Vermont for the brightest thinkers, inventors, and artists. It was founded by Albert Ellingham, an early twentieth century tycoon, who wanted to make a wonderful place full of riddles, twisting pathways, and gardens. “A place,” he said, “where learning is a game.”<br /><br />Shortly after the school opened, his wife and daughter were kidnapped. The only real clue was a mocking riddle listing methods of murder, signed with the frightening pseudonym “Truly, Devious.” It became one of the great unsolved crimes of American history.<br /><br />True-crime aficionado Stevie Bell is set to begin her first year at Ellingham Academy, and she has an ambitious plan: She will solve this cold case. That is, she will solve the case when she gets a grip on her demanding new school life and her housemates: the inventor, the novelist, the actor, the artist, and the jokester. But something strange is happening. Truly Devious makes a surprise return, and death revisits Ellingham Academy. The past has crawled out of its grave. Someone has gotten away with murder. <br /><br />The two interwoven mysteries of this first book in the Truly Devious series dovetail brilliantly, and Stevie Bell will continue her relentless quest for the murderers in books two and three.<br /><br /><strong><em>New York Times </em>bestselling author Maureen Johnson weaves a delicate tale of murder and mystery in the first book of a striking new series, perfect for fans of Agatha Christie and E. Lockhart.</strong>",
     "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1498501619l/29589074._SX318_.jpg",
     "book_published": "2018",
-    "average_rating": "3.91",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/29589074-truly-devious?utm_medium=api&amp;utm_source=rss\"><img alt=\"Truly, Devious (Truly Devious, #1)\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1498501619l/29589074._SX50_.jpg\" /></a><br/>\n                                      author: Maureen Johnson<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.91<br/>\n                                      book published: 2018<br/>\n                                      rating: 5<br/>\n                                      read at: 2023/10/29<br/>\n                                      date added: 2023/11/28<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "average_rating": "3.90",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/29589074-truly-devious?utm_medium=api&amp;utm_source=rss\"><img alt=\"Truly, Devious (Truly Devious, #1)\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1498501619l/29589074._SX50_.jpg\" /></a><br/>\n                                      author: Maureen Johnson<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.90<br/>\n                                      book published: 2018<br/>\n                                      rating: 5<br/>\n                                      read at: 2023/10/29<br/>\n                                      date added: 2023/11/28<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/5940456500?utm_medium=api&utm_source=rss",
     "isoDate": "2023-11-28T15:54:38.000Z"
@@ -1284,8 +1401,8 @@
     "book_description": "<b>The latest novel in the international bestselling <i>Before the Coffee Gets Cold Series</i>, following four new customers in a little Tokyo café where customers can travel back in time.</b><br /><br />In a small back alley in Tokyo, there is a café that has been serving carefully brewed coffee for more than one hundred years. But this coffee shop offers its customers a unique experience: the chance to travel back in time.<br /><br />From the author of <i>Before the Coffee Gets Cold</i> and <i>Tales from the Cafe</i> comes another story of four new customers, each of whom is hoping to take advantage of Café Funiculi Funicula's time-travelling offer. Among some familiar faces from Kawaguchi's previous novels, readers will also be introduced to a daughter, a comedian, a sister, and a lover, each with something they wish they had said differently.<br /><br />With his signature heartwarming characters and immersive storytelling, Kawaguchi once again invites the reader to ask themselves: what would you change if you could travel back in time?",
     "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1657903805l/60224365._SY475_.jpg",
     "book_published": "2018",
-    "average_rating": "3.91",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/60224365-before-your-memory-fades?utm_medium=api&amp;utm_source=rss\"><img alt=\"Before Your Memory Fades (Before the Coffee Gets Cold, #3)\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1657903805l/60224365._SY75_.jpg\" /></a><br/>\n                                      author: Toshikazu Kawaguchi<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.91<br/>\n                                      book published: 2018<br/>\n                                      rating: 0<br/>\n                                      read at: 2023/01/11<br/>\n                                      date added: 2023/01/10<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
+    "average_rating": "3.90",
+    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/60224365-before-your-memory-fades?utm_medium=api&amp;utm_source=rss\"><img alt=\"Before Your Memory Fades (Before the Coffee Gets Cold, #3)\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1657903805l/60224365._SY75_.jpg\" /></a><br/>\n                                      author: Toshikazu Kawaguchi<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 3.90<br/>\n                                      book published: 2018<br/>\n                                      rating: 0<br/>\n                                      read at: 2023/01/11<br/>\n                                      date added: 2023/01/10<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/5253066452?utm_medium=api&utm_source=rss",
     "isoDate": "2023-01-11T02:55:17.000Z"
@@ -2084,20 +2201,5 @@
     "contentSnippet": "",
     "guid": "https://www.goodreads.com/review/show/3274262977?utm_medium=api&utm_source=rss",
     "isoDate": "2020-04-25T15:49:27.000Z"
-  },
-  {
-    "title": "The Four Agreements",
-    "link": "https://www.goodreads.com/review/show/3226513999?utm_medium=api&utm_source=rss",
-    "pubDate": "Sat, 11 Apr 2020 02:37:57 -0700",
-    "isbn": "1878424505",
-    "author_name": "Miguel Ruiz",
-    "book_description": "In <i>The Four Agreements</i>, don Miguel Ruiz reveals the source of self-limiting beliefs that rob us of joy and create needless suffering. Based on ancient Toltec wisdom, the Four Agreements offer a powerful code of conduct that can rapidly transform our lives to a new experience of freedom, true happiness, and love. The Four Agreements are: Be Impeccable With Your Word, Don't Take Anything Personally, Don't Make Assumptions, Always Do Your Best.",
-    "book_large_image_url": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1630664059l/6596.jpg",
-    "book_published": "1997",
-    "average_rating": "4.20",
-    "content": "\n      \n      <a href=\"https://www.goodreads.com/book/show/6596.The_Four_Agreements?utm_medium=api&amp;utm_source=rss\"><img alt=\"The Four Agreements\" src=\"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1630664059l/6596._SY75_.jpg\" /></a><br/>\n                                      author: Miguel Ruiz<br/>\n                                      name: Varun Raj<br/>\n                                      average rating: 4.20<br/>\n                                      book published: 1997<br/>\n                                      rating: 5<br/>\n                                      read at: 2020/04/11<br/>\n                                      date added: 2020/04/11<br/>\n                                      shelves: <br/>\n                                      review: <br/><br/>\n                                      \n    ",
-    "contentSnippet": "",
-    "guid": "https://www.goodreads.com/review/show/3226513999?utm_medium=api&utm_source=rss",
-    "isoDate": "2020-04-11T09:37:57.000Z"
   }
 ]
