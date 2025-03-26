@@ -7,10 +7,10 @@
     "icon": "💻"
   },
   {
-    "name": "iPhone 11",
+    "name": "iPhone 16 Pro",
     "category": "Devices & Instruments",
     "description": "The device I rely on for communication, entertainment, and everything in between.",
-    "url": "https://www.apple.com/by/iphone-11/",
+    "url": "https://www.apple.com/by/iphone-16-pro/",
     "icon": "📱"
   },
   {
@@ -30,8 +30,15 @@
   {
     "name": "LG 29\" Ultrawide Monitor - 29WL500-B",
     "category": "Devices & Instruments",
-    "description": "The monitor I fell in love with, the wide angle setup helps me to focus on multiple things at once.",
+    "description": "The screen that I use to code from home, it's a 21:9 aspect ratio, which is perfect for coding and watching movies.",
     "url": "https://www.lg.com/in/monitors/lg-29wl500-b",
+    "icon": "🖥"
+  },
+  {
+    "name": "LG 34\" Ultrawide Monitor - 34WK95C-B",
+    "category": "Devices & Instruments",
+    "description": "My everyday office gear that helps me debug, code, write documents seamlessly.",
+    "url": "https://www.lg.com/in/monitors/lg-34w-k95c-b",
     "icon": "🖥"
   },
   {
@@ -166,5 +173,12 @@
     "description": "Immich is a self-hosted photo and video backup solution that allows users to store and manage their media content in a private and secure environment.",
     "url": "https://immich.app/",
     "icon": "/assets/images/immich.png"
+  },
+  {
+    "name": "Bambu Labs A1 + AMS Lite",
+    "category": "Personal Manufacturing",
+    "description": "3D printer that allows users to bring ideas to life.",
+    "url": "https://us.store.bambulab.com/products/a1",
+    "icon": "/assets/images/bambulabs.webp"
   }
 ]
