@@ -23,6 +23,7 @@ const { Content } = await render(post);
   meta={{
     title: `${post.data.title} | ${AppConfig.title}`,
     description: post.data.description,
+    image: post.data.cover || "/assets/og-images/blog.png",
   }}
 >
   <div class="flex justify-between">
