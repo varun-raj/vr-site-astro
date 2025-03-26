@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -11,7 +11,7 @@ const { post } = Astro.props;
 
 <div class="group mb-10 space-x-3 space-y-1 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
   {post.data.pubDate && <time
-    datetime={post.data.pubDate}
+    datetime={post.data.pubDate.toISOString()}
     class="mb-4 rounded-full font-mono text-xxs xl:text-xs"
   >
     {format(post.data.pubDate, 'LLLL d, yyyy')}
