@@ -26,7 +26,9 @@ const LINKS = [
 ---
 
 <div>
-  <Title title="🔗 Social Links" level={3} className="text-3xl" />
+  <a href="#social-links" class="block hover:opacity-80 transition-opacity duration-200 !no-underline">
+    <Title title="🔗 Social Links" level={3} className="text-3xl" id="social-links-heading" />
+  </a>
   <p>Here are my social links that you can use to mention me or tag me</p>
 </div>
 <ul class="flex flex-col gap-3">
@@ -34,12 +36,72 @@ const LINKS = [
     LINKS.map((link) => (
       <li class="group">
         <p class="font-bold">{link.name}</p>
-        <p class="flex items-center justify-between">
+        <p class="flex items-center gap-2">
           <a target="_blank" class="plain font-mono text-sm" href={link.url}>
             {link.url}
           </a>
+          <button 
+            class="copy-btn px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors duration-200 opacity-0 group-hover:opacity-100"
+            data-url={link.url}
+            title="Copy link"
+          >
+            📋
+          </button>
         </p>
       </li>
     ))
   }
 </ul>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    
+    copyButtons.forEach(button => {
+      button.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('data-url');
+        
+        try {
+          await navigator.clipboard.writeText(url);
+          
+          // Visual feedback
+          const originalText = this.innerHTML;
+          this.innerHTML = '✅';
+          this.classList.add('bg-green-100', 'text-green-700');
+          this.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+          
+          // Reset after 2 seconds
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.classList.remove('bg-green-100', 'text-green-700');
+            this.classList.add('bg-gray-100', 'hover:bg-gray-200');
+          }, 2000);
+          
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+          
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = url;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          
+          // Visual feedback for fallback
+          const originalText = this.innerHTML;
+          this.innerHTML = '✅';
+          this.classList.add('bg-green-100', 'text-green-700');
+          this.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.classList.remove('bg-green-100', 'text-green-700');
+            this.classList.add('bg-gray-100', 'hover:bg-gray-200');
+          }, 2000);
+        }
+      });
+    });
+  });
+</script>

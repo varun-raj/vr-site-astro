@@ -3,20 +3,45 @@ import Title from "../ui/Title.astro";
 ---
 
 <div>
-  <Title title="✍️ Biography" level={3} className="text-3xl" />
+  <a href="#biography" class="block hover:opacity-80 transition-opacity duration-200 !no-underline">
+    <Title title="✍️ Biography" level={3} className="text-3xl" id="biography-heading" />
+  </a>
   <p>
     I&apos;ve written two versions of my biography, a short one and a long one.
     Please use the one that fits your needs.
   </p>
 </div>
+
+<!-- Toggle for First Person / Third Person -->
+<div class="mb-6">
+  <div class="flex items-center gap-4">
+    <div class="flex bg-gray-100 rounded-lg p-1">
+      <button 
+        id="first-person-btn" 
+        class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm"
+        data-view="first"
+      >
+        First Person
+      </button>
+      <button 
+        id="third-person-btn" 
+        class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900"
+        data-view="third"
+      >
+        Third Person
+      </button>
+    </div>
+  </div>
+</div>
+
 <div>
   <p class="mb-3">
     <strong class="font-mono text-sm">Short Biography</strong>
   </p>
   <blockquote class="border-l-4 border-primary pl-4">
-    <p class="text-lg italic">
-      Co-Founder and CIO at Skcript, Google Developer Expert for Firebase, and a
-      software developer from India.
+    <p class="text-lg italic" id="short-bio">
+      <span class="first-person">I am a Co-Founder and CIO at Skcript, Google Developer Expert for Firebase, and a software developer from India.</span>
+      <span class="third-person hidden">Co-Founder and CIO at Skcript, Google Developer Expert for Firebase, and a software developer from India.</span>
     </p>
   </blockquote>
 </div>
@@ -25,19 +50,76 @@ import Title from "../ui/Title.astro";
     <strong class="font-mono text-sm">Long Biography</strong>
   </p>
   <blockquote class="border-l-4 border-primary pl-4">
-    <p class="text-lg italic">
-      Varun Raj Manoharan is an entrepreneur and a software developer from
-      India, Currently running Skcript Technologies Pvt, Ltd. a software
-      consulting company based out of Chennai, India. He is also a Google
-      Developer Expert for Firebase.
-      <br />
-      <br />
-      He is into the software industry for more than 10 years now, and the world
-      of web technology, Spent most of his time with Javascript and Typescript eco-system.
-      <br />
-      <br />
-      He loves traveling and exploring new places, mainly the trips that involves
-      adventure and nature. Reads a lot of novels.
+    <p class="text-lg italic" id="long-bio">
+      <span class="first-person">
+        I am a tech entrepreneur and software developer from Chennai, India. I currently run Skcript Technologies Pvt, Ltd., a software consulting company. I am also a Google Developer Expert for Firebase.
+        <br />
+        <br />
+        With over a decade of experience in the software industry, I have established myself as an expert in web technologies. I have deep expertise in the JavaScript and TypeScript ecosystem, building scalable applications and mentoring teams to deliver high-quality software solutions.
+        <br />
+        <br />
+        Beyond my professional endeavors, I am an avid traveler with a particular passion for adventure and nature exploration. I maintain a lifelong commitment to learning through my extensive reading habits, with a special focus on literature that broadens both personal and professional horizons.
+      </span>
+      <span class="third-person hidden">
+        Varun Raj Manoharan is a tech entrepreneur and software developer from Chennai, India. He currently runs Skcript Technologies Pvt, Ltd., a software consulting company. He is also a Google Developer Expert for Firebase.
+        <br />
+        <br />
+        With over a decade of experience in the software industry, he has established himself as an expert in web technologies. He has deep expertise in the JavaScript and TypeScript ecosystem, building scalable applications and mentoring teams to deliver high-quality software solutions.
+        <br />
+        <br />
+        Beyond his professional endeavors, he is an avid traveler with a particular passion for adventure and nature exploration. He maintains a lifelong commitment to learning through his extensive reading habits, with a special focus on literature that broadens both personal and professional horizons.
+      </span>
     </p>
   </blockquote>
 </div>
+
+<script is:inline>
+  function togglePersonView(view) {
+    const firstPersonBtn = document.getElementById('first-person-btn');
+    const thirdPersonBtn = document.getElementById('third-person-btn');
+    const firstPersonTexts = document.querySelectorAll('.first-person');
+    const thirdPersonTexts = document.querySelectorAll('.third-person');
+    
+    if (!firstPersonBtn || !thirdPersonBtn) return;
+    
+    if (view === 'first') {
+      // Update button styles
+      firstPersonBtn.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+      firstPersonBtn.classList.remove('text-gray-600');
+      thirdPersonBtn.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+      thirdPersonBtn.classList.add('text-gray-600');
+      
+      // Show first person text, hide third person
+      firstPersonTexts.forEach(text => text.classList.remove('hidden'));
+      thirdPersonTexts.forEach(text => text.classList.add('hidden'));
+    } else {
+      // Update button styles
+      thirdPersonBtn.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+      thirdPersonBtn.classList.remove('text-gray-600');
+      firstPersonBtn.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+      firstPersonBtn.classList.add('text-gray-600');
+      
+      // Show third person text, hide first person
+      thirdPersonTexts.forEach(text => text.classList.remove('hidden'));
+      firstPersonTexts.forEach(text => text.classList.add('hidden'));
+    }
+  }
+
+  // Add event listeners when DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstPersonBtn = document.getElementById('first-person-btn');
+    const thirdPersonBtn = document.getElementById('third-person-btn');
+    
+    if (firstPersonBtn) {
+      firstPersonBtn.addEventListener('click', function() {
+        togglePersonView('first');
+      });
+    }
+    
+    if (thirdPersonBtn) {
+      thirdPersonBtn.addEventListener('click', function() {
+        togglePersonView('third');
+      });
+    }
+  });
+</script>
