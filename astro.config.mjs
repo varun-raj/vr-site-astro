@@ -2,15 +2,10 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-
-import tailwind from "@astrojs/tailwind";
-
 import react from "@astrojs/react";
-
 import expressiveCode from "astro-expressive-code";
-
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
-
+import tailwindv4 from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,9 +16,11 @@ export default defineConfig({
     }),
     mdx(),
     sitemap(),
-    tailwind(),
     react(),
   ],
+  vite: {
+    plugins: [tailwindv4()],
+  },
   markdown: {
     shikiConfig: {
       themes: {
