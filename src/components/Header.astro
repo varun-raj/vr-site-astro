@@ -48,7 +48,7 @@ const activeItem = navItems.find(item =>
 		<!-- Mobile Nav Drawer (Compact) -->
 		<div 
 			id="mobile-nav" 
-			class="hidden absolute top-full left-0 w-full bg-black border-x border-b border-zinc-900 z-50 py-4 px-2 mt-2 shadow-2xl shadow-black/5"
+			class="hidden absolute top-full left-0 w-full bg-black border-x border-b border-zinc-900 z-50 py-6 px-4 mt-2 shadow-2xl shadow-black/5 space-y-8"
 		>
 			<ul class="flex flex-col gap-2 font-mono text-xxs uppercase tracking-widest">
 				{navItems.map(item => (
@@ -60,6 +60,21 @@ const activeItem = navItems.find(item =>
 					</li>
 				))}
 			</ul>
+
+			<div class="space-y-4 pt-4 border-t border-zinc-900">
+				<span class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest block">Quick_Access</span>
+				<div class="grid grid-cols-2 gap-2">
+					<a href="/stack" class="px-3 py-2 border border-zinc-800 rounded font-mono text-[10px] text-zinc-400 uppercase tracking-widest hover:border-zinc-100 hover:text-zinc-100 transition-colors">
+						Tech_Manifest
+					</a>
+					<a href="/press-kit" class="px-3 py-2 border border-zinc-800 rounded font-mono text-[10px] text-zinc-400 uppercase tracking-widest hover:border-zinc-100 hover:text-zinc-100 transition-colors">
+						Press_Kit
+					</a>
+				</div>
+				<button id="mobile-help-trigger" class="w-full px-3 py-2 bg-zinc-100 text-black font-mono text-[10px] uppercase tracking-widest rounded hover:bg-white transition-colors">
+					System_Manual (man)
+				</button>
+			</div>
 		</div>
 	</nav>
 </header>
@@ -67,6 +82,7 @@ const activeItem = navItems.find(item =>
 <script>
 	const toggle = document.getElementById('menu-toggle');
 	const mobileNav = document.getElementById('mobile-nav');
+	const helpTrigger = document.getElementById('mobile-help-trigger');
 
 	if (toggle && mobileNav) {
 		toggle.addEventListener('click', () => {
@@ -74,6 +90,18 @@ const activeItem = navItems.find(item =>
 			const isHidden = mobileNav.classList.contains('hidden');
 			toggle.querySelector('span')!.textContent = isHidden ? '▼' : '▲';
 		});
+
+		if (helpTrigger) {
+			helpTrigger.addEventListener('click', () => {
+				mobileNav.classList.add('hidden');
+				toggle.querySelector('span')!.textContent = '▼';
+				// Trigger the global 'man' command logic
+				const event = new KeyboardEvent('keydown', { key: 'm' });
+				document.dispatchEvent(event);
+				setTimeout(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' })), 10);
+				setTimeout(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'n' })), 20);
+			});
+		}
 
 		// Close menu when clicking outside
 		document.addEventListener('click', (event) => {
