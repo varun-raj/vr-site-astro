@@ -47,8 +47,8 @@
 }
 
 /* Minimalist Link Style */
-a:not(.plain):not(.tag):not(.internal-link):not(.footnote):not(.reversefootnote) {
-  @apply underline decoration-zinc-200 underline-offset-4 hover:decoration-zinc-900 transition-colors dark:decoration-zinc-800 dark:hover:decoration-zinc-100;
+a:not(.plain):not(.tag):not(.internal-link):not(.footnote):not(.reversefootnote):not(.prose a) {
+  @apply underline decoration-zinc-800 underline-offset-4 hover:decoration-zinc-100 transition-colors;
 }
 
 /* Tech-focused Monospace Accents */
