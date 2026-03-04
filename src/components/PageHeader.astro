@@ -28,10 +28,38 @@ const timestamp = new Date().toISOString().split('T')[0];
   <div class="space-y-4">
     <div class="flex items-baseline gap-3">
       <span class="text-emerald-500 font-mono text-xl font-bold">></span>
-      <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-100 sm:text-3xl uppercase">
-        {title}<span class="animate-terminal-cursor">_</span>
+      <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-100 sm:text-3xl uppercase relative">
+        <span id="typed-title" class="inline-block min-h-[1em]"></span>
+        <span class="animate-terminal-cursor">_</span>
+        <!-- Hidden but present for SEO -->
+        <span class="sr-only" id="original-title">{title}</span>
       </h1>
     </div>
+...
+<script is:inline>
+  function setupTyping() {
+    const titleEl = document.getElementById('original-title');
+    const typedEl = document.getElementById('typed-title');
+    if (!titleEl || !typedEl) return;
+
+    const text = titleEl.textContent || "";
+    typedEl.textContent = "";
+    let i = 0;
+
+    function type() {
+      if (i < text.length) {
+        typedEl.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, Math.random() * 50 + 50);
+      }
+    }
+
+    type();
+  }
+
+  setupTyping();
+  document.addEventListener('astro:after-swap', setupTyping);
+</script>
   
     {description && (
       <div class="relative pl-6 py-1">
