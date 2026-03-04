@@ -111,6 +111,7 @@ const { meta } = Astro.props;
               '05': '/books', '5': '/books',
               'pk': '/press-kit',
               'pr': '/projects',
+              'stk': '/stack',
               'sc': 'https://skcript.com',
               '0': 'section-0'
             };
@@ -129,8 +130,9 @@ const { meta } = Astro.props;
               keyBuffer = "";
             } else {
               // Only show error if buffer looks like a complete but invalid command
-              // (e.g., 2 characters long or starts with 0)
-              if (keyBuffer.length >= 2 || (keyBuffer.length === 1 && !['0','1','2','3','4','5'].includes(keyBuffer))) {
+              // (e.g., 3 characters long, or 2 chars and not starting a valid 3-char cmd)
+              const possibleStarts = ['s']; // starts of 3-char commands
+              if (keyBuffer.length >= 3 || (keyBuffer.length === 2 && !possibleStarts.includes(keyBuffer[0]))) {
                 showKeyIndicator(true);
                 keyBuffer = "";
               }
