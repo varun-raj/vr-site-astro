@@ -21,7 +21,84 @@ const { meta } = Astro.props;
     <ClientRouter />
     <BaseHead title={meta.title} description={meta.description} image={meta.image} />
   </head>
-  <body class="flex min-h-screen flex-col bg-black text-zinc-200">
+  <body class="flex min-h-screen flex-col bg-black text-zinc-200 relative">
+    <div id="help-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6">
+      <div class="w-full max-w-lg font-mono text-zinc-400 border-2 border-zinc-100 bg-black p-1 shadow-2xl">
+        <!-- TUI Border Inner -->
+        <div class="border border-zinc-100/30 p-6 space-y-8 relative">
+          <!-- TUI Title -->
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
+            [ system_help_v1.0 ]
+          </div>
+          
+          <div class="space-y-2 text-center pt-2">
+            <p class="text-[10px] uppercase tracking-widest opacity-70 text-zinc-500">Execute command sequence to navigate system</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-12 text-zinc-300">
+            <div class="space-y-4">
+              <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
+                <span class="text-[10px] uppercase font-bold text-zinc-500">Directories</span>
+                <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/root</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">1</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/about</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">2</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/logs</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">3</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/gear</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">4</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/library</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">5</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
+                <span class="text-[10px] uppercase font-bold text-zinc-500">Functions</span>
+                <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tech_manifest</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">STK</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">press_kit_hd</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PK</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">view_projects</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PR</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">ext_skcript</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SC</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-zinc-100/20 flex justify-between items-center">
+            <span class="text-[9px] uppercase tracking-tighter opacity-30 font-mono italic text-zinc-100">Secure transmission active...</span>
+            <span class="text-[10px] uppercase font-bold animate-pulse text-zinc-100">Press [ESC] to Exit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
         <Header />
@@ -44,6 +121,14 @@ const { meta } = Astro.props;
     <script>
       let keyBuffer = "";
       let bufferTimeout: ReturnType<typeof setTimeout>;
+
+      function toggleHelp() {
+        const modal = document.getElementById('help-modal');
+        if (modal) {
+          modal.classList.toggle('hidden');
+          modal.classList.toggle('flex');
+        }
+      }
 
       (window as any).showToast = function(message: string) {
         const toast = document.getElementById('toast');
@@ -91,6 +176,12 @@ const { meta } = Astro.props;
         }
 
         const key = e.key.toLowerCase();
+
+        if (key === 'escape' && !document.getElementById('help-modal')?.classList.contains('hidden')) {
+          e.preventDefault();
+          toggleHelp();
+          return;
+        }
         
         // Only allow alphanumeric keys for buffer
         if (!/^[a-z0-9]$/.test(key)) return;
@@ -100,6 +191,13 @@ const { meta } = Astro.props;
         
         clearTimeout(bufferTimeout);
         bufferTimeout = setTimeout(() => {
+          // Check for 'man' command
+          if (keyBuffer === 'man') {
+            toggleHelp();
+            keyBuffer = "";
+            return;
+          }
+
           // If buffer is not empty and no command matched
           if (keyBuffer.length > 0) {
             const isHomePage = window.location.pathname === '/';
@@ -131,14 +229,14 @@ const { meta } = Astro.props;
             } else {
               // Only show error if buffer looks like a complete but invalid command
               // (e.g., 3 characters long, or 2 chars and not starting a valid 3-char cmd)
-              const possibleStarts = ['s']; // starts of 3-char commands
+              const possibleStarts = ['s', 'm'];
               if (keyBuffer.length >= 3 || (keyBuffer.length === 2 && !possibleStarts.includes(keyBuffer[0]))) {
                 showKeyIndicator(true);
                 keyBuffer = "";
               }
             }
           }
-        }, 400); // Shorter timeout for better responsiveness
+        }, 400);
       }
 
       document.addEventListener('keydown', handleShortcuts);
