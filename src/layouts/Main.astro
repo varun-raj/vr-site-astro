@@ -16,25 +16,130 @@ const { meta } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <ClientRouter />
     <BaseHead title={meta.title} description={meta.description} image={meta.image} />
   </head>
-  <body class="flex h-full flex-col bg-zinc-50 dark:bg-zinc-900">
-    <div
-      class="w-full px-3 text-gray-700 antialiased md:px-3 dark:text-gray-400"
-    >
-      <div
-        class="mx-auto flex h-screen max-w-screen-md flex-col justify-between"
-      >
+  <body class="flex min-h-screen flex-col bg-black text-zinc-200">
+    <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
+      <div class="flex min-h-screen flex-col">
         <Header />
-        <main class="mb-auto py-5">
+        <main class="flex-grow py-8 md:py-12">
           <slot />
         </main>
-
         <Footer />
       </div>
     </div>
+
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[200] px-4 py-2 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-black font-mono text-xxxs uppercase tracking-widest rounded shadow-2xl transition-all duration-300 -translate-y-20 opacity-0 flex items-center gap-3 border border-white/10">
+      <span class="text-emerald-500">$</span>
+      <span id="toast-message"></span>
+    </div>
+
+    <div id="key-indicator" class="fixed bottom-8 right-8 pointer-events-none z-[100] font-mono text-xl text-zinc-400 dark:text-zinc-600 opacity-0 transition-opacity duration-200">
+      <span class="text-emerald-500 mr-2">></span><span id="key-text" class="uppercase font-bold text-zinc-900 dark:text-zinc-100"></span>
+    </div>
+
+    <script>
+      let keyBuffer = "";
+      let bufferTimeout: ReturnType<typeof setTimeout>;
+
+      (window as any).showToast = function(message: string) {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-message');
+        if (toast && toastMsg) {
+          toastMsg.textContent = message;
+          toast.classList.remove('-translate-y-20', 'opacity-0');
+          toast.classList.add('translate-y-0', 'opacity-100');
+          
+          clearTimeout((window as any).toastTimeout);
+          (window as any).toastTimeout = setTimeout(() => {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('-translate-y-20', 'opacity-0');
+          }, 2000);
+        }
+      }
+
+      function showKeyIndicator(isError = false) {
+        const el = document.getElementById('key-indicator');
+        const textEl = document.getElementById('key-text');
+        if (el && textEl) {
+          textEl.textContent = keyBuffer + (isError ? ' - unknown command' : '');
+          el.classList.remove('opacity-0');
+          el.classList.add('opacity-100');
+          
+          if (isError) {
+             textEl.classList.add('text-red-500');
+             textEl.classList.remove('text-zinc-900', 'dark:text-zinc-100');
+          } else {
+             textEl.classList.remove('text-red-500');
+             textEl.classList.add('text-zinc-900', 'dark:text-zinc-100');
+          }
+
+          clearTimeout((window as any).keyHintTimeout);
+          (window as any).keyHintTimeout = setTimeout(() => {
+            el.classList.remove('opacity-100');
+            el.classList.add('opacity-0');
+          }, isError ? 1500 : 800);
+        }
+      }
+
+      function handleShortcuts(e: KeyboardEvent) {
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.metaKey || e.ctrlKey) {
+          return;
+        }
+
+        const key = e.key.toLowerCase();
+        
+        // Only allow alphanumeric keys for buffer
+        if (!/^[a-z0-9]$/.test(key)) return;
+
+        keyBuffer += key;
+        showKeyIndicator();
+        
+        clearTimeout(bufferTimeout);
+        bufferTimeout = setTimeout(() => {
+          // If buffer is not empty and no command matched
+          if (keyBuffer.length > 0) {
+            const isHomePage = window.location.pathname === '/';
+            const navMap: Record<string, string> = {
+              '01': '/', '1': '/',
+              '02': '/about', '2': '/about',
+              '03': '/blog', '3': '/blog',
+              '04': '/uses', '4': '/uses',
+              '05': '/books', '5': '/books',
+              'pk': '/press-kit',
+              'pr': '/projects',
+              'sc': 'https://skcript.com',
+              '0': 'section-0'
+            };
+
+            if (navMap[keyBuffer]) {
+              const target = navMap[keyBuffer];
+              if (target === 'section-0' && isHomePage) {
+                document.getElementById('section-0')?.scrollIntoView({ behavior: 'smooth' });
+              } else if (target.startsWith('http')) {
+                window.open(target, '_blank');
+              } else if (window.location.pathname === target) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                window.location.href = target;
+              }
+              keyBuffer = "";
+            } else {
+              // Only show error if buffer looks like a complete but invalid command
+              // (e.g., 2 characters long or starts with 0)
+              if (keyBuffer.length >= 2 || (keyBuffer.length === 1 && !['0','1','2','3','4','5'].includes(keyBuffer))) {
+                showKeyIndicator(true);
+                keyBuffer = "";
+              }
+            }
+          }
+        }, 400); // Shorter timeout for better responsiveness
+      }
+
+      document.addEventListener('keydown', handleShortcuts);
+    </script>
   </body>
 </html>

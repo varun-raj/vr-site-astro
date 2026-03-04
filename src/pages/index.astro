@@ -11,41 +11,126 @@ import HomePageBlogSection from "../components/home/HomePageBlogSection.astro";
     description: AppConfig.description,
   }}
 >
-  <div class="pb-8 pt-16">
-    <img
-      src="/assets/press-kit/picture_four.jpg"
-      width={200}
-      height={200}
-      class="mb-3 size-16 rounded-full bg-zinc-100 object-cover ring-white transition-all duration-300 hover:size-20 dark:bg-zinc-800"
-      alt="Profile Picture"
-    />
-    <h1 class="mb-2 text-5xl font-bold text-gray-900 dark:text-gray-200">
-      {AppConfig.title} 🪴
-    </h1>
-    <h2 class="text-xl font-normal">{AppConfig.description}</h2>
+  <div class="space-y-16 pt-4">
+    <header class="flex flex-col-reverse items-start gap-8 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-3 max-w-xl">
+        <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          {AppConfig.title}
+        </h1>
+        <p class="text-base text-zinc-500 dark:text-zinc-400">
+          {AppConfig.description}
+        </p>
+      </div>
+      <div class="relative inline-block hover:scale-105 transition-transform duration-300">
+        <img
+          src="/assets/press-kit/picture_four.jpg"
+          width={120}
+          height={120}
+          class="size-20 bg-zinc-100 object-cover dark:bg-zinc-800 rounded-xl"
+          alt="Profile Picture"
+        />
+        <div class="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-xl"></div>
+      </div>
+    </header>
+
+    <div class="space-y-6 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 max-w-xl">
+      <div id="section-0">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-1">[0] Overview</span>
+        <p>
+          I&apos;m Varun, a software developer and founder from India. Currently building{" "}
+          <a 
+            href="https://featureos.app?utm_source=varunraj_in" 
+            target="_blank"
+            class="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-900 dark:text-zinc-200 dark:decoration-zinc-700 dark:hover:decoration-zinc-200 transition-colors"
+          >
+            FeatureOS
+          </a>, 
+          a platform designed to help product teams build better software.
+        </p>
+      </div>
+
+      <p>
+        Beyond SaaS, I am deeply fascinated by the intersection of hardware and software. I spend my time building AI agents, tinkering with electronics in my homelab, and bringing digital models to life through 3D printing.
+      </p>
+    </div>
+
+    <section class="space-y-8" id="section-1">
+      <div>
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-6">[1] Interests</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10">
+          <div class="group space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+              <span class="size-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+              Agent Dev
+            </div>
+            <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+              Exploring LLM orchestration and autonomous agentic workflows to build intelligent tools.
+            </p>
+          </div>
+
+          <div class="group space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+              <span class="size-1.5 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.5)]"></span>
+              Homelab
+            </div>
+            <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+              Self-hosting infrastructure and managing private clouds for data sovereignty and privacy.
+            </p>
+          </div>
+
+          <div class="group space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+              <span class="size-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
+              Electronics
+            </div>
+            <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+              Tinkering with micro-controllers, IoT systems, and custom PCB designs for home automation.
+            </p>
+          </div>
+
+          <div class="group space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+              <span class="size-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></span>
+              3D Printing
+            </div>
+            <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+              Bringing digital models to life with high-speed, multi-color printing and functional design.
+            </p>
+          </div>
+
+          <div class="group space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+              <span class="size-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]"></span>
+              Product Design
+            </div>
+            <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+              Crafting exceptional user experiences and visual systems with a focus on utility and craft.
+            </p>
+          </div>
+
+          <div class="group space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+              <span class="size-1.5 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]"></span>
+              Exploration
+            </div>
+            <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+              Adventure travel and nature photography, finding inspiration beyond the digital realm.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-2">
+       <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-4">[2] Writing</span>
+       <HomePageBlogSection />
+    </section>
+
+    <footer class="pt-8 border-t border-zinc-100 dark:border-zinc-900">
+      <SocialLinks />
+      <p class="mt-4 font-mono text-xxs uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+        Love Nature · Spread Peace
+      </p>
+    </footer>
   </div>
-  <div class="space-y-3 text-base font-normal">
-    <p>
-      <span role="img" aria-label="Hi"> 👋 </span>{" "}
-      I&apos;m Varun, a tech entrepreneur from India, Currently building{" "}
-      <a href="https://featureos.app?utm_source=varunraj_in" target="_blank">
-        FeatureOS
-      </a>{" "}
-      a product manager swiss army knife.
-    </p>
-
-    <p>
-      I code, speak and write for passion. Love books and music, huge fan of
-      art. Love collecting souvenirs from every travel I make.
-    </p>
-
-    <p>I&apos;ve a thing for really good design.</p>
-
-    <p>
-      <em>Love Nature, Spread Peace.</em>
-    </p>
-  </div>
-
-  <HomePageBlogSection />
-  <SocialLinks />
 </Main>

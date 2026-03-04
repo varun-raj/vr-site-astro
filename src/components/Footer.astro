@@ -2,46 +2,37 @@
 import { AppConfig } from "../config/AppConfig";
 ---
 
-<footer class="pb-10">
-	<div class="flex flex-col items-center justify-center gap-3 p-2">
-		<ul class="flex items-center gap-5 text-center">
+<footer class="py-8 border-t border-zinc-100 dark:border-zinc-900 mt-12">
+	<div class="flex flex-col md:flex-row items-start justify-between gap-6">
+		<ul class="flex flex-wrap items-center gap-6 font-mono text-xxs uppercase tracking-widest">
 			<li>
 				<a
-					class="plain text-xs text-gray-400 dark:text-gray-600"
+					class="plain text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 flex items-center"
 					href="/press-kit"
 				>
-					Press Kit
+					<span class="text-[10px] opacity-50 mr-1.5">[PK]</span> Press Kit
 				</a>
 			</li>
 			<li>
 				<a
-					class="plain text-xs text-gray-400 dark:text-gray-600"
+					class="plain text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 flex items-center"
 					href="https://skcript.com"
 					target="_blank"
 				>
-					Skcript
+					<span class="text-[10px] opacity-50 mr-1.5">[SC]</span> Skcript
 				</a>
 			</li>
 			<li>
 				<a
-					class="plain text-xs text-gray-400 dark:text-gray-600"
-					href="https://developers.google.com/profile/u/varunrajm"
-					target="_blank"
-				>
-					Developer Profile
-				</a>
-			</li>
-			<li>
-				<a
-					class="plain text-xs text-gray-400 dark:text-gray-600"
+					class="plain text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 flex items-center"
 					href="/projects"
 				>
-					Projects
+					<span class="text-[10px] opacity-50 mr-1.5">[PR]</span> Projects
 				</a>
 			</li>
 		</ul>
-		<p class="inline font-mono text-xs text-gray-400 dark:text-gray-600">
-			Copyright &copy; {new Date().getFullYear()} {AppConfig.site_name}
+		<p class="font-mono text-xxs text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+			&copy; {new Date().getFullYear()} {AppConfig.site_name}
 		</p>
 	</div>
 </footer>

@@ -1,42 +1,63 @@
 ---
-import { ArrowRight } from "@phosphor-icons/react";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { format } from "date-fns";
 
-const allPosts = (await getCollection("blog"))
+const allPosts = (await getCollection("blog"));
 
 const posts = allPosts.sort(
-  (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-).slice(0, 3);
-
-
+  (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) => {
+    const aDate = a.data.pubDate ? a.data.pubDate.valueOf() : 0;
+    const bDate = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
+    return bDate - aDate;
+  }
+).slice(0, 5);
 ---
 
-<div class="my-24">
-  <h2 class="text-sm font-mono font-semibold uppercase text-zinc-400 dark:text-zinc-600 ">
-    Writings
-  </h2>
-  <div class="my-4 space-y-4">
-    {posts.map((post: CollectionEntry<"blog">) => (
-      <div class="flex items-center justify-between rounded-lg ">
-        <a
-          class="plain text-md !no-underline hover:text-primary"
-          href={`/blog/${post.id}`}
-        >
-          {post.data.title}
+<div class="flex flex-col gap-1">
+  {posts.length > 0 ? (
+    posts.map((post, index) => (
+      <a 
+        href={`/blog/${post.id}`}
+        class="group relative flex items-baseline gap-4 p-2 pr-8 -mx-2 rounded hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+      >
+        <span class="font-mono text-xxxs text-zinc-400 dark:text-zinc-600 w-8">
+          [0x{(index + 1).toString(16).toUpperCase().padStart(2, '0')}]
+        </span>
+          
+          <div class="flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+            <h3 class="text-sm font-medium text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
+              {post.data.title}
+            </h3>
+            
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="hidden sm:inline-block h-px w-8 bg-zinc-200 dark:bg-zinc-800"></span>
+              <time 
+                datetime={post.data.pubDate?.toISOString()} 
+                class="font-mono text-xxxs text-zinc-400 dark:text-zinc-500 whitespace-nowrap"
+              >
+                {post.data.pubDate ? format(post.data.pubDate, 'yyyy-MM-dd') : 'N/A'}
+              </time>
+            </div>
+          </div>
+
+          <span class="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 font-mono text-xs absolute right-2 top-1/2 -translate-y-1/2 hidden sm:block">
+            ←
+          </span>
         </a>
-        <time datetime={post.data.pubDate} class="font-mono text-xxs">
-          {format(post.data.pubDate, 'LLLL d, yyyy')}
-        </time>
-      </div>
-    ))}
+      ))
+    ) : (
+    <div class="p-4 border border-dashed border-zinc-200 dark:border-zinc-800 rounded text-center">
+      <p class="text-xs font-mono text-zinc-400 uppercase tracking-widest">System Log Empty</p>
+    </div>
+  )}
+  
+  <div class="pt-6">
+    <a
+      class="group inline-flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+      href="/blog"
+    >
+      <span class="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">></span>
+      [View Archive]
+    </a>
   </div>
-  <a
-    class="plain flex items-center font-mono text-xs !no-underline hover:text-primary"
-    href="/blog"
-  >
-    View all posts
-    <ArrowRight className="size-4" />
-  </a>
 </div>

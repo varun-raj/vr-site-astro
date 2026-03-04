@@ -5,29 +5,63 @@ interface Props {
     author_name: string | string[];
     book_large_image_url: string;
     link: string;
+    isbn?: string;
+    book_published?: string;
+    average_rating?: string;
   };
+  index: number;
 }
 
-const { book } = Astro.props;
+const { book, index } = Astro.props;
+const hexId = `0x${(index + 1).toString(16).padStart(2, '0')}`;
 ---
 
-<div class="flex flex-col items-center justify-start space-y-3 py-6">
-  <div
-    class="h-[200px] w-[150px] rounded-lg bg-cover bg-center bg-no-repeat drop-shadow-lg"
-    style={`background-image: url(${book.book_large_image_url})`}
-  />
+<div class="group relative flex flex-col items-center justify-start space-y-4 p-4 transition-all duration-200 overflow-hidden border border-zinc-900 hover:border-zinc-700">
+  <!-- Sliding Background -->
+  <span class="absolute inset-0 bg-zinc-900/50 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out -z-10"></span>
+  
+  <!-- Hex ID Badge -->
+  <div class="absolute top-2 left-2 font-mono text-[10px] text-zinc-600">
+    [{hexId}]
+  </div>
 
-  <a href={book.link} target="_blank" class="plain">
-    <h3 class="m-2 text-center text-lg font-normal dark:text-white">
+  <div
+    class="h-[180px] w-[130px] rounded bg-cover bg-center bg-no-repeat shadow-lg transition-transform group-hover:scale-105"
+    style={`background-image: url(${book.book_large_image_url})`}
+  >
+    <div class="opacity-0 group-hover:opacity-100 transition-opacity absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
+       <a href={book.link} target="_blank" class="px-3 py-1 bg-white text-black font-mono text-xxxs uppercase tracking-widest hover:bg-zinc-200 transition-colors">
+         Access_Data
+       </a>
+    </div>
+  </div>
+
+  <div class="w-full space-y-2 text-center">
+    <h3 class="text-sm font-medium text-zinc-100 line-clamp-2 min-h-[40px]">
       {book.title}
     </h3>
-  </a>
 
-  <div class="flex items-center rounded-full bg-gray-200 px-2 text-xxs text-gray-800 dark:bg-zinc-700 dark:text-gray-400 dark:ring-white/10">
-    <span class="inline-flex truncate font-normal">
-      {Array.isArray(book.author_name)
-        ? book.author_name.join(', ')
-        : book.author_name}
-    </span>
+    <div class="space-y-1 font-mono text-[10px] text-zinc-500">
+      <div class="flex items-center justify-center gap-2">
+        <span class="text-zinc-600 uppercase">Auth:</span>
+        <span class="truncate max-w-[100px]">
+          {Array.isArray(book.author_name) ? book.author_name[0] : book.author_name}
+        </span>
+      </div>
+      
+      {book.isbn && book.isbn !== "" && (
+        <div class="flex items-center justify-center gap-2">
+          <span class="text-zinc-600 uppercase">ISBN:</span>
+          <span>{book.isbn}</span>
+        </div>
+      )}
+
+      {book.book_published && (
+        <div class="flex items-center justify-center gap-2">
+          <span class="text-zinc-600 uppercase">Year:</span>
+          <span>{book.book_published}</span>
+        </div>
+      )}
+    </div>
   </div>
 </div>

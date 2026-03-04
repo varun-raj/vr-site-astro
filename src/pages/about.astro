@@ -11,54 +11,78 @@ import Main from "../layouts/Main.astro";
     image: "/assets/og-images/about.png",
   }}
 >
-  <div class="pb-8 pt-16">
-    <PageHeader title="About Me" emoji="💡" />
-    {/* <h2 class="text-xl">{AppConfig.description}</h2> */}
+  <div class="pb-8 pt-2">
+    <PageHeader 
+      title="About Me" 
+      emoji="💡" 
+      description="Builder, tinkerer, and lifelong learner."
+    />
   </div>
-  <div class="space-y-3 text-base font-normal">
-    <p>
-      I&apos;m a technology entrepreneur from India 🇮🇳, running{" "}
-      <a href="https://skcript.com" target="_blank"> Skcript </a>{" "}
-      - a ten year old software technology company, building products that makes
-      product owners life easier to build and manage their products.
-    </p>
-    <p>
-      Been into the industry for more than 10 years now, and the world of web
-      technology kept me fasicnated, built most of my projects with Javascript
-      and Typescript eco-system.
-    </p>
-    <p>
-      I love traveling and exploring new places, mainly the trips that involves
-      adventure and nature. More into books and music. I love collecting
-      souvenirs from every travel I make. I&apos;ve a thing for really{" "}
-      <a href="/blog/why-we-should-care-about-good-design">
-        good design.
-      </a>
-    </p>
-  </div>
-  <div class="mt-10">
-    <h3 class="font-bold text-primary">Currently Working on</h3>
-    <ul class="mt-3 flex flex-col space-y-4">
-      <li>
-        <h4 class="text-base font-normal">
-          <a href="https://featureos.app" class="plain" target="_blank">
-            featureOS.app
-          </a>
-        </h4>
-        <p class="text-sm font-normal">
-          A feature management tool for product owners to manage their product
+
+  <div class="space-y-12">
+    <!-- Section 01: The Journey -->
+    <section id="journey" class="space-y-4">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[01] The Journey</span>
+      <div class="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <p>
+          I&apos;m a technology entrepreneur from India 🇮🇳 with over a decade of experience in the software industry. 
+          My journey began with a deep fascination for the web, which eventually led me to co-found 
+          <a href="https://skcript.com" target="_blank" class="text-zinc-900 dark:text-zinc-200 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-900 dark:decoration-zinc-700 dark:hover:decoration-zinc-200 transition-colors">Skcript</a>, 
+          a technology consulting company that has been solving complex engineering problems for ten years.
         </p>
-      </li>
-      <li>
-        <h4 class="text-base font-normal">
-          <a href="https://guidekit.app" class="plain" target="_blank">
-            guidekit.app
-          </a>
-        </h4>
-        <p class="text-sm font-normal">
-          Helps product users create quick help workflows
+        <p>
+          Over the years, I've built countless projects, primarily within the JavaScript and TypeScript ecosystems. 
+          What started as writing code has evolved into a passion for building sustainable products and helping 
+          other product owners bring their visions to life.
         </p>
-      </li>
-    </ul>
+      </div>
+    </section>
+
+    <!-- Section 02: Current Focus -->
+    <section id="focus" class="space-y-4">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[02] Current Focus</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="https://featureos.app?utm_source=varunraj_in" target="_blank" class="group block p-4 rounded-lg border border-zinc-900 hover:border-zinc-700 transition-all bg-zinc-900/50">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-zinc-100 group-hover:underline decoration-1 underline-offset-4">FeatureOS</h3>
+            <span class="font-mono text-xxs text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded-full">Active</span>
+          </div>
+          <p class="text-sm text-zinc-400">
+            The premier platform for product teams to collect feedback, manage roadmaps, and publish changelogs.
+          </p>
+        </a>
+
+        <a href="https://supportwire.io?utm_source=varunraj_in" target="_blank" class="group block p-4 rounded-lg border border-zinc-900 hover:border-zinc-700 transition-all bg-zinc-900/50">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-zinc-100 group-hover:underline decoration-1 underline-offset-4">SupportWire</h3>
+            <span class="font-mono text-xxs text-amber-400 bg-amber-900/30 px-2 py-0.5 rounded-full">Maintenance</span>
+          </div>
+          <p class="text-sm text-zinc-400">
+             A lightweight tool designed to help product owners create quick, step-by-step help workflows for their users.
+          </p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 03: Beyond Code -->
+    <section id="interests" class="space-y-4">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[03] Beyond Code</span>
+      <div class="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <p>
+          When I'm away from the keyboard, I'm usually exploring the physical world. I have a deep appreciation for 
+          nature and adventure travel—collecting memories and souvenirs from every new place I visit.
+        </p>
+        <p>
+          Recently, my curiosity has expanded into hardware. I spend my weekends building AI agents, 
+          maintaining a self-hosted homelab, and designing functional prints for my 3D printer. 
+          It's a chaotic but rewarding mix of soldering irons, PLA filament, and Python scripts.
+        </p>
+        <p>
+          I also have a strong affinity for 
+          <a href="/blog/why-we-should-care-about-good-design" class="text-zinc-900 dark:text-zinc-200 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-900 dark:decoration-zinc-700 dark:hover:decoration-zinc-200 transition-colors">good design</a>, 
+          whether it's in software, architecture, or everyday objects.
+        </p>
+      </div>
+    </section>
   </div>
 </Main>

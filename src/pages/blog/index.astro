@@ -20,16 +20,16 @@ const posts = allPosts.sort(
     description: AppConfig.description,
   }}
 >
-  <div class="pb-8 pt-16">
+  <div class="pb-8 pt-2">
     <PageHeader
-      title="Hear me out."
+      title="Writing"
       emoji="📝"
-      description="I write about life, business and philosophy."
+      description="System logs on life, SaaS, and engineering."
     />
 
-    <div class="mt-20">
+    <div class="mt-12 space-y-1">
       {posts.map((post: CollectionEntry<"blog">, idx: number) => (
-        <PostCard post={post} />
+        <PostCard post={post} index={idx} />
       ))}
     </div>
   </div>

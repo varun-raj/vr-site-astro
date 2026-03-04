@@ -14,23 +14,60 @@ import Main from "../layouts/Main.astro";
     image: "/assets/og-images/press-kit.png",
   }}
 >
-  <div class="">
-    <div class="mb-10">
+  <div class="space-y-16 pt-2">
+    <header class="space-y-4">
       <Title title="Press Kit" level={1} className="text-5xl" />
-      <p class="">
-        Please use the following assets when writing about me or my work.
+      <p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+        Resources for conference organizers, media, and podcasts. Everything you need to introduce Varun or feature his work.
       </p>
-    </div>
+    </header>
 
     <div class="flex flex-col gap-20">
-      <section id="photos" class="flex flex-col gap-3">
-        <PKPhotos />
-      </section>
-      <section id="biography" class="flex flex-col gap-3">
+      <section id="biography" class="space-y-4">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[01] Biography</span>
         <PKBiography />
       </section>
-      <section id="social-links" class="flex flex-col gap-3">
-        <PKSocialLinks />
+
+      <section id="topics" class="space-y-6">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[02] Topics & Expertise</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">Product Management & SaaS</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Building scalable feedback loops, managing complex roadmaps, and the psychology behind shipping successful products.
+             </p>
+          </div>
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">AI Agents & Orchestration</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               The transition from simple LLM wrappers to complex, autonomous agentic workflows and their impact on software development.
+             </p>
+          </div>
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">Firebase & Web Ecosystems</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Leveraging Firebase as a Google Developer Expert to build high-performance, serverless applications at scale.
+             </p>
+          </div>
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">The Human Side of Engineering</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Curiosity as a skill, the importance of good design in technical products, and scaling yourself as an entrepreneur.
+             </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="photos" class="space-y-4">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[03] Visual Assets</span>
+        <PKPhotos />
+      </section>
+
+      <section id="social-links" class="space-y-4">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[04] Connect</span>
+        <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50">
+          <PKSocialLinks />
+        </div>
       </section> 
     </div>
   </div>

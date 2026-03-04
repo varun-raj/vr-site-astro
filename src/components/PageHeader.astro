@@ -1,21 +1,45 @@
 ---
 interface Props {
-  emoji?: string;
+  emoji?: string; // Kept for prop compatibility, but will use for icon logic if needed
   title: string;
   description?: string;
 }
 
-const { emoji, title, description } = Astro.props;
+const { title, description } = Astro.props;
+const timestamp = new Date().toISOString().split('T')[0];
 ---
 
-<div class="text-left">
-  <h1 class="mb-2 text-5xl font-bold text-gray-900 dark:text-gray-200">
-    {emoji && (
-      <span role="img" aria-label="Hi">
-        {emoji}
-      </span>
+<div class="mb-12 group">
+  <!-- Terminal Window Decoration -->
+  <div class="flex items-center gap-4 mb-4">
+    <div class="flex gap-1.5">
+      <div class="size-2.5 rounded-full bg-zinc-800"></div>
+      <div class="size-2.5 rounded-full bg-zinc-800"></div>
+      <div class="size-2.5 rounded-full bg-zinc-800"></div>
+    </div>
+    <div class="h-px flex-1 bg-zinc-900"></div>
+    <div class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest flex items-center gap-3">
+      <span>Status: OK</span>
+      <span class="hidden sm:inline">|</span>
+      <span class="hidden sm:inline">{timestamp}</span>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="flex items-baseline gap-3">
+      <span class="text-emerald-500 font-mono text-xl font-bold">></span>
+      <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-100 sm:text-3xl uppercase">
+        {title}<span class="animate-terminal-cursor">_</span>
+      </h1>
+    </div>
+  
+    {description && (
+      <div class="relative pl-6 py-1">
+        <div class="absolute left-0 top-0 bottom-0 w-px bg-zinc-800"></div>
+        <p class="max-w-2xl text-sm font-mono leading-relaxed text-zinc-500">
+          // {description}
+        </p>
+      </div>
     )}
-    {emoji ? ' ' : ''}{title}
-  </h1>
-  {description && <h2 class="text-xl font-normal">{description}</h2>}
+  </div>
 </div>

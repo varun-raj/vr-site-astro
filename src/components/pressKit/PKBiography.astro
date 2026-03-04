@@ -2,124 +2,133 @@
 import Title from "../ui/Title.astro";
 ---
 
-<div>
-  <a href="#biography" class="block hover:opacity-80 transition-opacity duration-200 !no-underline">
+<div class="space-y-6">
+  <div>
     <Title title="✍️ Biography" level={3} className="text-3xl" id="biography-heading" />
-  </a>
-  <p>
-    I&apos;ve written two versions of my biography, a short one and a long one.
-    Please use the one that fits your needs.
-  </p>
-</div>
+    <p class="text-zinc-500 dark:text-zinc-400 mt-2">
+      Standard bios in different lengths and perspectives. Use the one that fits your event or publication needs.
+    </p>
+  </div>
 
-<!-- Toggle for First Person / Third Person -->
-<div class="mb-6">
-  <div class="flex items-center gap-4">
-    <div class="flex bg-gray-100 rounded-lg p-1">
+  <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-4">
+    <div class="flex gap-2">
       <button 
         id="first-person-btn" 
-        class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm"
+        class="px-3 py-1 font-mono text-xxxs uppercase tracking-widest border border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-black transition-all rounded"
         data-view="first"
       >
         First Person
       </button>
       <button 
         id="third-person-btn" 
-        class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900"
+        class="px-3 py-1 font-mono text-xxxs uppercase tracking-widest border border-zinc-200 text-zinc-500 hover:border-zinc-400 hover:text-zinc-700 dark:border-zinc-800 dark:text-zinc-500 dark:hover:border-zinc-600 dark:hover:text-zinc-300 transition-all rounded"
         data-view="third"
       >
         Third Person
       </button>
     </div>
   </div>
-</div>
 
-<div>
-  <p class="mb-3">
-    <strong class="font-mono text-sm">Short Biography</strong>
-  </p>
-  <blockquote class="border-l-4 border-primary pl-4">
-    <p class="text-lg italic" id="short-bio">
-      <span class="first-person">I am a Co-Founder and CIO at Skcript, Google Developer Expert for Firebase, and a software developer from India.</span>
-      <span class="third-person hidden">Co-Founder and CIO at Skcript, Google Developer Expert for Firebase, and a software developer from India.</span>
-    </p>
-  </blockquote>
-</div>
-<div>
-  <p class="mb-3">
-    <strong class="font-mono text-sm">Long Biography</strong>
-  </p>
-  <blockquote class="border-l-4 border-primary pl-4">
-    <p class="text-lg italic" id="long-bio">
-      <span class="first-person">
-        I am a tech entrepreneur and software developer from Chennai, India. I currently run Skcript Technologies Pvt, Ltd., a software consulting company. I am also a Google Developer Expert for Firebase.
-        <br />
-        <br />
-        With over a decade of experience in the software industry, I have established myself as an expert in web technologies. I have deep expertise in the JavaScript and TypeScript ecosystem, building scalable applications and mentoring teams to deliver high-quality software solutions.
-        <br />
-        <br />
-        Beyond my professional endeavors, I am an avid traveler with a particular passion for adventure and nature exploration. I maintain a lifelong commitment to learning through my extensive reading habits, with a special focus on literature that broadens both personal and professional horizons.
-      </span>
-      <span class="third-person hidden">
-        Varun Raj Manoharan is a tech entrepreneur and software developer from Chennai, India. He currently runs Skcript Technologies Pvt, Ltd., a software consulting company. He is also a Google Developer Expert for Firebase.
-        <br />
-        <br />
-        With over a decade of experience in the software industry, he has established himself as an expert in web technologies. He has deep expertise in the JavaScript and TypeScript ecosystem, building scalable applications and mentoring teams to deliver high-quality software solutions.
-        <br />
-        <br />
-        Beyond his professional endeavors, he is an avid traveler with a particular passion for adventure and nature exploration. He maintains a lifelong commitment to learning through his extensive reading habits, with a special focus on literature that broadens both personal and professional horizons.
-      </span>
-    </p>
-  </blockquote>
+  <div class="space-y-8">
+    <!-- Short Bio -->
+    <div class="group relative">
+      <div class="flex items-center justify-between mb-2">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[01] Short Biography</span>
+        <button 
+          class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
+          data-target="short-bio-content"
+        >
+          Copy_Data
+        </button>
+      </div>
+      <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-900 rounded">
+        <p class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400" id="short-bio-content">
+          <span class="first-person block">I am a tech entrepreneur, Google Developer Expert for Firebase, and a software developer from India. I co-founded Skcript and currently build FeatureOS and SupportWire.</span>
+          <span class="third-person hidden block">Varun Raj Manoharan is a tech entrepreneur, Google Developer Expert for Firebase, and a software developer from India. He co-founded Skcript and currently builds FeatureOS and SupportWire.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Long Bio -->
+    <div class="group relative">
+      <div class="flex items-center justify-between mb-2">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[02] Long Biography</span>
+        <button 
+          class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
+          data-target="long-bio-content"
+        >
+          Copy_Data
+        </button>
+      </div>
+      <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-900 rounded">
+        <p class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400" id="long-bio-content">
+          <span class="first-person block">
+            I am a tech entrepreneur and software developer based in India. With over a decade of experience, I currently lead FeatureOS and SupportWire, while also serving as a Google Developer Expert for Firebase. My career has been defined by building scalable software and consulting for companies globally through Skcript.
+            <br /><br />
+            I have deep expertise in the JavaScript and TypeScript ecosystems, focusing on product management tools and AI Agent orchestration. Beyond code, I am an avid traveler, homelab enthusiast, and 3D printing tinkerer, always looking for the intersection of hardware and software.
+          </span>
+          <span class="third-person hidden block">
+            Varun Raj Manoharan is a tech entrepreneur and software developer based in India. With over a decade of experience, he currently leads FeatureOS and SupportWire, while also serving as a Google Developer Expert for Firebase. His career has been defined by building scalable software and consulting for companies globally through Skcript.
+            <br /><br />
+            He has deep expertise in the JavaScript and TypeScript ecosystems, focusing on product management tools and AI Agent orchestration. Beyond code, he is an avid traveler, homelab enthusiast, and 3D printing tinkerer, always looking for the intersection of hardware and software.
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script is:inline>
-  function togglePersonView(view) {
+  function setupBiography() {
     const firstPersonBtn = document.getElementById('first-person-btn');
     const thirdPersonBtn = document.getElementById('third-person-btn');
     const firstPersonTexts = document.querySelectorAll('.first-person');
     const thirdPersonTexts = document.querySelectorAll('.third-person');
+    const copyBtns = document.querySelectorAll('.copy-btn');
     
-    if (!firstPersonBtn || !thirdPersonBtn) return;
-    
-    if (view === 'first') {
-      // Update button styles
-      firstPersonBtn.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
-      firstPersonBtn.classList.remove('text-gray-600');
-      thirdPersonBtn.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
-      thirdPersonBtn.classList.add('text-gray-600');
-      
-      // Show first person text, hide third person
-      firstPersonTexts.forEach(text => text.classList.remove('hidden'));
-      thirdPersonTexts.forEach(text => text.classList.add('hidden'));
-    } else {
-      // Update button styles
-      thirdPersonBtn.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
-      thirdPersonBtn.classList.remove('text-gray-600');
-      firstPersonBtn.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
-      firstPersonBtn.classList.add('text-gray-600');
-      
-      // Show third person text, hide first person
-      thirdPersonTexts.forEach(text => text.classList.remove('hidden'));
-      firstPersonTexts.forEach(text => text.classList.add('hidden'));
+    let currentView = 'first';
+
+    function toggleView(view) {
+      currentView = view;
+      const activeClassList = ['border-zinc-900', 'bg-zinc-900', 'text-white', 'dark:border-zinc-100', 'dark:bg-zinc-100', 'dark:text-black'];
+      const inactiveClassList = ['border-zinc-200', 'text-zinc-500', 'hover:border-zinc-400', 'hover:text-zinc-700', 'dark:border-zinc-800', 'dark:text-zinc-500', 'dark:hover:border-zinc-600', 'dark:hover:text-zinc-300', 'bg-transparent'];
+
+      if (view === 'first') {
+        firstPersonBtn?.classList.remove(...inactiveClassList);
+        firstPersonBtn?.classList.add(...activeClassList);
+        thirdPersonBtn?.classList.remove(...activeClassList);
+        thirdPersonBtn?.classList.add(...inactiveClassList);
+        firstPersonTexts.forEach(t => t.classList.remove('hidden'));
+        thirdPersonTexts.forEach(t => t.classList.add('hidden'));
+      } else {
+        thirdPersonBtn?.classList.remove(...inactiveClassList);
+        thirdPersonBtn?.classList.add(...activeClassList);
+        firstPersonBtn?.classList.remove(...activeClassList);
+        firstPersonBtn?.classList.add(...inactiveClassList);
+        thirdPersonTexts.forEach(t => t.classList.remove('hidden'));
+        firstPersonTexts.forEach(t => t.classList.add('hidden'));
+      }
     }
+
+    firstPersonBtn?.addEventListener('click', () => toggleView('first'));
+    thirdPersonBtn?.addEventListener('click', () => toggleView('third'));
+
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-target');
+        const container = document.getElementById(targetId);
+        const textToCopy = container.querySelector(`.${currentView}-person`).innerText;
+        
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          (window as any).showToast('COPIED_TO_CLIPBOARD');
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
+      });
+    });
   }
 
-  // Add event listeners when DOM is loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    const firstPersonBtn = document.getElementById('first-person-btn');
-    const thirdPersonBtn = document.getElementById('third-person-btn');
-    
-    if (firstPersonBtn) {
-      firstPersonBtn.addEventListener('click', function() {
-        togglePersonView('first');
-      });
-    }
-    
-    if (thirdPersonBtn) {
-      thirdPersonBtn.addEventListener('click', function() {
-        togglePersonView('third');
-      });
-    }
-  });
+  // Setup on initial load
+  setupBiography();
 </script>
