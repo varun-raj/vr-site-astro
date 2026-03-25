@@ -11,6 +11,7 @@ import PongGame from "../components/PongGame.astro";
 import MemoryGame from "../components/MemoryGame.astro";
 import TicTacToe from "../components/TicTacToe.astro";
 import GameOfLife from "../components/GameOfLife.astro";
+import MobileControls from "../components/MobileControls.astro";
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -146,6 +147,7 @@ const { meta } = Astro.props;
     <PongGame />
     <MemoryGame />
     <TicTacToe />
+    <MobileControls />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">

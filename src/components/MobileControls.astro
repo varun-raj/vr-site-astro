@@ -1,0 +1,101 @@
+<!-- Mobile game controls - dispatches keyboard events so all games work unchanged -->
+
+<div id="mobile-controls" class="fixed bottom-4 left-0 right-0 z-[400] hidden md:!hidden pointer-events-none">
+  <div class="flex justify-between items-end px-4 max-w-lg mx-auto">
+    <!-- D-Pad -->
+    <div class="pointer-events-auto grid grid-cols-3 gap-1" style="grid-template-rows: repeat(3, 44px); grid-template-columns: repeat(3, 44px);">
+      <div></div>
+      <button data-key="ArrowUp" class="bg-zinc-800/80 border border-zinc-600/50 rounded-lg flex items-center justify-center text-zinc-300 active:bg-zinc-700 active:scale-95 transition-all touch-manipulation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+      <div></div>
+      <button data-key="ArrowLeft" class="bg-zinc-800/80 border border-zinc-600/50 rounded-lg flex items-center justify-center text-zinc-300 active:bg-zinc-700 active:scale-95 transition-all touch-manipulation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div></div>
+      <button data-key="ArrowRight" class="bg-zinc-800/80 border border-zinc-600/50 rounded-lg flex items-center justify-center text-zinc-300 active:bg-zinc-700 active:scale-95 transition-all touch-manipulation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div></div>
+      <button data-key="ArrowDown" class="bg-zinc-800/80 border border-zinc-600/50 rounded-lg flex items-center justify-center text-zinc-300 active:bg-zinc-700 active:scale-95 transition-all touch-manipulation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </button>
+      <div></div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="pointer-events-auto flex flex-col gap-2 items-center">
+      <button data-key=" " class="w-14 h-14 bg-emerald-800/80 border border-emerald-600/50 rounded-full flex items-center justify-center text-emerald-300 text-[10px] font-bold uppercase tracking-wide active:bg-emerald-700 active:scale-95 transition-all touch-manipulation">
+        ACT
+      </button>
+      <button data-key="Enter" class="w-14 h-8 bg-zinc-800/80 border border-zinc-600/50 rounded-lg flex items-center justify-center text-zinc-400 text-[9px] font-bold uppercase tracking-wide active:bg-zinc-700 active:scale-95 transition-all touch-manipulation">
+        START
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const controlsEl = document.getElementById('mobile-controls')!;
+  const gameModalIds = ['snake-modal', 'tetris-modal', 'brk-modal', 'dino-modal', 'pong-modal', 'mem-modal', 'ttt-modal'];
+
+  function isAnyGameOpen(): boolean {
+    return gameModalIds.some(id => {
+      const el = document.getElementById(id);
+      return el && !el.classList.contains('hidden');
+    });
+  }
+
+  // Show/hide controls based on game modal visibility
+  const observer = new MutationObserver(() => {
+    if (isAnyGameOpen() && window.innerWidth < 768) {
+      controlsEl.classList.remove('hidden');
+      controlsEl.classList.add('flex');
+    } else {
+      controlsEl.classList.remove('flex');
+      controlsEl.classList.add('hidden');
+    }
+  });
+
+  // Observe class changes on all game modals
+  gameModalIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // Dispatch synthetic keyboard events
+  function fireKey(key: string, type: 'keydown' | 'keyup') {
+    document.dispatchEvent(new KeyboardEvent(type, {
+      key: key,
+      code: key === ' ' ? 'Space' : key,
+      bubbles: true,
+      cancelable: true,
+    }));
+  }
+
+  // Handle touch events on all buttons
+  controlsEl.querySelectorAll('button[data-key]').forEach(btn => {
+    const key = btn.getAttribute('data-key')!;
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      fireKey(key, 'keydown');
+      // Repeat for held buttons (arrows)
+      if (key.startsWith('Arrow')) {
+        interval = setInterval(() => fireKey(key, 'keydown'), 80);
+      }
+    }, { passive: false });
+
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      fireKey(key, 'keyup');
+      if (interval) { clearInterval(interval); interval = null; }
+    }, { passive: false });
+
+    btn.addEventListener('touchcancel', () => {
+      fireKey(key, 'keyup');
+      if (interval) { clearInterval(interval); interval = null; }
+    });
+  });
+</script>
