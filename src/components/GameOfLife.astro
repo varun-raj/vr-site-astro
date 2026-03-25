@@ -98,8 +98,22 @@
 
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Pass 1: wide outer glow
     ctx.shadowColor = 'rgb(16, 185, 129)';
-    ctx.shadowBlur = 12;
+    ctx.shadowBlur = 30;
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (grid[y * cols + x]) {
+          ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE - 1, CELL_SIZE - 1);
+        }
+      }
+    }
+
+    // Pass 2: bright cells with tight glow
+    ctx.shadowBlur = 10;
     ctx.fillStyle = ALIVE_COLOR;
 
     for (let y = 0; y < rows; y++) {
