@@ -1,0 +1,331 @@
+<!-- No frontmatter needed -->
+
+<div id="ttt-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
+  <div class="w-full max-w-sm border-2 border-zinc-100 bg-black p-1 shadow-2xl">
+    <div class="border border-zinc-100/30 p-4 space-y-4 relative">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
+        [ ttt_v1.0 ]
+      </div>
+
+      <div class="flex justify-center pt-2">
+        <div id="ttt-grid" class="select-none">
+          <!-- Board cells rendered by JS -->
+        </div>
+      </div>
+
+      <div id="ttt-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none hidden">
+        <div id="ttt-overlay-text" class="text-center space-y-2 bg-black/80 px-6 py-4"></div>
+      </div>
+
+      <div class="pt-2 border-t border-zinc-100/20 flex justify-between items-center text-[10px] uppercase font-bold">
+        <span id="ttt-stats-footer" class="text-zinc-500">W:0 L:0 D:0</span>
+        <span class="text-zinc-100 animate-pulse">Press [ESC] to Exit</span>
+        <span class="text-zinc-500 text-[9px]">← → ↑ ↓ Move</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  type GameState = 'idle' | 'playing' | 'gameover';
+  type Cell = '' | 'X' | 'O';
+  type Stats = { w: number; l: number; d: number };
+
+  const SIZE = 3;
+  const CELL_PX = 80;
+
+  let board: Cell[] = Array(9).fill('');
+  let cursorPos = 4; // center
+  let gameState: GameState = 'idle';
+  let winLine: number[] = [];
+  let stats: Stats = { w: 0, l: 0, d: 0 };
+
+  const modalEl = document.getElementById('ttt-modal')!;
+  const gridEl = document.getElementById('ttt-grid')!;
+  const overlayEl = document.getElementById('ttt-overlay')!;
+  const overlayTextEl = document.getElementById('ttt-overlay-text')!;
+  const statsFooterEl = document.getElementById('ttt-stats-footer')!;
+
+  let cells: HTMLDivElement[] = [];
+
+  // Load stats from localStorage
+  function loadStats() {
+    try {
+      const raw = localStorage.getItem('ttt-stats');
+      if (raw) stats = JSON.parse(raw);
+    } catch {}
+    updateStatsDisplay();
+  }
+
+  function saveStats() {
+    localStorage.setItem('ttt-stats', JSON.stringify(stats));
+    updateStatsDisplay();
+  }
+
+  function updateStatsDisplay() {
+    statsFooterEl.textContent = `W:${stats.w} L:${stats.l} D:${stats.d}`;
+  }
+
+  loadStats();
+
+  // Win lines (indices)
+  const WIN_LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+    [0, 4, 8], [2, 4, 6],             // diags
+  ];
+
+  function checkWinner(b: Cell[]): { winner: Cell; line: number[] } | null {
+    for (const line of WIN_LINES) {
+      const [a, bIdx, c] = line;
+      if (b[a] && b[a] === b[bIdx] && b[a] === b[c]) {
+        return { winner: b[a], line };
+      }
+    }
+    return null;
+  }
+
+  function isBoardFull(b: Cell[]): boolean {
+    return b.every(c => c !== '');
+  }
+
+  function getEmpty(b: Cell[]): number[] {
+    return b.map((c, i) => c === '' ? i : -1).filter(i => i !== -1);
+  }
+
+  // AI logic
+  function cpuMove() {
+    const empty = getEmpty(board);
+    if (empty.length === 0) return;
+
+    // 1. Can CPU win?
+    for (const i of empty) {
+      board[i] = 'O';
+      if (checkWinner(board)?.winner === 'O') { render(); return; }
+      board[i] = '';
+    }
+
+    // 2. Block player win
+    for (const i of empty) {
+      board[i] = 'X';
+      if (checkWinner(board)?.winner === 'X') { board[i] = 'O'; render(); return; }
+      board[i] = '';
+    }
+
+    // 3. Take center
+    if (board[4] === '') { board[4] = 'O'; render(); return; }
+
+    // 4. Take corner
+    const corners = [0, 2, 6, 8].filter(i => board[i] === '');
+    if (corners.length > 0) {
+      board[corners[Math.floor(Math.random() * corners.length)]] = 'O';
+      render();
+      return;
+    }
+
+    // 5. Take any
+    const pick = empty[Math.floor(Math.random() * empty.length)];
+    board[pick] = 'O';
+    render();
+  }
+
+  function buildGrid() {
+    cells = [];
+    const container = document.createElement('div');
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = `repeat(${SIZE}, ${CELL_PX}px)`;
+
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div');
+      cell.style.width = `${CELL_PX}px`;
+      cell.style.height = `${CELL_PX}px`;
+      cell.style.display = 'flex';
+      cell.style.alignItems = 'center';
+      cell.style.justifyContent = 'center';
+      cell.className = 'border border-zinc-700';
+      cells.push(cell);
+      container.appendChild(cell);
+    }
+
+    gridEl.innerHTML = '';
+    gridEl.appendChild(container);
+  }
+
+  function render() {
+    if (cells.length !== 9) buildGrid();
+
+    for (let i = 0; i < 9; i++) {
+      const cell = cells[i];
+      const val = board[i];
+
+      // Background
+      if (winLine.includes(i)) {
+        cell.style.backgroundColor = '#18181b'; // zinc-900 highlight
+      } else {
+        cell.style.backgroundColor = '#000000';
+      }
+
+      // Border — cursor highlight
+      if (gameState === 'playing' && i === cursorPos) {
+        cell.className = 'border border-zinc-400';
+      } else {
+        cell.className = 'border border-zinc-700';
+      }
+
+      // Content
+      if (val === 'X') {
+        cell.innerHTML = '<span class="text-emerald-500 text-3xl font-bold select-none">X</span>';
+      } else if (val === 'O') {
+        cell.innerHTML = '<span class="text-red-500 text-3xl font-bold select-none">O</span>';
+      } else {
+        cell.innerHTML = '';
+      }
+    }
+  }
+
+  function showOverlay(textLines: string[]) {
+    overlayEl.classList.remove('hidden');
+    overlayTextEl.innerHTML = textLines
+      .map(l => `<p class="text-zinc-100 text-xs font-bold uppercase tracking-widest">${l}</p>`)
+      .join('');
+  }
+
+  function hideOverlay() {
+    overlayEl.classList.add('hidden');
+    overlayTextEl.innerHTML = '';
+  }
+
+  function handleGameOver() {
+    gameState = 'gameover';
+    const result = checkWinner(board);
+
+    if (result) {
+      winLine = result.line;
+      if (result.winner === 'X') {
+        stats.w++;
+        saveStats();
+        render();
+        showOverlay(['You Win!', 'Press [ENTER] to retry']);
+      } else {
+        stats.l++;
+        saveStats();
+        render();
+        showOverlay(['CPU Wins!', 'Press [ENTER] to retry']);
+      }
+    } else {
+      stats.d++;
+      saveStats();
+      render();
+      showOverlay(['Draw!', 'Press [ENTER] to retry']);
+    }
+  }
+
+  function placeX() {
+    if (board[cursorPos] !== '') return;
+
+    board[cursorPos] = 'X';
+    render();
+
+    // Check if player won or board full
+    if (checkWinner(board)) { handleGameOver(); return; }
+    if (isBoardFull(board)) { handleGameOver(); return; }
+
+    // CPU turn
+    cpuMove();
+
+    // Check if CPU won or board full
+    if (checkWinner(board)) { handleGameOver(); return; }
+    if (isBoardFull(board)) { handleGameOver(); return; }
+  }
+
+  function startGame() {
+    gameState = 'playing';
+    hideOverlay();
+    board = Array(9).fill('');
+    cursorPos = 4;
+    winLine = [];
+    render();
+  }
+
+  function isModalVisible() {
+    return !modalEl.classList.contains('hidden');
+  }
+
+  function handleTttKeys(e: KeyboardEvent) {
+    if (!isModalVisible()) return;
+
+    const key = e.key.toLowerCase();
+
+    if (key === 'escape') {
+      (window as any).toggleTtt();
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (key === 'enter' || key === ' ') {
+      if (gameState === 'idle') {
+        startGame();
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      if (gameState === 'gameover') {
+        if (key === 'enter') {
+          startGame();
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+    }
+
+    if (gameState !== 'playing') return;
+
+    let handled = true;
+    const row = Math.floor(cursorPos / SIZE);
+    const col = cursorPos % SIZE;
+
+    if (key === 'arrowleft' || key === 'a') {
+      if (col > 0) cursorPos--;
+    } else if (key === 'arrowright' || key === 'd') {
+      if (col < SIZE - 1) cursorPos++;
+    } else if (key === 'arrowup' || key === 'w') {
+      if (row > 0) cursorPos -= SIZE;
+    } else if (key === 'arrowdown' || key === 's') {
+      if (row < SIZE - 1) cursorPos += SIZE;
+    } else if (key === 'enter' || key === ' ') {
+      placeX();
+    } else {
+      handled = false;
+    }
+
+    if (handled) {
+      render();
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  document.addEventListener('keydown', handleTttKeys, true);
+
+  (window as any).toggleTtt = function () {
+    const isHidden = modalEl.classList.contains('hidden');
+    modalEl.classList.toggle('hidden');
+    modalEl.classList.toggle('flex');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    if (isHidden) {
+      board = Array(9).fill('');
+      cursorPos = 4;
+      winLine = [];
+      gameState = 'idle';
+      loadStats();
+      buildGrid();
+      render();
+      showOverlay(['[ ttt_v1.0 ]', 'Press [ENTER] to start']);
+    } else {
+      gameState = 'idle';
+    }
+  };
+</script>
