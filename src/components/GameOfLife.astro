@@ -1,0 +1,144 @@
+<!-- No frontmatter needed -->
+
+<canvas id="gol-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+<script>
+  const canvas = document.getElementById('gol-canvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+
+  const CELL_SIZE = 12;
+  const ALIVE_COLOR = 'rgba(16, 185, 129, 0.06)'; // emerald-500 at ~6%
+  const DEAD_COLOR = 'rgba(0, 0, 0, 0)';
+  const TICK_MS = 400;
+  const RESPAWN_THRESHOLD = 0.02; // respawn if less than 2% alive
+  const INITIAL_DENSITY = 0.15;
+
+  let cols = 0;
+  let rows = 0;
+  let grid: Uint8Array;
+  let nextGrid: Uint8Array;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const newCols = Math.ceil(canvas.width / CELL_SIZE);
+    const newRows = Math.ceil(canvas.height / CELL_SIZE);
+
+    if (newCols !== cols || newRows !== rows) {
+      const oldGrid = grid;
+      const oldCols = cols;
+      const oldRows = rows;
+      cols = newCols;
+      rows = newRows;
+      grid = new Uint8Array(cols * rows);
+      nextGrid = new Uint8Array(cols * rows);
+
+      if (oldGrid) {
+        // Copy old state into resized grid
+        for (let y = 0; y < Math.min(oldRows, rows); y++) {
+          for (let x = 0; x < Math.min(oldCols, cols); x++) {
+            grid[y * cols + x] = oldGrid[y * oldCols + x];
+          }
+        }
+      }
+    }
+  }
+
+  function seedRandom(density: number) {
+    for (let i = 0; i < grid.length; i++) {
+      grid[i] = Math.random() < density ? 1 : 0;
+    }
+  }
+
+  function countNeighbors(x: number, y: number): number {
+    let count = 0;
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx === 0 && dy === 0) continue;
+        const nx = (x + dx + cols) % cols;
+        const ny = (y + dy + rows) % rows;
+        count += grid[ny * cols + nx];
+      }
+    }
+    return count;
+  }
+
+  function step() {
+    let alive = 0;
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const i = y * cols + x;
+        const n = countNeighbors(x, y);
+        const cell = grid[i];
+        if (cell) {
+          nextGrid[i] = (n === 2 || n === 3) ? 1 : 0;
+        } else {
+          nextGrid[i] = (n === 3) ? 1 : 0;
+        }
+        alive += nextGrid[i];
+      }
+    }
+
+    // Respawn if too few alive
+    if (alive / grid.length < RESPAWN_THRESHOLD) {
+      // Inject random cells in a random region
+      const rx = Math.floor(Math.random() * (cols - 20));
+      const ry = Math.floor(Math.random() * (rows - 20));
+      for (let dy = 0; dy < 20; dy++) {
+        for (let dx = 0; dx < 20; dx++) {
+          if (Math.random() < 0.3) {
+            nextGrid[(ry + dy) * cols + (rx + dx)] = 1;
+          }
+        }
+      }
+    }
+
+    // Swap
+    const tmp = grid;
+    grid = nextGrid;
+    nextGrid = tmp;
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = ALIVE_COLOR;
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (grid[y * cols + x]) {
+          ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+      }
+    }
+  }
+
+  function init() {
+    resize();
+    seedRandom(INITIAL_DENSITY);
+    render();
+  }
+
+  init();
+
+  let interval = setInterval(() => {
+    step();
+    render();
+  }, TICK_MS);
+
+  window.addEventListener('resize', () => {
+    resize();
+    render();
+  });
+
+  // Pause when tab is hidden to save CPU
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(interval);
+    } else {
+      interval = setInterval(() => {
+        step();
+        render();
+      }, TICK_MS);
+    }
+  });
+</script>

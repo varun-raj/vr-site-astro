@@ -4,6 +4,7 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import SnakeGame from "../components/SnakeGame.astro";
 import TetrisGame from "../components/TetrisGame.astro";
+import GameOfLife from "../components/GameOfLife.astro";
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -24,6 +25,7 @@ const { meta } = Astro.props;
     <BaseHead title={meta.title} description={meta.description} image={meta.image} />
   </head>
   <body class="flex min-h-screen flex-col bg-black text-zinc-200 relative">
+    <GameOfLife />
     <div id="help-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
       <div class="w-full max-w-lg border-2 border-zinc-100 bg-black p-1 shadow-2xl">
         <div class="border border-zinc-100/30 p-6 space-y-8 relative">
