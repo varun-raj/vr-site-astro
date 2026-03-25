@@ -1,0 +1,272 @@
+<!-- No frontmatter needed -->
+
+<div id="snake-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
+  <div class="w-full max-w-md border-2 border-zinc-100 bg-black p-1 shadow-2xl">
+    <div class="border border-zinc-100/30 p-4 space-y-4 relative">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
+        [ snake_v1.0 ]
+      </div>
+
+      <div id="snake-grid" class="flex items-center justify-center pt-2 select-none" style="min-height: 200px;">
+        <!-- Grid cells rendered by JS -->
+      </div>
+
+      <div id="snake-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div id="snake-overlay-text" class="text-center space-y-2"></div>
+      </div>
+
+      <div class="pt-2 border-t border-zinc-100/20 flex justify-between items-center text-[10px] uppercase font-bold">
+        <span class="text-zinc-500">Score: <span id="snake-score" class="text-zinc-100">0</span></span>
+        <span class="text-zinc-100 animate-pulse">Press [ESC] to Exit</span>
+        <span class="text-zinc-500">Best: <span id="snake-highscore" class="text-amber-500">0</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  type Direction = 'up' | 'down' | 'left' | 'right';
+  type GameState = 'idle' | 'playing' | 'gameover';
+  type Point = { x: number; y: number };
+
+  let cols = 15;
+  let rows = 15;
+  let cellSize = 20;
+  let snake: Point[] = [];
+  let food: Point = { x: 0, y: 0 };
+  let direction: Direction = 'right';
+  let nextDirection: Direction = 'right';
+  let score = 0;
+  let highScore = parseInt(localStorage.getItem('snake-highscore') || '0', 10);
+  let gameState: GameState = 'idle';
+  let gameInterval: ReturnType<typeof setInterval> | null = null;
+
+  const gridEl = document.getElementById('snake-grid')!;
+  const overlayEl = document.getElementById('snake-overlay')!;
+  const overlayTextEl = document.getElementById('snake-overlay-text')!;
+  const scoreEl = document.getElementById('snake-score')!;
+  const highScoreEl = document.getElementById('snake-highscore')!;
+  const modalEl = document.getElementById('snake-modal')!;
+
+  highScoreEl.textContent = String(highScore);
+
+  function calcGridSize() {
+    cellSize = window.innerWidth >= 768 ? 20 : 16;
+    const container = gridEl;
+    const availW = Math.min(container.clientWidth || 300, 400);
+    const availH = Math.min(window.innerHeight * 0.5, 400);
+    cols = Math.max(12, Math.min(22, Math.floor(availW / cellSize)));
+    rows = Math.max(12, Math.min(22, Math.floor(availH / cellSize)));
+  }
+
+  function placeFood() {
+    const empty: Point[] = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (!snake.some(s => s.x === x && s.y === y)) {
+          empty.push({ x, y });
+        }
+      }
+    }
+    if (empty.length > 0) {
+      food = empty[Math.floor(Math.random() * empty.length)];
+    }
+  }
+
+  function resetGame() {
+    const cx = Math.floor(cols / 2);
+    const cy = Math.floor(rows / 2);
+    snake = [{ x: cx, y: cy }, { x: cx - 1, y: cy }, { x: cx - 2, y: cy }];
+    direction = 'right';
+    nextDirection = 'right';
+    score = 0;
+    scoreEl.textContent = '0';
+    placeFood();
+  }
+
+  function showOverlay(lines: string[]) {
+    overlayEl.classList.remove('hidden');
+    overlayTextEl.innerHTML = lines
+      .map(l => `<p class="text-zinc-100 text-xs font-bold uppercase tracking-widest">${l}</p>`)
+      .join('');
+  }
+
+  function hideOverlay() {
+    overlayEl.classList.add('hidden');
+    overlayTextEl.innerHTML = '';
+  }
+
+  function render() {
+    const grid = document.createElement('div');
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+    grid.style.lineHeight = `${cellSize}px`;
+    grid.style.gap = '0';
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const cell = document.createElement('span');
+        cell.style.width = `${cellSize}px`;
+        cell.style.height = `${cellSize}px`;
+        cell.style.display = 'flex';
+        cell.style.alignItems = 'center';
+        cell.style.justifyContent = 'center';
+        cell.style.fontSize = `${cellSize - 2}px`;
+
+        const isHead = snake.length > 0 && snake[0].x === x && snake[0].y === y;
+        const isBody = !isHead && snake.some(s => s.x === x && s.y === y);
+        const isFood = food.x === x && food.y === y;
+
+        if (isHead) {
+          cell.textContent = '█';
+          cell.style.color = '#34d399'; // emerald-400
+        } else if (isBody) {
+          cell.textContent = '█';
+          cell.style.color = '#10b981'; // emerald-500
+        } else if (isFood) {
+          cell.textContent = '●';
+          cell.style.color = '#f59e0b'; // amber-500
+        } else {
+          cell.textContent = '\u00A0';
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    gridEl.innerHTML = '';
+    gridEl.appendChild(grid);
+  }
+
+  function tick() {
+    direction = nextDirection;
+    const head = { ...snake[0] };
+
+    switch (direction) {
+      case 'up': head.y--; break;
+      case 'down': head.y++; break;
+      case 'left': head.x--; break;
+      case 'right': head.x++; break;
+    }
+
+    // Wall collision
+    if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+      endGame(); return;
+    }
+
+    // Self collision
+    if (snake.some(s => s.x === head.x && s.y === head.y)) {
+      endGame(); return;
+    }
+
+    snake.unshift(head);
+
+    // Food collision
+    if (head.x === food.x && head.y === food.y) {
+      score += 10;
+      scoreEl.textContent = String(score);
+      placeFood();
+    } else {
+      snake.pop();
+    }
+
+    render();
+  }
+
+  function endGame() {
+    gameState = 'gameover';
+    if (gameInterval) { clearInterval(gameInterval); gameInterval = null; }
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('snake-highscore', String(highScore));
+      highScoreEl.textContent = String(highScore);
+    }
+    showOverlay([`Game Over — Score: ${score}`, 'Press [ENTER] to retry']);
+  }
+
+  function startGame() {
+    gameState = 'playing';
+    hideOverlay();
+    resetGame();
+    render();
+    if (gameInterval) clearInterval(gameInterval);
+    gameInterval = setInterval(tick, 150);
+  }
+
+  function isModalVisible() {
+    return !modalEl.classList.contains('hidden');
+  }
+
+  function handleSnakeKeys(e: KeyboardEvent) {
+    if (!isModalVisible()) return;
+
+    const key = e.key.toLowerCase();
+
+    if (key === 'escape') {
+      (window as any).toggleSnake();
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (key === 'enter') {
+      if (gameState === 'idle' || gameState === 'gameover') {
+        startGame();
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (gameState !== 'playing') return;
+
+    const dirMap: Record<string, Direction> = {
+      arrowup: 'up', arrowdown: 'down', arrowleft: 'left', arrowright: 'right',
+      w: 'up', s: 'down', a: 'left', d: 'right',
+    };
+
+    const newDir = dirMap[key];
+    if (!newDir) return;
+
+    const opposites: Record<Direction, Direction> = {
+      up: 'down', down: 'up', left: 'right', right: 'left',
+    };
+
+    if (opposites[newDir] !== direction) {
+      nextDirection = newDir;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  // Use capture phase so snake keys are caught before the nav handler
+  document.addEventListener('keydown', handleSnakeKeys, true);
+
+  (window as any).toggleSnake = function () {
+    const isHidden = modalEl.classList.contains('hidden');
+    modalEl.classList.toggle('hidden');
+    modalEl.classList.toggle('flex');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    if (isHidden) {
+      // Opening
+      calcGridSize();
+      resetGame();
+      gameState = 'idle';
+      render();
+      showOverlay(['Type SNAKE to play', 'Press [ENTER] to start']);
+    } else {
+      // Closing
+      if (gameInterval) { clearInterval(gameInterval); gameInterval = null; }
+      gameState = 'idle';
+    }
+  };
+
+  window.addEventListener('resize', () => {
+    if (isModalVisible() && gameState === 'idle') {
+      calcGridSize();
+      resetGame();
+      render();
+    }
+  });
+</script>
