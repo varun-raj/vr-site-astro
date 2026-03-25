@@ -160,32 +160,31 @@
   highScoreEl.textContent = String(highScore);
   highScoreFooterEl.textContent = String(highScore);
 
-  let cells: HTMLSpanElement[] = [];
+  let cells: HTMLDivElement[] = [];
   let gridContainer: HTMLDivElement | null = null;
   let cellSize = 16;
+  const EMPTY_COLOR = '#18181b'; // zinc-900
+  const GRID_COLOR = '#27272a33'; // zinc-800 subtle
 
   function getCellSize() {
-    return window.innerWidth >= 768 ? 18 : 14;
+    return window.innerWidth >= 768 ? 16 : 12;
   }
 
   function buildGrid() {
     cells = [];
     cellSize = getCellSize();
-    const cellHeight = Math.round(cellSize * 0.6);
     gridContainer = document.createElement('div');
     gridContainer.style.display = 'grid';
     gridContainer.style.gridTemplateColumns = `repeat(${COLS}, ${cellSize}px)`;
-    gridContainer.style.gap = '0';
+    gridContainer.style.gap = '1px';
+    gridContainer.style.backgroundColor = GRID_COLOR;
 
     for (let y = 0; y < ROWS; y++) {
       for (let x = 0; x < COLS; x++) {
-        const cell = document.createElement('span');
+        const cell = document.createElement('div');
         cell.style.width = `${cellSize}px`;
-        cell.style.height = `${cellHeight}px`;
-        cell.style.display = 'flex';
-        cell.style.alignItems = 'center';
-        cell.style.justifyContent = 'center';
-        cell.style.fontSize = `${cellHeight}px`;
+        cell.style.height = `${cellSize}px`;
+        cell.style.backgroundColor = EMPTY_COLOR;
         cells.push(cell);
         gridContainer.appendChild(cell);
       }
@@ -292,28 +291,20 @@
     if (!nextPiece) { nextEl.innerHTML = ''; return; }
     const shape = nextPiece.shape[0];
     const color = COLORS[nextPiece.color];
-    const previewSize = Math.round(getCellSize() * 0.6);
+    const previewSize = Math.round(getCellSize() * 0.75);
 
     const grid = document.createElement('div');
     grid.style.display = 'grid';
     grid.style.gridTemplateColumns = `repeat(${shape[0].length}, ${previewSize}px)`;
     grid.style.gap = '1px';
+    grid.style.backgroundColor = GRID_COLOR;
 
     for (let y = 0; y < shape.length; y++) {
       for (let x = 0; x < shape[y].length; x++) {
-        const cell = document.createElement('span');
+        const cell = document.createElement('div');
         cell.style.width = `${previewSize}px`;
-        cell.style.height = `${Math.round(previewSize * 0.6)}px`;
-        cell.style.display = 'flex';
-        cell.style.alignItems = 'center';
-        cell.style.justifyContent = 'center';
-        cell.style.fontSize = `${Math.round(previewSize * 0.6)}px`;
-        if (shape[y][x]) {
-          cell.textContent = '█';
-          cell.style.color = color;
-        } else {
-          cell.textContent = '\u00A0';
-        }
+        cell.style.height = `${previewSize}px`;
+        cell.style.backgroundColor = shape[y][x] ? color : EMPTY_COLOR;
         grid.appendChild(cell);
       }
     }
@@ -331,14 +322,7 @@
       for (let x = 0; x < COLS; x++) {
         const cell = cells[y * COLS + x];
         const val = board[y][x];
-
-        if (val !== 0) {
-          cell.textContent = '█';
-          cell.style.color = COLORS[val];
-        } else {
-          cell.textContent = '·';
-          cell.style.color = COLORS[0];
-        }
+        cell.style.backgroundColor = val !== 0 ? COLORS[val] : EMPTY_COLOR;
       }
     }
 
@@ -351,9 +335,7 @@
             const by = currentY + y;
             const bx = currentX + x;
             if (by >= 0 && by < ROWS && bx >= 0 && bx < COLS) {
-              const cell = cells[by * COLS + bx];
-              cell.textContent = '█';
-              cell.style.color = color;
+              cells[by * COLS + bx].style.backgroundColor = color;
             }
           }
         }

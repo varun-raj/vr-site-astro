@@ -51,13 +51,12 @@
   highScoreEl.textContent = String(highScore);
 
   function calcGridSize() {
-    cellSize = window.innerWidth >= 768 ? 20 : 16;
-    const cellHeight = Math.round(cellSize * 0.6);
+    cellSize = window.innerWidth >= 768 ? 16 : 12;
     const container = gridEl;
     const availW = Math.min(container.clientWidth || 300, 400);
     const availH = Math.min(window.innerHeight * 0.5, 400);
-    cols = Math.max(12, Math.min(22, Math.floor(availW / cellSize)));
-    rows = Math.max(12, Math.min(22, Math.floor(availH / cellHeight)));
+    cols = Math.max(12, Math.min(22, Math.floor(availW / (cellSize + 1))));
+    rows = Math.max(12, Math.min(22, Math.floor(availH / (cellSize + 1))));
   }
 
   function placeFood() {
@@ -98,27 +97,25 @@
     overlayTextEl.innerHTML = '';
   }
 
-  let cells: HTMLSpanElement[] = [];
+  let cells: HTMLDivElement[] = [];
   let gridContainer: HTMLDivElement | null = null;
+  const EMPTY_COLOR = '#18181b'; // zinc-900
+  const GRID_COLOR = '#27272a33'; // zinc-800 subtle
 
   function buildGrid() {
     cells = [];
-    const cellHeight = Math.round(cellSize * 0.6);
     gridContainer = document.createElement('div');
     gridContainer.style.display = 'grid';
     gridContainer.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
-    gridContainer.style.lineHeight = `${cellHeight}px`;
-    gridContainer.style.gap = '0';
+    gridContainer.style.gap = '1px';
+    gridContainer.style.backgroundColor = GRID_COLOR;
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        const cell = document.createElement('span');
+        const cell = document.createElement('div');
         cell.style.width = `${cellSize}px`;
-        cell.style.height = `${cellHeight}px`;
-        cell.style.display = 'flex';
-        cell.style.alignItems = 'center';
-        cell.style.justifyContent = 'center';
-        cell.style.fontSize = `${cellHeight}px`;
+        cell.style.height = `${cellSize}px`;
+        cell.style.backgroundColor = EMPTY_COLOR;
         cells.push(cell);
         gridContainer.appendChild(cell);
       }
@@ -145,17 +142,13 @@
         const isFood = food.x === x && food.y === y;
 
         if (isHead) {
-          cell.textContent = '█';
-          cell.style.color = '#34d399';
+          cell.style.backgroundColor = '#34d399'; // emerald-400
         } else if (isBody) {
-          cell.textContent = '█';
-          cell.style.color = '#10b981';
+          cell.style.backgroundColor = '#10b981'; // emerald-500
         } else if (isFood) {
-          cell.textContent = '●';
-          cell.style.color = '#f59e0b';
+          cell.style.backgroundColor = '#f59e0b'; // amber-500
         } else {
-          cell.textContent = '·';
-          cell.style.color = '#27272a';
+          cell.style.backgroundColor = EMPTY_COLOR;
         }
       }
     }
