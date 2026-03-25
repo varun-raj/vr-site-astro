@@ -12,7 +12,7 @@ import MemoryGame from "../components/MemoryGame.astro";
 import TicTacToe from "../components/TicTacToe.astro";
 import GameOfLife from "../components/GameOfLife.astro";
 import Fortune from "../components/Fortune.astro";
-import AsciiArt from "../components/AsciiArt.astro";
+
 import MobileControls from "../components/MobileControls.astro";
 import { ClientRouter } from 'astro:transitions';
 
@@ -81,19 +81,19 @@ const { meta } = Astro.props;
               <div class="space-y-1.5 md:space-y-2">
                 <div class="flex justify-between items-center group/item text-xs">
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tech_manifest</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">STK</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">stk</span>
                 </div>
                 <div class="flex justify-between items-center group/item text-xs">
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">press_kit_hd</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PK</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">pk</span>
                 </div>
                 <div class="flex justify-between items-center group/item text-xs">
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">view_projects</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PR</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">pr</span>
                 </div>
                 <div class="flex justify-between items-center group/item text-xs">
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">ext_skcript</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SC</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">sc</span>
                 </div>
               </div>
             </div>
@@ -107,39 +107,39 @@ const { meta } = Astro.props;
             <div class="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-1.5 md:gap-y-2 text-zinc-300">
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">snake_game</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SNAKE</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">snake</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tetris_game</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TRIS</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">tris</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">breakout</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">BRK</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">brk</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">dino_run</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">DINO</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">dino</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">pong</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PONG</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">pong</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">memory_match</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">MEM</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">mem</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tic_tac_toe</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TTT</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">ttt</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">typing_test</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">WPM</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">wpm</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">game_of_life</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">LIFE</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">life</span>
               </div>
             </div>
           </div>
@@ -152,19 +152,15 @@ const { meta } = Astro.props;
             <div class="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-1.5 md:gap-y-2 text-zinc-300">
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">fortune</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">FRTN</span>
-              </div>
-              <div class="flex justify-between items-center group/item text-xs">
-                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">ascii_art</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">ASCII</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">frtn</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">list_pages</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">LS</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">ls</span>
               </div>
               <div class="flex justify-between items-center group/item text-xs">
                 <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">navigate</span>
-                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">CD ___</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">cd ___</span>
               </div>
             </div>
           </div>
@@ -185,7 +181,6 @@ const { meta } = Astro.props;
     <TicTacToe />
     <MobileControls />
     <Fortune />
-    <AsciiArt />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
@@ -282,7 +277,6 @@ const { meta } = Astro.props;
         'mem': () => (window as any).toggleMemory(),
         'ttt': () => (window as any).toggleTtt(),
         'frtn': () => (window as any).showFortune(),
-        'ascii': () => (window as any).toggleAscii(),
         'ls': () => (window as any).showToast('/ /about /blog /uses /books /projects /stack /press-kit'),
       };
 
@@ -381,7 +375,7 @@ const { meta } = Astro.props;
           if (!document.getElementById('pong-modal')?.classList.contains('hidden')) { (window as any).togglePong(); return; }
           if (!document.getElementById('mem-modal')?.classList.contains('hidden')) { (window as any).toggleMemory(); return; }
           if (!document.getElementById('ttt-modal')?.classList.contains('hidden')) { (window as any).toggleTtt(); return; }
-          if (!document.getElementById('ascii-modal')?.classList.contains('hidden')) { (window as any).toggleAscii(); return; }
+
         }
 
         if (key === 'backspace' && keyBuffer.length > 0) {
