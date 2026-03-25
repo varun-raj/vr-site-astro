@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import SnakeGame from "../components/SnakeGame.astro";
+import TetrisGame from "../components/TetrisGame.astro";
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -87,6 +88,10 @@ const { meta } = Astro.props;
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">snake_game</span>
                   <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SNAKE</span>
                 </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tetris_game</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TRIS</span>
+                </div>
               </div>
             </div>
           </div>
@@ -98,6 +103,7 @@ const { meta } = Astro.props;
       </div>
     </div>
     <SnakeGame />
+    <TetrisGame />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
@@ -174,6 +180,7 @@ const { meta } = Astro.props;
         if (key === 'escape') {
           if (!document.getElementById('help-modal')?.classList.contains('hidden')) { toggleHelp(); return; }
           if (!document.getElementById('snake-modal')?.classList.contains('hidden')) { (window as any).toggleSnake(); return; }
+          if (!document.getElementById('tetris-modal')?.classList.contains('hidden')) { (window as any).toggleTetris(); return; }
         }
         
         if (!/^[a-z0-9]$/.test(key)) return;
@@ -184,6 +191,7 @@ const { meta } = Astro.props;
         bufferTimeout = setTimeout(() => {
           if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; return; }
           if (keyBuffer === 'snake') { (window as any).toggleSnake(); keyBuffer = ""; return; }
+          if (keyBuffer === 'tris') { (window as any).toggleTetris(); keyBuffer = ""; return; }
 
           if (keyBuffer.length > 0) {
             const isHomePage = window.location.pathname === '/';
@@ -206,7 +214,7 @@ const { meta } = Astro.props;
               }
               keyBuffer = "";
             } else {
-              const possibleStarts = ['s', 'm'];
+              const possibleStarts = ['s', 'm', 't'];
               if (keyBuffer.length >= 6 || (keyBuffer.length === 2 && !possibleStarts.includes(keyBuffer[0]))) {
                 showKeyIndicator(true);
                 keyBuffer = "";
