@@ -126,7 +126,6 @@ const { meta } = Astro.props;
 
     <script>
       let keyBuffer = "";
-      let bufferTimeout: any;
 
       function toggleHelp() {
         const modal = document.getElementById('help-modal');
@@ -189,22 +188,34 @@ const { meta } = Astro.props;
         }
       }
 
-      function executeBuffer() {
-        if (!keyBuffer) return;
+      const commandMap: Record<string, () => void> = {
+        'man': () => toggleHelp(),
+        'snake': () => (window as any).toggleSnake(),
+        'tris': () => (window as any).toggleTetris(),
+      };
 
-        if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; hideKeyIndicator(); return; }
-        if (keyBuffer === 'snake') { (window as any).toggleSnake(); keyBuffer = ""; hideKeyIndicator(); return; }
-        if (keyBuffer === 'tris') { (window as any).toggleTetris(); keyBuffer = ""; hideKeyIndicator(); return; }
-
-        const isHomePage = window.location.pathname === '/';
+      function getNavTarget(): string | null {
         const navMap: Record<string, string> = {
           '01': '/', '1': '/', '02': '/about', '2': '/about', '03': '/blog', '3': '/blog',
           '04': '/uses', '4': '/uses', '05': '/books', '5': '/books', 'pk': '/press-kit',
           'pr': '/projects', 'stk': '/stack', 'sc': 'https://skcript.com', '0': 'section-0'
         };
+        return navMap[keyBuffer] || null;
+      }
 
-        if (navMap[keyBuffer]) {
-          const target = navMap[keyBuffer];
+      function tryExecute(showError: boolean): boolean {
+        if (!keyBuffer) return false;
+
+        if (commandMap[keyBuffer]) {
+          commandMap[keyBuffer]();
+          keyBuffer = "";
+          hideKeyIndicator();
+          return true;
+        }
+
+        const target = getNavTarget();
+        if (target) {
+          const isHomePage = window.location.pathname === '/';
           if (target === 'section-0' && isHomePage) {
             document.getElementById('section-0')?.scrollIntoView({ behavior: 'smooth' });
           } else if (target.startsWith('http')) {
@@ -216,10 +227,14 @@ const { meta } = Astro.props;
           }
           keyBuffer = "";
           hideKeyIndicator();
-        } else {
+          return true;
+        }
+
+        if (showError) {
           showKeyIndicator(true);
           keyBuffer = "";
         }
+        return false;
       }
 
       function handleShortcuts(e: KeyboardEvent) {
@@ -230,14 +245,13 @@ const { meta } = Astro.props;
         const key = e.key.toLowerCase();
 
         if (key === 'escape') {
-          if (keyBuffer.length > 0) { keyBuffer = ""; clearTimeout(bufferTimeout); hideKeyIndicator(); return; }
+          if (keyBuffer.length > 0) { keyBuffer = ""; hideKeyIndicator(); return; }
           if (!document.getElementById('help-modal')?.classList.contains('hidden')) { toggleHelp(); return; }
           if (!document.getElementById('snake-modal')?.classList.contains('hidden')) { (window as any).toggleSnake(); return; }
           if (!document.getElementById('tetris-modal')?.classList.contains('hidden')) { (window as any).toggleTetris(); return; }
         }
 
         if (key === 'backspace' && keyBuffer.length > 0) {
-          clearTimeout(bufferTimeout);
           keyBuffer = keyBuffer.slice(0, -1);
           if (keyBuffer.length === 0) {
             hideKeyIndicator();
@@ -248,8 +262,7 @@ const { meta } = Astro.props;
         }
 
         if (key === 'enter' && keyBuffer.length > 0) {
-          clearTimeout(bufferTimeout);
-          executeBuffer();
+          tryExecute(true);
           return;
         }
 
@@ -257,10 +270,8 @@ const { meta } = Astro.props;
 
         keyBuffer += key;
         showKeyIndicator();
-        clearTimeout(bufferTimeout);
-        bufferTimeout = setTimeout(() => {
-          executeBuffer();
-        }, 400);
+        // Execute immediately on exact match, no error on mismatch
+        tryExecute(false);
       }
 
       document.addEventListener('keydown', handleShortcuts);
