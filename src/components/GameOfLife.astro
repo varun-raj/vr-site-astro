@@ -7,7 +7,7 @@
   const ctx = canvas.getContext('2d')!;
 
   const CELL_SIZE = 5;
-  const ALIVE_COLOR = 'rgba(16, 185, 129, 0.4)'; // emerald-500 at 40%
+  const ALIVE_COLOR = 'rgba(52, 211, 153, 0.7)'; // emerald-400 at 70%
   const TICK_MS = 120;
   const RESPAWN_THRESHOLD = 0.02;
   const INITIAL_DENSITY = 0.18;
@@ -102,7 +102,7 @@
     // Pass 1: wide outer glow
     ctx.shadowColor = 'rgb(16, 185, 129)';
     ctx.shadowBlur = 30;
-    ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+    ctx.fillStyle = 'rgba(52, 211, 153, 0.25)';
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
