@@ -1,22 +1,23 @@
 <!-- No frontmatter needed -->
 
-<canvas id="gol-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+<canvas id="gol-canvas" class="fixed inset-0 z-0 pointer-events-none hidden"></canvas>
 
 <script>
   const canvas = document.getElementById('gol-canvas') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d')!;
 
-  const CELL_SIZE = 12;
-  const ALIVE_COLOR = 'rgba(16, 185, 129, 0.06)'; // emerald-500 at ~6%
-  const DEAD_COLOR = 'rgba(0, 0, 0, 0)';
-  const TICK_MS = 400;
-  const RESPAWN_THRESHOLD = 0.02; // respawn if less than 2% alive
-  const INITIAL_DENSITY = 0.15;
+  const CELL_SIZE = 10;
+  const ALIVE_COLOR = 'rgba(16, 185, 129, 0.25)'; // emerald-500 at 25%
+  const TICK_MS = 300;
+  const RESPAWN_THRESHOLD = 0.02;
+  const INITIAL_DENSITY = 0.18;
 
   let cols = 0;
   let rows = 0;
   let grid: Uint8Array;
   let nextGrid: Uint8Array;
+  let running = false;
+  let interval: ReturnType<typeof setInterval> | null = null;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -34,7 +35,6 @@
       nextGrid = new Uint8Array(cols * rows);
 
       if (oldGrid) {
-        // Copy old state into resized grid
         for (let y = 0; y < Math.min(oldRows, rows); y++) {
           for (let x = 0; x < Math.min(oldCols, cols); x++) {
             grid[y * cols + x] = oldGrid[y * oldCols + x];
@@ -79,9 +79,7 @@
       }
     }
 
-    // Respawn if too few alive
     if (alive / grid.length < RESPAWN_THRESHOLD) {
-      // Inject random cells in a random region
       const rx = Math.floor(Math.random() * (cols - 20));
       const ry = Math.floor(Math.random() * (rows - 20));
       for (let dy = 0; dy < 20; dy++) {
@@ -93,7 +91,6 @@
       }
     }
 
-    // Swap
     const tmp = grid;
     grid = nextGrid;
     nextGrid = tmp;
@@ -106,39 +103,43 @@
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         if (grid[y * cols + x]) {
-          ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+          ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE - 1, CELL_SIZE - 1);
         }
       }
     }
   }
 
-  function init() {
+  function start() {
+    canvas.classList.remove('hidden');
     resize();
     seedRandom(INITIAL_DENSITY);
     render();
+    running = true;
+    if (interval) clearInterval(interval);
+    interval = setInterval(() => { step(); render(); }, TICK_MS);
   }
 
-  init();
+  function stop() {
+    running = false;
+    if (interval) { clearInterval(interval); interval = null; }
+    canvas.classList.add('hidden');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
-  let interval = setInterval(() => {
-    step();
-    render();
-  }, TICK_MS);
+  (window as any).toggleLife = function () {
+    if (running) { stop(); } else { start(); }
+  };
 
   window.addEventListener('resize', () => {
-    resize();
-    render();
+    if (running) { resize(); render(); }
   });
 
-  // Pause when tab is hidden to save CPU
   document.addEventListener('visibilitychange', () => {
+    if (!running) return;
     if (document.hidden) {
-      clearInterval(interval);
+      if (interval) { clearInterval(interval); interval = null; }
     } else {
-      interval = setInterval(() => {
-        step();
-        render();
-      }, TICK_MS);
+      interval = setInterval(() => { step(); render(); }, TICK_MS);
     }
   });
 </script>

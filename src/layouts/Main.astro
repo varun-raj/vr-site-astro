@@ -94,6 +94,10 @@ const { meta } = Astro.props;
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tetris_game</span>
                   <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TRIS</span>
                 </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">game_of_life</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">LIFE</span>
+                </div>
               </div>
             </div>
           </div>
@@ -194,6 +198,7 @@ const { meta } = Astro.props;
         'man': () => toggleHelp(),
         'snake': () => (window as any).toggleSnake(),
         'tris': () => (window as any).toggleTetris(),
+        'life': () => (window as any).toggleLife(),
       };
 
       function getNavTarget(): string | null {
