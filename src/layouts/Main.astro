@@ -5,6 +5,7 @@ import Header from "../components/Header.astro";
 import SnakeGame from "../components/SnakeGame.astro";
 import TetrisGame from "../components/TetrisGame.astro";
 import BreakoutGame from "../components/BreakoutGame.astro";
+import TypingTest from "../components/TypingTest.astro";
 import GameOfLife from "../components/GameOfLife.astro";
 import { ClientRouter } from 'astro:transitions';
 
@@ -116,6 +117,7 @@ const { meta } = Astro.props;
     <SnakeGame />
     <TetrisGame />
     <BreakoutGame />
+    <TypingTest />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
@@ -206,6 +208,7 @@ const { meta } = Astro.props;
         'tris': () => (window as any).toggleTetris(),
         'life': () => (window as any).toggleLife(),
         'brk': () => (window as any).toggleBreakout(),
+        'wpm': () => (window as any).toggleWpm(),
       };
 
       function getNavTarget(): string | null {
@@ -264,6 +267,7 @@ const { meta } = Astro.props;
           if (!document.getElementById('snake-modal')?.classList.contains('hidden')) { (window as any).toggleSnake(); return; }
           if (!document.getElementById('tetris-modal')?.classList.contains('hidden')) { (window as any).toggleTetris(); return; }
           if (!document.getElementById('brk-modal')?.classList.contains('hidden')) { (window as any).toggleBreakout(); return; }
+          if (!document.getElementById('wpm-modal')?.classList.contains('hidden')) { (window as any).toggleWpm(); return; }
         }
 
         if (key === 'backspace' && keyBuffer.length > 0) {

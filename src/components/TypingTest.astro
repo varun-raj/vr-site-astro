@@ -1,0 +1,329 @@
+<!-- No frontmatter needed -->
+
+<div id="wpm-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
+  <div class="w-full max-w-md border-2 border-zinc-100 bg-black p-1 shadow-2xl">
+    <div class="border border-zinc-100/30 p-4 space-y-4 relative">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
+        [ wpm_v1.0 ]
+      </div>
+
+      <div id="wpm-words" class="pt-2 font-mono text-sm leading-relaxed min-h-[120px] select-none">
+        <!-- Character spans rendered by JS -->
+      </div>
+
+      <div id="wpm-stats" class="flex justify-between text-[10px] uppercase font-bold text-zinc-500">
+        <span>Time: <span id="wpm-timer" class="text-zinc-100">30</span>s</span>
+        <span>WPM: <span id="wpm-live" class="text-zinc-100">0</span></span>
+        <span>Acc: <span id="wpm-accuracy" class="text-zinc-100">100</span>%</span>
+      </div>
+
+      <div id="wpm-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none hidden">
+        <div id="wpm-overlay-text" class="text-center space-y-2 bg-black/80 px-6 py-4"></div>
+      </div>
+
+      <div class="pt-2 border-t border-zinc-100/20 flex justify-between items-center text-[10px] uppercase font-bold">
+        <span class="text-zinc-500">WPM: <span id="wpm-footer-wpm" class="text-zinc-100">0</span></span>
+        <span class="text-zinc-100 animate-pulse">Press [ESC] to Exit</span>
+        <span class="text-zinc-500">Best: <span id="wpm-footer-best" class="text-amber-500">0</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  type GameState = 'idle' | 'playing' | 'gameover';
+
+  const WORDS = [
+    'the','be','to','of','and','a','in','that','have','it','for','not','on','with','he','as','you',
+    'do','at','this','but','his','by','from','they','we','her','she','or','an','will','my','one',
+    'all','would','there','their','what','so','up','out','if','about','who','get','which','go','me',
+    'when','make','can','like','time','no','just','him','know','take','people','into','year','your',
+    'good','some','could','them','see','other','than','then','now','look','only','come','its','over',
+    'think','also','back','after','use','two','how','our','work','first','well','way','even','new',
+    'want','because','any','these','give','day','most','find','here','thing','many','code','type',
+    'fast','test','word','text','game','play','hand','move','next','each','open','read','write',
+    'help','life','home',
+  ];
+
+  const DURATION = 30;
+
+  let gameState: GameState = 'idle';
+  let chars: string[] = [];
+  let cursorPos = 0;
+  let correctCount = 0;
+  let incorrectCount = 0;
+  let startTime = 0;
+  let timerInterval: ReturnType<typeof setInterval> | null = null;
+  let timeLeft = DURATION;
+  let highScore = parseInt(localStorage.getItem('wpm-highscore') || '0', 10);
+
+  const modalEl = document.getElementById('wpm-modal')!;
+  const wordsEl = document.getElementById('wpm-words')!;
+  const timerEl = document.getElementById('wpm-timer')!;
+  const liveWpmEl = document.getElementById('wpm-live')!;
+  const accuracyEl = document.getElementById('wpm-accuracy')!;
+  const overlayEl = document.getElementById('wpm-overlay')!;
+  const overlayTextEl = document.getElementById('wpm-overlay-text')!;
+  const footerWpmEl = document.getElementById('wpm-footer-wpm')!;
+  const footerBestEl = document.getElementById('wpm-footer-best')!;
+
+  footerBestEl.textContent = String(highScore);
+
+  function pickWords(count: number): string {
+    const result: string[] = [];
+    for (let i = 0; i < count; i++) {
+      result.push(WORDS[Math.floor(Math.random() * WORDS.length)]);
+    }
+    return result.join(' ');
+  }
+
+  function generateChars() {
+    const text = pickWords(25);
+    chars = text.split('');
+  }
+
+  function renderWords() {
+    wordsEl.innerHTML = '';
+    for (let i = 0; i < chars.length; i++) {
+      const span = document.createElement('span');
+      span.textContent = chars[i];
+
+      if (gameState === 'idle') {
+        span.className = 'text-zinc-600';
+      } else if (i < cursorPos) {
+        // Already typed
+        span.className = span.dataset.correct === 'false' ? 'text-red-500' : 'text-emerald-500';
+      } else if (i === cursorPos) {
+        span.className = 'text-zinc-100 border-b border-zinc-100';
+      } else {
+        span.className = 'text-zinc-600';
+      }
+
+      wordsEl.appendChild(span);
+    }
+  }
+
+  function renderWithState() {
+    const spans = wordsEl.children;
+    for (let i = 0; i < spans.length; i++) {
+      const span = spans[i] as HTMLSpanElement;
+      if (gameState === 'idle') {
+        span.className = 'text-zinc-600';
+      } else if (i < cursorPos) {
+        // keep existing correct/incorrect class
+      } else if (i === cursorPos) {
+        span.className = 'text-zinc-100 border-b border-zinc-100';
+      } else {
+        span.className = 'text-zinc-600';
+      }
+    }
+  }
+
+  function buildSpans() {
+    wordsEl.innerHTML = '';
+    for (let i = 0; i < chars.length; i++) {
+      const span = document.createElement('span');
+      span.textContent = chars[i];
+      span.className = gameState === 'idle' ? 'text-zinc-600' : (i === 0 ? 'text-zinc-100 border-b border-zinc-100' : 'text-zinc-600');
+      wordsEl.appendChild(span);
+    }
+  }
+
+  function updateCursor(oldPos: number, newPos: number, wasCorrect?: boolean) {
+    const spans = wordsEl.children;
+    // Update old position
+    if (oldPos >= 0 && oldPos < spans.length) {
+      const oldSpan = spans[oldPos] as HTMLSpanElement;
+      if (wasCorrect === true) {
+        oldSpan.className = 'text-emerald-500';
+      } else if (wasCorrect === false) {
+        oldSpan.className = 'text-red-500';
+      } else {
+        oldSpan.className = 'text-zinc-600';
+      }
+    }
+    // Update new cursor position
+    if (newPos >= 0 && newPos < spans.length) {
+      const newSpan = spans[newPos] as HTMLSpanElement;
+      newSpan.className = 'text-zinc-100 border-b border-zinc-100';
+    }
+  }
+
+  function calcWpm(): number {
+    if (correctCount === 0) return 0;
+    const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
+    if (elapsed <= 0) return 0;
+    return Math.round((correctCount / 5) / elapsed);
+  }
+
+  function calcAccuracy(): number {
+    const total = correctCount + incorrectCount;
+    if (total === 0) return 100;
+    return Math.round((correctCount / total) * 100);
+  }
+
+  function updateStats() {
+    const wpm = calcWpm();
+    liveWpmEl.textContent = String(wpm);
+    footerWpmEl.textContent = String(wpm);
+    accuracyEl.textContent = String(calcAccuracy());
+    timerEl.textContent = String(timeLeft);
+  }
+
+  function startTimer() {
+    startTime = Date.now();
+    timeLeft = DURATION;
+    timerEl.textContent = String(timeLeft);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = String(timeLeft);
+      updateStats();
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+  }
+
+  function endGame() {
+    gameState = 'gameover';
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    const wpm = calcWpm();
+    const acc = calcAccuracy();
+    if (wpm > highScore) {
+      highScore = wpm;
+      localStorage.setItem('wpm-highscore', String(highScore));
+      footerBestEl.textContent = String(highScore);
+    }
+    showOverlay([`WPM: ${wpm} | Accuracy: ${acc}%`, 'Press [ENTER] to retry']);
+  }
+
+  function showOverlay(textLines: string[]) {
+    overlayEl.classList.remove('hidden');
+    overlayTextEl.innerHTML = textLines
+      .map(l => `<p class="text-zinc-100 text-xs font-bold uppercase tracking-widest">${l}</p>`)
+      .join('');
+  }
+
+  function hideOverlay() {
+    overlayEl.classList.add('hidden');
+    overlayTextEl.innerHTML = '';
+  }
+
+  function startGame() {
+    gameState = 'playing';
+    hideOverlay();
+    cursorPos = 0;
+    correctCount = 0;
+    incorrectCount = 0;
+    timeLeft = DURATION;
+    generateChars();
+    buildSpans();
+    updateStats();
+  }
+
+  function isModalVisible() {
+    return !modalEl.classList.contains('hidden');
+  }
+
+  function handleWpmKeys(e: KeyboardEvent) {
+    if (!isModalVisible()) return;
+
+    const key = e.key;
+
+    if (key === 'Escape') {
+      (window as any).toggleWpm();
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (key === 'Enter') {
+      if (gameState === 'idle' || gameState === 'gameover') {
+        startGame();
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    // Stop propagation for all keys when modal is visible and playing
+    if (gameState === 'playing') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (key === 'Backspace') {
+        if (cursorPos > 0) {
+          const oldPos = cursorPos;
+          cursorPos--;
+          // Reset the character we're moving back to
+          updateCursor(oldPos, cursorPos, undefined);
+          // The old cursor position becomes untyped again (revert)
+          const span = wordsEl.children[oldPos] as HTMLSpanElement;
+          span.className = 'text-zinc-600';
+        }
+        return;
+      }
+
+      if (key.length === 1) {
+        // Start timer on first keypress
+        if (cursorPos === 0 && !timerInterval) {
+          startTimer();
+        }
+
+        const expected = chars[cursorPos];
+        const isCorrect = key === expected;
+
+        if (isCorrect) {
+          correctCount++;
+        } else {
+          incorrectCount++;
+        }
+
+        const oldPos = cursorPos;
+        cursorPos++;
+        updateCursor(oldPos, cursorPos, isCorrect);
+
+        updateStats();
+
+        // If we've typed all characters, generate new set
+        if (cursorPos >= chars.length) {
+          generateChars();
+          cursorPos = 0;
+          buildSpans();
+        }
+      }
+      return;
+    }
+
+    // When idle or gameover, still stop propagation for letter keys
+    if (key.length === 1 || key === 'Backspace') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  document.addEventListener('keydown', handleWpmKeys, true);
+
+  (window as any).toggleWpm = function () {
+    const isHidden = modalEl.classList.contains('hidden');
+    modalEl.classList.toggle('hidden');
+    modalEl.classList.toggle('flex');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    if (isHidden) {
+      cursorPos = 0;
+      correctCount = 0;
+      incorrectCount = 0;
+      timeLeft = DURATION;
+      gameState = 'idle';
+      generateChars();
+      buildSpans();
+      updateStats();
+      footerBestEl.textContent = String(highScore);
+      showOverlay(['[ wpm_v1.0 ]', 'Press [ENTER] to start']);
+    } else {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      gameState = 'idle';
+    }
+  };
+</script>
