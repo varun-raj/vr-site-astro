@@ -1,0 +1,337 @@
+<!-- No frontmatter needed -->
+
+<div id="dino-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
+  <div class="w-full max-w-lg border-2 border-zinc-100 bg-black p-1 shadow-2xl">
+    <div class="border border-zinc-100/30 p-4 space-y-4 relative">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
+        [ dino_v1.0 ]
+      </div>
+
+      <div class="flex justify-center pt-2">
+        <canvas id="dino-canvas" class="border border-zinc-100/20"></canvas>
+      </div>
+
+      <div id="dino-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none hidden">
+        <div id="dino-overlay-text" class="text-center space-y-2 bg-black/80 px-6 py-4"></div>
+      </div>
+
+      <div class="pt-2 border-t border-zinc-100/20 flex justify-between items-center text-[10px] uppercase font-bold">
+        <span class="text-zinc-500">Score: <span id="dino-score" class="text-zinc-100">0</span></span>
+        <span class="text-zinc-100 animate-pulse">Press [ESC] to Exit</span>
+        <span class="text-zinc-500">Best: <span id="dino-highscore" class="text-amber-500">0</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  type GameState = 'idle' | 'playing' | 'gameover';
+
+  // Board dimensions
+  const DESKTOP_W = 600;
+  const DESKTOP_H = 200;
+  const MOBILE_W = 320;
+  const MOBILE_H = 180;
+
+  // Dino
+  const DINO_SIZE = 30;
+  const DINO_X = 50;
+  const DINO_COLOR = '#22c55e'; // emerald-500
+
+  // Physics
+  const GRAVITY = 0.6;
+  const JUMP_VEL = -12;
+
+  // Obstacles
+  const OBS_COLOR = '#ef4444'; // red-500
+  const OBS_MIN_W = 15;
+  const OBS_MAX_W = 25;
+  const OBS_MIN_H = 30;
+  const OBS_MAX_H = 50;
+  const GAP_MIN = 200;
+  const GAP_MAX = 400;
+  const INITIAL_SPEED = 4;
+  const SPEED_INCREMENT = 0.001;
+
+  // Ground
+  const GROUND_OFFSET = 30; // ground is canvas height - 30
+
+  // State
+  let gameState: GameState = 'idle';
+  let score = 0;
+  let highScore = parseInt(localStorage.getItem('dino-highscore') || '0', 10);
+
+  let canvasW = 0;
+  let canvasH = 0;
+  let groundY = 0;
+
+  // Dino state
+  let dinoY = 0;
+  let dinoVY = 0;
+  let isOnGround = true;
+
+  // Obstacle state
+  interface Obstacle {
+    x: number;
+    w: number;
+    h: number;
+  }
+  let obstacles: Obstacle[] = [];
+  let obstacleSpeed = INITIAL_SPEED;
+  let nextSpawnThreshold = 0;
+
+  let animFrame: number | null = null;
+
+  // DOM
+  const modalEl = document.getElementById('dino-modal')!;
+  const canvasEl = document.getElementById('dino-canvas') as HTMLCanvasElement;
+  const ctx = canvasEl.getContext('2d')!;
+  const overlayEl = document.getElementById('dino-overlay')!;
+  const overlayTextEl = document.getElementById('dino-overlay-text')!;
+  const scoreEl = document.getElementById('dino-score')!;
+  const highScoreEl = document.getElementById('dino-highscore')!;
+
+  highScoreEl.textContent = String(highScore);
+
+  function getBoardSize(): [number, number] {
+    return window.innerWidth >= 768 ? [DESKTOP_W, DESKTOP_H] : [MOBILE_W, MOBILE_H];
+  }
+
+  function setupCanvas() {
+    [canvasW, canvasH] = getBoardSize();
+    canvasEl.width = canvasW;
+    canvasEl.height = canvasH;
+    canvasEl.style.width = `${canvasW}px`;
+    canvasEl.style.height = `${canvasH}px`;
+    groundY = canvasH - GROUND_OFFSET;
+  }
+
+  function resetDino() {
+    dinoY = groundY - DINO_SIZE;
+    dinoVY = 0;
+    isOnGround = true;
+  }
+
+  function jump() {
+    if (!isOnGround) return;
+    dinoVY = JUMP_VEL;
+    isOnGround = false;
+  }
+
+  function spawnObstacle() {
+    const w = OBS_MIN_W + Math.random() * (OBS_MAX_W - OBS_MIN_W);
+    const h = OBS_MIN_H + Math.random() * (OBS_MAX_H - OBS_MIN_H);
+    obstacles.push({ x: canvasW, w, h });
+    nextSpawnThreshold = GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
+  }
+
+  function updateScoreDisplay() {
+    scoreEl.textContent = String(score);
+  }
+
+  function showOverlay(textLines: string[]) {
+    overlayEl.classList.remove('hidden');
+    overlayTextEl.innerHTML = textLines
+      .map(l => `<p class="text-zinc-100 text-xs font-bold uppercase tracking-widest">${l}</p>`)
+      .join('');
+  }
+
+  function hideOverlay() {
+    overlayEl.classList.add('hidden');
+    overlayTextEl.innerHTML = '';
+  }
+
+  function isModalVisible() {
+    return !modalEl.classList.contains('hidden');
+  }
+
+  function checkCollision(obs: Obstacle): boolean {
+    // AABB collision between dino and obstacle
+    const dinoLeft = DINO_X;
+    const dinoRight = DINO_X + DINO_SIZE;
+    const dinoTop = dinoY;
+    const dinoBottom = dinoY + DINO_SIZE;
+
+    const obsLeft = obs.x;
+    const obsRight = obs.x + obs.w;
+    const obsTop = groundY - obs.h;
+    const obsBottom = groundY;
+
+    return (
+      dinoRight > obsLeft &&
+      dinoLeft < obsRight &&
+      dinoBottom > obsTop &&
+      dinoTop < obsBottom
+    );
+  }
+
+  function update() {
+    // Apply gravity
+    dinoVY += GRAVITY;
+    dinoY += dinoVY;
+
+    // Land on ground
+    if (dinoY >= groundY - DINO_SIZE) {
+      dinoY = groundY - DINO_SIZE;
+      dinoVY = 0;
+      isOnGround = true;
+    }
+
+    // Move obstacles
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+      obstacles[i].x -= obstacleSpeed;
+      // Remove off-screen obstacles
+      if (obstacles[i].x + obstacles[i].w < 0) {
+        obstacles.splice(i, 1);
+      }
+    }
+
+    // Spawn new obstacle
+    const lastObs = obstacles[obstacles.length - 1];
+    if (!lastObs || (canvasW - lastObs.x) > nextSpawnThreshold) {
+      spawnObstacle();
+    }
+
+    // Increase speed
+    obstacleSpeed += SPEED_INCREMENT;
+
+    // Increment score
+    score++;
+    updateScoreDisplay();
+
+    // Check collisions
+    for (const obs of obstacles) {
+      if (checkCollision(obs)) {
+        endGame();
+        return;
+      }
+    }
+  }
+
+  function draw() {
+    // Clear
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, canvasW, canvasH);
+
+    // Ground line
+    ctx.strokeStyle = '#3f3f46'; // zinc-700
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(canvasW, groundY);
+    ctx.stroke();
+
+    // Dino
+    ctx.fillStyle = DINO_COLOR;
+    ctx.fillRect(DINO_X, dinoY, DINO_SIZE, DINO_SIZE);
+
+    // Obstacles
+    ctx.fillStyle = OBS_COLOR;
+    for (const obs of obstacles) {
+      ctx.fillRect(obs.x, groundY - obs.h, obs.w, obs.h);
+    }
+
+    // Score in top-right of canvas
+    ctx.fillStyle = '#71717a'; // zinc-500
+    ctx.font = '14px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(String(score).padStart(5, '0'), canvasW - 10, 20);
+    ctx.textAlign = 'left';
+  }
+
+  function gameLoop() {
+    if (gameState !== 'playing') return;
+    update();
+    draw();
+    animFrame = requestAnimationFrame(gameLoop);
+  }
+
+  function endGame() {
+    gameState = 'gameover';
+    if (animFrame !== null) { cancelAnimationFrame(animFrame); animFrame = null; }
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('dino-highscore', String(highScore));
+      highScoreEl.textContent = String(highScore);
+    }
+    showOverlay([`Game Over — Score: ${score}`, 'Press [ENTER] to retry']);
+    draw();
+  }
+
+  function startGame() {
+    gameState = 'playing';
+    hideOverlay();
+    score = 0;
+    obstacleSpeed = INITIAL_SPEED;
+    obstacles = [];
+    nextSpawnThreshold = GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
+    updateScoreDisplay();
+    setupCanvas();
+    resetDino();
+    draw();
+    if (animFrame !== null) cancelAnimationFrame(animFrame);
+    animFrame = requestAnimationFrame(gameLoop);
+  }
+
+  function handleDinoKeys(e: KeyboardEvent) {
+    if (!isModalVisible()) return;
+
+    const key = e.key.toLowerCase();
+
+    if (key === 'escape') {
+      (window as any).toggleDino();
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (key === 'enter') {
+      if (gameState === 'idle' || gameState === 'gameover') {
+        startGame();
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (gameState !== 'playing') return;
+
+    if (key === ' ' || key === 'arrowup' || key === 'w') {
+      jump();
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  document.addEventListener('keydown', handleDinoKeys, true);
+
+  (window as any).toggleDino = function () {
+    const isHidden = modalEl.classList.contains('hidden');
+    modalEl.classList.toggle('hidden');
+    modalEl.classList.toggle('flex');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    if (isHidden) {
+      gameState = 'idle';
+      score = 0;
+      obstacleSpeed = INITIAL_SPEED;
+      obstacles = [];
+      updateScoreDisplay();
+      setupCanvas();
+      resetDino();
+      draw();
+      showOverlay(['[ dino_v1.0 ]', 'Press [ENTER] to start']);
+    } else {
+      if (animFrame !== null) { cancelAnimationFrame(animFrame); animFrame = null; }
+      gameState = 'idle';
+    }
+  };
+
+  window.addEventListener('resize', () => {
+    if (isModalVisible() && gameState === 'idle') {
+      setupCanvas();
+      resetDino();
+      draw();
+    }
+  });
+</script>
