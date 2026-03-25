@@ -121,7 +121,7 @@ const { meta } = Astro.props;
     </div>
 
     <div id="key-indicator" class="fixed bottom-8 right-8 pointer-events-none z-[100] font-mono text-xl text-zinc-400 dark:text-zinc-600 opacity-0 transition-opacity duration-200">
-      <span class="text-emerald-500 mr-2">></span><span id="key-text" class="uppercase font-bold text-zinc-100"></span>
+      <span class="text-emerald-500 mr-2">></span><span id="key-text" class="uppercase font-bold text-zinc-100"></span><span id="key-cursor" class="text-zinc-100 animate-terminal-cursor hidden">_</span>
     </div>
 
     <script>
@@ -156,26 +156,45 @@ const { meta } = Astro.props;
       function showKeyIndicator(isError = false) {
         const el = document.getElementById('key-indicator');
         const textEl = document.getElementById('key-text');
-        if (el && textEl) {
+        const cursorEl = document.getElementById('key-cursor');
+        if (el && textEl && cursorEl) {
           textEl.textContent = keyBuffer + (isError ? ' - unknown command' : '');
           el.classList.remove('opacity-0');
           el.classList.add('opacity-100');
-          if (isError) { textEl.classList.add('text-red-500'); } 
-          else { textEl.classList.remove('text-red-500'); }
+          if (isError) {
+            textEl.classList.add('text-red-500');
+            cursorEl.classList.add('hidden');
+          } else {
+            textEl.classList.remove('text-red-500');
+            cursorEl.classList.remove('hidden');
+          }
           clearTimeout((window as any).keyHintTimeout);
-          (window as any).keyHintTimeout = setTimeout(() => {
-            el.classList.remove('opacity-100');
-            el.classList.add('opacity-0');
-          }, isError ? 1500 : 800);
+          if (isError || keyBuffer.length === 0) {
+            cursorEl.classList.add('hidden');
+            (window as any).keyHintTimeout = setTimeout(() => {
+              el.classList.remove('opacity-100');
+              el.classList.add('opacity-0');
+            }, isError ? 1500 : 300);
+          }
+        }
+      }
+
+      function hideKeyIndicator() {
+        const el = document.getElementById('key-indicator');
+        const cursorEl = document.getElementById('key-cursor');
+        if (el && cursorEl) {
+          cursorEl.classList.add('hidden');
+          el.classList.remove('opacity-100');
+          el.classList.add('opacity-0');
         }
       }
 
       function executeBuffer() {
         if (!keyBuffer) return;
 
-        if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; return; }
-        if (keyBuffer === 'snake') { (window as any).toggleSnake(); keyBuffer = ""; return; }
-        if (keyBuffer === 'tris') { (window as any).toggleTetris(); keyBuffer = ""; return; }
+        if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; hideKeyIndicator(); return; }
+        if (keyBuffer === 'snake') { (window as any).toggleSnake(); keyBuffer = ""; hideKeyIndicator(); return; }
+        if (keyBuffer === 'tris') { (window as any).toggleTetris(); keyBuffer = ""; hideKeyIndicator(); return; }
 
         const isHomePage = window.location.pathname === '/';
         const navMap: Record<string, string> = {
@@ -196,6 +215,7 @@ const { meta } = Astro.props;
             window.location.href = target;
           }
           keyBuffer = "";
+          hideKeyIndicator();
         } else {
           showKeyIndicator(true);
           keyBuffer = "";
@@ -210,9 +230,21 @@ const { meta } = Astro.props;
         const key = e.key.toLowerCase();
 
         if (key === 'escape') {
+          if (keyBuffer.length > 0) { keyBuffer = ""; clearTimeout(bufferTimeout); hideKeyIndicator(); return; }
           if (!document.getElementById('help-modal')?.classList.contains('hidden')) { toggleHelp(); return; }
           if (!document.getElementById('snake-modal')?.classList.contains('hidden')) { (window as any).toggleSnake(); return; }
           if (!document.getElementById('tetris-modal')?.classList.contains('hidden')) { (window as any).toggleTetris(); return; }
+        }
+
+        if (key === 'backspace' && keyBuffer.length > 0) {
+          clearTimeout(bufferTimeout);
+          keyBuffer = keyBuffer.slice(0, -1);
+          if (keyBuffer.length === 0) {
+            hideKeyIndicator();
+          } else {
+            showKeyIndicator();
+          }
+          return;
         }
 
         if (key === 'enter' && keyBuffer.length > 0) {
