@@ -170,6 +170,38 @@ const { meta } = Astro.props;
         }
       }
 
+      function executeBuffer() {
+        if (!keyBuffer) return;
+
+        if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; return; }
+        if (keyBuffer === 'snake') { (window as any).toggleSnake(); keyBuffer = ""; return; }
+        if (keyBuffer === 'tris') { (window as any).toggleTetris(); keyBuffer = ""; return; }
+
+        const isHomePage = window.location.pathname === '/';
+        const navMap: Record<string, string> = {
+          '01': '/', '1': '/', '02': '/about', '2': '/about', '03': '/blog', '3': '/blog',
+          '04': '/uses', '4': '/uses', '05': '/books', '5': '/books', 'pk': '/press-kit',
+          'pr': '/projects', 'stk': '/stack', 'sc': 'https://skcript.com', '0': 'section-0'
+        };
+
+        if (navMap[keyBuffer]) {
+          const target = navMap[keyBuffer];
+          if (target === 'section-0' && isHomePage) {
+            document.getElementById('section-0')?.scrollIntoView({ behavior: 'smooth' });
+          } else if (target.startsWith('http')) {
+            window.open(target, '_blank');
+          } else if (window.location.pathname === target) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            window.location.href = target;
+          }
+          keyBuffer = "";
+        } else {
+          showKeyIndicator(true);
+          keyBuffer = "";
+        }
+      }
+
       function handleShortcuts(e: KeyboardEvent) {
         if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.metaKey || e.ctrlKey) {
           return;
@@ -182,45 +214,20 @@ const { meta } = Astro.props;
           if (!document.getElementById('snake-modal')?.classList.contains('hidden')) { (window as any).toggleSnake(); return; }
           if (!document.getElementById('tetris-modal')?.classList.contains('hidden')) { (window as any).toggleTetris(); return; }
         }
-        
+
+        if (key === 'enter' && keyBuffer.length > 0) {
+          clearTimeout(bufferTimeout);
+          executeBuffer();
+          return;
+        }
+
         if (!/^[a-z0-9]$/.test(key)) return;
 
         keyBuffer += key;
         showKeyIndicator();
         clearTimeout(bufferTimeout);
         bufferTimeout = setTimeout(() => {
-          if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; return; }
-          if (keyBuffer === 'snake') { (window as any).toggleSnake(); keyBuffer = ""; return; }
-          if (keyBuffer === 'tris') { (window as any).toggleTetris(); keyBuffer = ""; return; }
-
-          if (keyBuffer.length > 0) {
-            const isHomePage = window.location.pathname === '/';
-            const navMap: Record<string, string> = {
-              '01': '/', '1': '/', '02': '/about', '2': '/about', '03': '/blog', '3': '/blog',
-              '04': '/uses', '4': '/uses', '05': '/books', '5': '/books', 'pk': '/press-kit',
-              'pr': '/projects', 'stk': '/stack', 'sc': 'https://skcript.com', '0': 'section-0'
-            };
-
-            if (navMap[keyBuffer]) {
-              const target = navMap[keyBuffer];
-              if (target === 'section-0' && isHomePage) {
-                document.getElementById('section-0')?.scrollIntoView({ behavior: 'smooth' });
-              } else if (target.startsWith('http')) {
-                window.open(target, '_blank');
-              } else if (window.location.pathname === target) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              } else {
-                window.location.href = target;
-              }
-              keyBuffer = "";
-            } else {
-              const possibleStarts = ['s', 'm', 't'];
-              if (keyBuffer.length >= 6 || (keyBuffer.length === 2 && !possibleStarts.includes(keyBuffer[0]))) {
-                showKeyIndicator(true);
-                keyBuffer = "";
-              }
-            }
-          }
+          executeBuffer();
         }, 400);
       }
 
