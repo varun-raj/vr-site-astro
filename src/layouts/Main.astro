@@ -6,6 +6,10 @@ import SnakeGame from "../components/SnakeGame.astro";
 import TetrisGame from "../components/TetrisGame.astro";
 import BreakoutGame from "../components/BreakoutGame.astro";
 import TypingTest from "../components/TypingTest.astro";
+import DinoGame from "../components/DinoGame.astro";
+import PongGame from "../components/PongGame.astro";
+import MemoryGame from "../components/MemoryGame.astro";
+import TicTacToe from "../components/TicTacToe.astro";
 import GameOfLife from "../components/GameOfLife.astro";
 import { ClientRouter } from 'astro:transitions';
 
@@ -104,6 +108,26 @@ const { meta } = Astro.props;
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">breakout</span>
                   <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">BRK</span>
                 </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">typing_test</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">WPM</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">dino_run</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">DINO</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">pong</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PONG</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">memory_match</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">MEM</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tic_tac_toe</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TTT</span>
+                </div>
               </div>
             </div>
           </div>
@@ -118,6 +142,10 @@ const { meta } = Astro.props;
     <TetrisGame />
     <BreakoutGame />
     <TypingTest />
+    <DinoGame />
+    <PongGame />
+    <MemoryGame />
+    <TicTacToe />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
@@ -209,6 +237,10 @@ const { meta } = Astro.props;
         'life': () => (window as any).toggleLife(),
         'brk': () => (window as any).toggleBreakout(),
         'wpm': () => (window as any).toggleWpm(),
+        'dino': () => (window as any).toggleDino(),
+        'pong': () => (window as any).togglePong(),
+        'mem': () => (window as any).toggleMemory(),
+        'ttt': () => (window as any).toggleTtt(),
       };
 
       function getNavTarget(): string | null {
@@ -268,6 +300,10 @@ const { meta } = Astro.props;
           if (!document.getElementById('tetris-modal')?.classList.contains('hidden')) { (window as any).toggleTetris(); return; }
           if (!document.getElementById('brk-modal')?.classList.contains('hidden')) { (window as any).toggleBreakout(); return; }
           if (!document.getElementById('wpm-modal')?.classList.contains('hidden')) { (window as any).toggleWpm(); return; }
+          if (!document.getElementById('dino-modal')?.classList.contains('hidden')) { (window as any).toggleDino(); return; }
+          if (!document.getElementById('pong-modal')?.classList.contains('hidden')) { (window as any).togglePong(); return; }
+          if (!document.getElementById('mem-modal')?.classList.contains('hidden')) { (window as any).toggleMemory(); return; }
+          if (!document.getElementById('ttt-modal')?.classList.contains('hidden')) { (window as any).toggleTtt(); return; }
         }
 
         if (key === 'backspace' && keyBuffer.length > 0) {
