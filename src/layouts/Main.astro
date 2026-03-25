@@ -12,6 +12,7 @@ import MemoryGame from "../components/MemoryGame.astro";
 import TicTacToe from "../components/TicTacToe.astro";
 import GameOfLife from "../components/GameOfLife.astro";
 import Fortune from "../components/Fortune.astro";
+import AsciiArt from "../components/AsciiArt.astro";
 import MobileControls from "../components/MobileControls.astro";
 import { ClientRouter } from 'astro:transitions';
 
@@ -142,6 +143,31 @@ const { meta } = Astro.props;
               </div>
             </div>
           </div>
+          <!-- Utilities section -->
+          <div class="space-y-3 md:space-y-4">
+            <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
+              <span class="text-[10px] uppercase font-bold text-zinc-500">Utilities</span>
+              <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-1.5 md:gap-y-2 text-zinc-300">
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">fortune</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">FRTN</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">ascii_art</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">ASCII</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">list_pages</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">LS</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">navigate</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">CD ___</span>
+              </div>
+            </div>
+          </div>
           <div class="pt-3 md:pt-4 border-t border-zinc-100/20 flex justify-between items-center">
             <span class="text-[9px] uppercase tracking-tighter opacity-30 font-mono italic text-zinc-100 hidden md:inline">Secure transmission active...</span>
             <span class="text-[10px] uppercase font-bold animate-pulse text-zinc-100">Press [ESC] to Exit</span>
@@ -159,6 +185,7 @@ const { meta } = Astro.props;
     <TicTacToe />
     <MobileControls />
     <Fortune />
+    <AsciiArt />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
@@ -255,6 +282,8 @@ const { meta } = Astro.props;
         'mem': () => (window as any).toggleMemory(),
         'ttt': () => (window as any).toggleTtt(),
         'frtn': () => (window as any).showFortune(),
+        'ascii': () => (window as any).toggleAscii(),
+        'ls': () => (window as any).showToast('/ /about /blog /uses /books /projects /stack /press-kit'),
       };
 
       function getNavTarget(): string | null {
@@ -266,6 +295,18 @@ const { meta } = Astro.props;
         return navMap[keyBuffer] || null;
       }
 
+      const cdPaths: Record<string, string> = {
+        '/': '/', 'root': '/', 'home': '/',
+        '/about': '/about', 'about': '/about',
+        '/blog': '/blog', 'blog': '/blog',
+        '/uses': '/uses', 'uses': '/uses',
+        '/books': '/books', 'books': '/books',
+        '/projects': '/projects', 'projects': '/projects',
+        '/stack': '/stack', 'stack': '/stack',
+        '/presskit': '/press-kit', 'presskit': '/press-kit',
+        '..': '/',
+      };
+
       function tryExecute(showError: boolean): boolean {
         if (!keyBuffer) return false;
 
@@ -274,6 +315,28 @@ const { meta } = Astro.props;
           keyBuffer = "";
           hideKeyIndicator();
           return true;
+        }
+
+        // Handle cd command with path argument
+        if (keyBuffer.startsWith('cd')) {
+          const path = keyBuffer.slice(2).trim().replace(/\//g, '');
+          const resolved = cdPaths[path] || cdPaths['/' + path];
+          if (resolved) {
+            if (window.location.pathname === resolved) {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              window.location.href = resolved;
+            }
+            keyBuffer = "";
+            hideKeyIndicator();
+            return true;
+          } else if (showError) {
+            (window as any).showToast(`cd: ${path || '?'}: no such directory`);
+            keyBuffer = "";
+            hideKeyIndicator();
+            return true;
+          }
+          return false;
         }
 
         const target = getNavTarget();
@@ -318,6 +381,7 @@ const { meta } = Astro.props;
           if (!document.getElementById('pong-modal')?.classList.contains('hidden')) { (window as any).togglePong(); return; }
           if (!document.getElementById('mem-modal')?.classList.contains('hidden')) { (window as any).toggleMemory(); return; }
           if (!document.getElementById('ttt-modal')?.classList.contains('hidden')) { (window as any).toggleTtt(); return; }
+          if (!document.getElementById('ascii-modal')?.classList.contains('hidden')) { (window as any).toggleAscii(); return; }
         }
 
         if (key === 'backspace' && keyBuffer.length > 0) {
@@ -335,7 +399,7 @@ const { meta } = Astro.props;
           return;
         }
 
-        if (!/^[a-z0-9]$/.test(key)) return;
+        if (!/^[a-z0-9/ ]$/.test(key)) return;
 
         keyBuffer += key;
         showKeyIndicator();
