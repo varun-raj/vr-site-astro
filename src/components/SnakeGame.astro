@@ -11,7 +11,7 @@
         <!-- Grid cells rendered by JS -->
       </div>
 
-      <div id="snake-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div id="snake-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none hidden">
         <div id="snake-overlay-text" class="text-center space-y-2"></div>
       </div>
 
@@ -60,10 +60,11 @@
   }
 
   function placeFood() {
+    const occupied = new Set(snake.map(s => `${s.x},${s.y}`));
     const empty: Point[] = [];
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        if (!snake.some(s => s.x === x && s.y === y)) {
+        if (!occupied.has(`${x},${y}`)) {
           empty.push({ x, y });
         }
       }
@@ -96,12 +97,16 @@
     overlayTextEl.innerHTML = '';
   }
 
-  function render() {
-    const grid = document.createElement('div');
-    grid.style.display = 'grid';
-    grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
-    grid.style.lineHeight = `${cellSize}px`;
-    grid.style.gap = '0';
+  let cells: HTMLSpanElement[] = [];
+  let gridContainer: HTMLDivElement | null = null;
+
+  function buildGrid() {
+    cells = [];
+    gridContainer = document.createElement('div');
+    gridContainer.style.display = 'grid';
+    gridContainer.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+    gridContainer.style.lineHeight = `${cellSize}px`;
+    gridContainer.style.gap = '0';
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
@@ -112,29 +117,46 @@
         cell.style.alignItems = 'center';
         cell.style.justifyContent = 'center';
         cell.style.fontSize = `${cellSize - 2}px`;
-
-        const isHead = snake.length > 0 && snake[0].x === x && snake[0].y === y;
-        const isBody = !isHead && snake.some(s => s.x === x && s.y === y);
-        const isFood = food.x === x && food.y === y;
-
-        if (isHead) {
-          cell.textContent = '█';
-          cell.style.color = '#34d399'; // emerald-400
-        } else if (isBody) {
-          cell.textContent = '█';
-          cell.style.color = '#10b981'; // emerald-500
-        } else if (isFood) {
-          cell.textContent = '●';
-          cell.style.color = '#f59e0b'; // amber-500
-        } else {
-          cell.textContent = '\u00A0';
-        }
-        grid.appendChild(cell);
+        cells.push(cell);
+        gridContainer.appendChild(cell);
       }
     }
 
     gridEl.innerHTML = '';
-    gridEl.appendChild(grid);
+    gridEl.appendChild(gridContainer);
+  }
+
+  function render() {
+    if (!gridContainer || cells.length !== cols * rows) {
+      buildGrid();
+    }
+
+    const snakeSet = new Set(snake.map(s => `${s.x},${s.y}`));
+    const headKey = snake.length > 0 ? `${snake[0].x},${snake[0].y}` : '';
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const cell = cells[y * cols + x];
+        const key = `${x},${y}`;
+        const isHead = key === headKey;
+        const isBody = !isHead && snakeSet.has(key);
+        const isFood = food.x === x && food.y === y;
+
+        if (isHead) {
+          cell.textContent = '█';
+          cell.style.color = '#34d399';
+        } else if (isBody) {
+          cell.textContent = '█';
+          cell.style.color = '#10b981';
+        } else if (isFood) {
+          cell.textContent = '●';
+          cell.style.color = '#f59e0b';
+        } else {
+          cell.textContent = '\u00A0';
+          cell.style.color = '';
+        }
+      }
+    }
   }
 
   function tick() {
@@ -254,7 +276,7 @@
       resetGame();
       gameState = 'idle';
       render();
-      showOverlay(['Type SNAKE to play', 'Press [ENTER] to start']);
+      showOverlay(['[ snake_v1.0 ]', 'Press [ENTER] to start']);
     } else {
       // Closing
       if (gameInterval) { clearInterval(gameInterval); gameInterval = null; }
@@ -265,6 +287,7 @@
   window.addEventListener('resize', () => {
     if (isModalVisible() && gameState === 'idle') {
       calcGridSize();
+      gridContainer = null;
       resetGame();
       render();
     }
