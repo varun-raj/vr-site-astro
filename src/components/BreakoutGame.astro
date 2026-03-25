@@ -234,6 +234,7 @@
         endGame(false);
       } else {
         resetPaddleAndBall();
+        launchBall();
       }
       return;
     }
@@ -345,6 +346,7 @@
     setupCanvas();
     initBricks();
     resetPaddleAndBall();
+    launchBall();
     draw();
     if (animFrame !== null) cancelAnimationFrame(animFrame);
     animFrame = requestAnimationFrame(gameLoop);
