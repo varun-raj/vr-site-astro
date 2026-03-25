@@ -33,22 +33,22 @@ const { meta } = Astro.props;
   </head>
   <body class="flex min-h-screen flex-col bg-black text-zinc-200 relative">
     <GameOfLife />
-    <div id="help-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
-      <div class="w-full max-w-lg border-2 border-zinc-100 bg-black p-1 shadow-2xl">
-        <div class="border border-zinc-100/30 p-6 space-y-8 relative">
+    <div id="help-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-3 md:p-6 text-zinc-400 font-mono overflow-y-auto">
+      <div class="w-full max-w-lg border-2 border-zinc-100 bg-black p-1 shadow-2xl my-auto">
+        <div class="border border-zinc-100/30 p-3 md:p-6 space-y-4 md:space-y-8 relative">
           <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
             [ system_help_v1.0 ]
           </div>
           <div class="space-y-2 text-center pt-2">
             <p class="text-[10px] uppercase tracking-widest opacity-70 text-zinc-500">Execute command sequence to navigate system</p>
           </div>
-          <div class="grid grid-cols-2 gap-12 text-zinc-300">
-            <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4 md:gap-12 text-zinc-300">
+            <div class="space-y-3 md:space-y-4">
               <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
                 <span class="text-[10px] uppercase font-bold text-zinc-500">Directories</span>
                 <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
               </div>
-              <div class="space-y-2">
+              <div class="space-y-1.5 md:space-y-2">
                 <div class="flex justify-between items-center group/item text-xs">
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/root</span>
                   <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">1</span>
@@ -71,12 +71,12 @@ const { meta } = Astro.props;
                 </div>
               </div>
             </div>
-            <div class="space-y-4">
+            <div class="space-y-3 md:space-y-4">
               <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
                 <span class="text-[10px] uppercase font-bold text-zinc-500">Functions</span>
                 <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
               </div>
-              <div class="space-y-2">
+              <div class="space-y-1.5 md:space-y-2">
                 <div class="flex justify-between items-center group/item text-xs">
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tech_manifest</span>
                   <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">STK</span>
@@ -93,47 +93,56 @@ const { meta } = Astro.props;
                   <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">ext_skcript</span>
                   <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SC</span>
                 </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">snake_game</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SNAKE</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tetris_game</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TRIS</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">game_of_life</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">LIFE</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">breakout</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">BRK</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">typing_test</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">WPM</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">dino_run</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">DINO</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">pong</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PONG</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">memory_match</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">MEM</span>
-                </div>
-                <div class="flex justify-between items-center group/item text-xs">
-                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tic_tac_toe</span>
-                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TTT</span>
-                </div>
               </div>
             </div>
           </div>
-          <div class="pt-4 border-t border-zinc-100/20 flex justify-between items-center">
-            <span class="text-[9px] uppercase tracking-tighter opacity-30 font-mono italic text-zinc-100">Secure transmission active...</span>
+          <!-- Games section -->
+          <div class="space-y-3 md:space-y-4">
+            <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
+              <span class="text-[10px] uppercase font-bold text-zinc-500">Games</span>
+              <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-1.5 md:gap-y-2 text-zinc-300">
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">snake_game</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">SNAKE</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tetris_game</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TRIS</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">breakout</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">BRK</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">dino_run</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">DINO</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">pong</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PONG</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">memory_match</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">MEM</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tic_tac_toe</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TTT</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">typing_test</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">WPM</span>
+              </div>
+              <div class="flex justify-between items-center group/item text-xs">
+                <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">game_of_life</span>
+                <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">LIFE</span>
+              </div>
+            </div>
+          </div>
+          <div class="pt-3 md:pt-4 border-t border-zinc-100/20 flex justify-between items-center">
+            <span class="text-[9px] uppercase tracking-tighter opacity-30 font-mono italic text-zinc-100 hidden md:inline">Secure transmission active...</span>
             <span class="text-[10px] uppercase font-bold animate-pulse text-zinc-100">Press [ESC] to Exit</span>
           </div>
         </div>
