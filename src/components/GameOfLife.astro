@@ -8,7 +8,7 @@
 
   const CELL_SIZE = 10;
   const ALIVE_COLOR = 'rgba(16, 185, 129, 0.25)'; // emerald-500 at 25%
-  const TICK_MS = 300;
+  const TICK_MS = 120;
   const RESPAWN_THRESHOLD = 0.02;
   const INITIAL_DENSITY = 0.18;
 
@@ -98,6 +98,8 @@
 
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowColor = 'rgb(16, 185, 129)';
+    ctx.shadowBlur = 8;
     ctx.fillStyle = ALIVE_COLOR;
 
     for (let y = 0; y < rows; y++) {
@@ -107,6 +109,8 @@
         }
       }
     }
+
+    ctx.shadowBlur = 0;
   }
 
   function start() {
