@@ -64,6 +64,9 @@
   let ballDY = 0;
   let ballSpeed = INITIAL_BALL_SPEED;
   let animFrame: number | null = null;
+  let countdown = 0;
+  let countdownStart = 0;
+  let pendingBallDir = false; // toward player?
 
   // Keys held
   const keysDown: Set<string> = new Set();
@@ -124,7 +127,29 @@
     return !modalEl.classList.contains('hidden');
   }
 
+  function startCountdown(towardPlayer: boolean) {
+    countdown = 3;
+    countdownStart = performance.now();
+    pendingBallDir = towardPlayer;
+    ballX = canvasW / 2;
+    ballY = canvasH / 2;
+    ballDX = 0;
+    ballDY = 0;
+  }
+
   function update() {
+    // Handle countdown
+    if (countdown > 0) {
+      const elapsed = performance.now() - countdownStart;
+      const remaining = 3 - Math.floor(elapsed / 1000);
+      if (remaining !== countdown) countdown = remaining;
+      if (countdown <= 0) {
+        countdown = 0;
+        resetBall(pendingBallDir);
+      }
+      return;
+    }
+
     // Move player paddle
     if (keysDown.has('arrowup') || keysDown.has('w')) {
       playerY = Math.max(0, playerY - PLAYER_SPEED);
@@ -197,7 +222,7 @@
       if (cpuScore >= WIN_SCORE) {
         endGame(false);
       } else {
-        resetBall(true); // toward player (scored on)
+        startCountdown(true);
       }
       return;
     }
@@ -210,7 +235,7 @@
       if (playerScore >= WIN_SCORE) {
         endGame(true);
       } else {
-        resetBall(false); // toward CPU (scored on)
+        startCountdown(false);
       }
       return;
     }
@@ -246,9 +271,21 @@
     ctx.fillStyle = CPU_COLOR;
     ctx.fillRect(canvasW - PADDLE_MARGIN - PADDLE_W, cpuY, PADDLE_W, PADDLE_H);
 
-    // Ball (square)
-    ctx.fillStyle = BALL_COLOR;
-    ctx.fillRect(ballX - BALL_SIZE / 2, ballY - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
+    // Ball (square) — hide during countdown
+    if (countdown <= 0) {
+      ctx.fillStyle = BALL_COLOR;
+      ctx.fillRect(ballX - BALL_SIZE / 2, ballY - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
+    }
+
+    // Countdown display
+    if (countdown > 0) {
+      ctx.fillStyle = '#f4f4f5';
+      ctx.font = 'bold 48px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(countdown), canvasW / 2, canvasH / 2);
+      ctx.textBaseline = 'alphabetic';
+    }
   }
 
   function gameLoop() {
