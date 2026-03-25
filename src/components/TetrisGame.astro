@@ -329,6 +329,26 @@
     if (currentPiece && gameState === 'playing') {
       const shape = getShape();
       const color = COLORS[currentPiece.color];
+
+      // Ghost piece — find hard drop position
+      let ghostY = currentY;
+      while (isValid(currentX, ghostY + 1, currentRotation)) ghostY++;
+
+      if (ghostY !== currentY) {
+        for (let y = 0; y < shape.length; y++) {
+          for (let x = 0; x < shape[y].length; x++) {
+            if (shape[y][x]) {
+              const by = ghostY + y;
+              const bx = currentX + x;
+              if (by >= 0 && by < ROWS && bx >= 0 && bx < COLS) {
+                cells[by * COLS + bx].style.backgroundColor = color + '33'; // ~20% opacity
+              }
+            }
+          }
+        }
+      }
+
+      // Current piece
       for (let y = 0; y < shape.length; y++) {
         for (let x = 0; x < shape[y].length; x++) {
           if (shape[y][x]) {
