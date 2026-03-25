@@ -11,6 +11,7 @@ import PongGame from "../components/PongGame.astro";
 import MemoryGame from "../components/MemoryGame.astro";
 import TicTacToe from "../components/TicTacToe.astro";
 import GameOfLife from "../components/GameOfLife.astro";
+import Fortune from "../components/Fortune.astro";
 import MobileControls from "../components/MobileControls.astro";
 import { ClientRouter } from 'astro:transitions';
 
@@ -157,6 +158,7 @@ const { meta } = Astro.props;
     <MemoryGame />
     <TicTacToe />
     <MobileControls />
+    <Fortune />
 
     <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
       <div class="flex min-h-screen flex-col">
@@ -252,6 +254,7 @@ const { meta } = Astro.props;
         'pong': () => (window as any).togglePong(),
         'mem': () => (window as any).toggleMemory(),
         'ttt': () => (window as any).toggleTtt(),
+        'frtn': () => (window as any).showFortune(),
       };
 
       function getNavTarget(): string | null {

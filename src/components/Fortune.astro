@@ -1,0 +1,45 @@
+<script>
+  const fortunes: string[] = [
+    "There are only 2 hard things: cache invalidation and naming things",
+    "It works on my machine \u00af\\_(ツ)_/\u00af",
+    "// TODO: fix this later (written 3 years ago)",
+    "99 bugs in the code. Fix one. 127 bugs in the code.",
+    "The best error message is the one that never shows up",
+    "First, solve the problem. Then, write the code.",
+    "Code is like humor. When you have to explain it, it's bad.",
+    "Deleted code is debugged code.",
+    "It's not a bug, it's an undocumented feature.",
+    "The only way to go fast is to go well.",
+    "Simplicity is the soul of efficiency.",
+    "Talk is cheap. Show me the code.",
+    "Weeks of coding can save hours of planning.",
+    "A good programmer looks both ways before crossing a one-way street.",
+    "Programming is thinking, not typing.",
+    "The best code is no code at all.",
+    "Debugging is twice as hard as writing the code.",
+    "Any fool can write code that a computer can understand.",
+    "Make it work, make it right, make it fast.",
+    "Software is a great combination of artistry and engineering.",
+    "chmod 777. What could go wrong?",
+    "git push --force. YOLO.",
+    "sudo make me a sandwich.",
+    "There's no place like 127.0.0.1",
+    "I don't always test my code, but when I do, I do it in production.",
+    "Real programmers count from 0.",
+    "AI will replace programmers. \u2014 AI, probably.",
+    "Documentation is like sex: when it's good, it's great.",
+    "SELECT * FROM problems WHERE solution IS NULL",
+    "!false \u2014 it's funny because it's true",
+    "In theory, there is no difference between theory and practice.",
+    "The cloud is just someone else's computer.",
+    "Algorithm: a word used by programmers when they don't want to explain.",
+    "Programmers don't die. They just go offline.",
+    "A SQL query walks into a bar, sees two tables, and asks... can I join you?",
+    "To understand recursion, you must first understand recursion.",
+  ];
+
+  (window as any).showFortune = function () {
+    const quote = fortunes[Math.floor(Math.random() * fortunes.length)];
+    (window as any).showToast(quote);
+  };
+</script>
