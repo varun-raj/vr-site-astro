@@ -21,6 +21,7 @@ interface Props {
     title: string;
     description: string;
     image?: string;
+    noindex?: boolean;
   };
 }
 
@@ -31,7 +32,12 @@ const { meta } = Astro.props;
 <html lang="en" class="dark" style="color-scheme: dark;">
   <head>
     <ClientRouter />
-    <BaseHead title={meta.title} description={meta.description} image={meta.image} />
+    <BaseHead 
+      title={meta.title} 
+      description={meta.description} 
+      image={meta.image} 
+      noindex={meta.noindex} 
+    />
   </head>
   <body class="flex min-h-screen flex-col bg-black text-zinc-200 relative">
     <GameOfLife />

@@ -15,7 +15,9 @@ export default defineConfig({
       plugins: [pluginLineNumbers()],
     }),
     mdx(),
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes("bni/dance-card"),
+    }),
     react(),
   ],
   vite: {

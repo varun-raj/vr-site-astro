@@ -2,46 +2,64 @@
   "profile": {
     "name": "Varun Raj Manoharan",
     "role": "Founder, FoundrySoft",
-    "tagline": "AI & Future-Tech Navigator",
-    "image": "/assets/press-kit/picture_four.jpg"
+    "chapter": "Galaxy",
+    "category": "Web Development",
+    "tagline": "Reliable technology for ambitious founders. Built to scale, delivered on time.",
+    "image": "/assets/press-kit/picture_four.jpg",
+    "email": "varun@foundrysoft.io"
   },
   "gains": [
     {
       "id": "0",
       "label": "Goals",
-      "content": "Expanding FoundrySoft to be a global brand in AI and future tech."
+      "content": "Building FoundrySoft into a global software company. I'm helping 100 founders modernize their technology and scale their operations this year."
     },
     {
       "id": "1",
       "label": "Accomplishments",
-      "content": "Shipped an end-to-end ecommerce website with exceptional design in just one month."
+      "content": "I built a workflow to ship high-quality websites in 30 days. Most agencies make you choose between speed and design—I do both."
     },
     {
       "id": "2",
       "label": "Interests",
-      "content": "Homelab, 3D printing, electronics, and building tiny hobby projects."
+      "content": "I'm a hardware and software tinkerer. I spend my time building AI agents, managing my own private cloud, and 3D printing parts for electronics projects."
     },
     {
       "id": "3",
       "label": "Networks",
-      "content": "Corporate connections, travel agencies, hospital/healthcare administration."
+      "content": "Founders, e-commerce owners, and digital marketing agencies across India and Singapore."
     },
     {
       "id": "4",
       "label": "Skills",
-      "content": "Rapid technology adoption, AI-leveraged problem solving, and design-forward development."
+      "content": "Fixing slow or outdated websites. I rebuild them to be fast, stable, and professional so they actually help your business grow."
+    }
+  ],
+  "superpowers": [
+    {
+      "title": "Reliable Delivery",
+      "description": "I don't disappear on clients. I provide clear schedules and updates so you always know exactly what's happening with your project."
+    },
+    {
+      "title": "AI Leverage",
+      "description": "I use AI to build in days what usually takes months. It helps my clients launch faster than their competition without cutting corners."
     }
   ],
   "referrals": {
     "triggers": [
-      "We don't know how to figure out a technology.",
-      "I want to build something but I don't have a tech team.",
-      "My website is old and outdated; I want a new one."
+      "Our developer has stopped taking our calls and we can't update our site.",
+      "The site is so slow that customers are complaining.",
+      "We want to start selling globally but our technology can't handle it.",
+      "We're spending money on ads but the website isn't converting visitors into sales."
     ],
     "ideal_partners": [
-      "Travel Agency owners/connectors",
-      "Corporate Consultants",
-      "Healthcare/Hospital Administrators"
+      "Chartered Accountants & Company Secretaries",
+      "Digital Marketing & Ad Agencies",
+      "Branding & Logo Designers",
+      "Business Growth Consultants",
+      "SEO & Content Strategy Agencies",
+      "Event & Exhibition Organizers",
+      "IT Infrastructure & Security Providers"
     ]
   }
 }
