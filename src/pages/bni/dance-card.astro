@@ -1,0 +1,42 @@
+---
+import Main from "../../layouts/Main.astro";
+import bniData from "../../content/bni.json";
+---
+
+<Main
+  meta={{
+    title: `BNI Dance Card | ${bniData.profile.name}`,
+    description: `One-to-One preparation for ${bniData.profile.name}, ${bniData.profile.role}.`,
+  }}
+>
+  <div class="space-y-16 pt-4">
+    <header class="flex flex-col-reverse items-start gap-8 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-3 max-w-xl">
+        <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          {bniData.profile.name}
+        </h1>
+        <p class="text-base text-zinc-500 dark:text-zinc-400">
+          {bniData.profile.role} · <span class="text-zinc-400">{bniData.profile.tagline}</span>
+        </p>
+      </div>
+      <div class="relative inline-block">
+        <img
+          src={bniData.profile.image}
+          width={120}
+          height={120}
+          class="size-20 bg-zinc-100 object-cover dark:bg-zinc-800 rounded-xl"
+          alt="Profile Picture"
+        />
+        <div class="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-xl"></div>
+      </div>
+    </header>
+
+    <!-- Content sections will go here -->
+
+    <footer class="pt-8 border-t border-zinc-100 dark:border-zinc-900">
+      <p class="font-mono text-xxs uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+        BNI 1-to-1 Preparation · FoundrySoft
+      </p>
+    </footer>
+  </div>
+</Main>
