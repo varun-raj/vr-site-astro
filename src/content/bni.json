@@ -1,0 +1,47 @@
+{
+  "profile": {
+    "name": "Varun Raj Manoharan",
+    "role": "Founder, FoundrySoft",
+    "tagline": "AI & Future-Tech Navigator",
+    "image": "/assets/press-kit/picture_four.jpg"
+  },
+  "gains": [
+    {
+      "id": "0",
+      "label": "Goals",
+      "content": "Expanding FoundrySoft to be a global brand in AI and future tech."
+    },
+    {
+      "id": "1",
+      "label": "Accomplishments",
+      "content": "Shipped an end-to-end ecommerce website with exceptional design in just one month."
+    },
+    {
+      "id": "2",
+      "label": "Interests",
+      "content": "Homelab, 3D printing, electronics, and building tiny hobby projects."
+    },
+    {
+      "id": "3",
+      "label": "Networks",
+      "content": "Corporate connections, travel agencies, hospital/healthcare administration."
+    },
+    {
+      "id": "4",
+      "label": "Skills",
+      "content": "Rapid technology adoption, AI-leveraged problem solving, and design-forward development."
+    }
+  ],
+  "referrals": {
+    "triggers": [
+      "We don't know how to figure out a technology.",
+      "I want to build something but I don't have a tech team.",
+      "My website is old and outdated; I want a new one."
+    ],
+    "ideal_partners": [
+      "Travel Agency owners/connectors",
+      "Corporate Consultants",
+      "Healthcare/Hospital Administrators"
+    ]
+  }
+}
