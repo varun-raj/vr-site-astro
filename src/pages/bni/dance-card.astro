@@ -31,7 +31,24 @@ import bniData from "../../content/bni.json";
       </div>
     </header>
 
-    <!-- Content sections will go here -->
+    <section class="space-y-8">
+      <div>
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-6">[1] GAINS Profile</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+          {bniData.gains.map((item) => (
+            <div class="group space-y-2">
+              <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+                <span class="size-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700"></span>
+                {item.label}
+              </div>
+              <p class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                {item.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
 
     <footer class="pt-8 border-t border-zinc-100 dark:border-zinc-900">
       <p class="font-mono text-xxs uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
