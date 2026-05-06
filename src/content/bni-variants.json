@@ -1,0 +1,240 @@
+[
+  {
+    "id": "01",
+    "title": "The MVP Launcher",
+    "focus": "Startups & Product",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "Most startups die in WhatsApp drafts.",
+          "The idea is great. The launch never happens."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "Last quarter, a Chennai founder came to me.",
+          "Hyperlocal food-tasting platform.",
+          "No team. No code. Just conviction."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "3 weeks later, I shipped his MVP.",
+          "Login, listings, Razorpay checkout. All live."
+        ]
+      },
+      {
+        "kind": "punch",
+        "lines": ["He got 200 paying users before raising a single rupee."]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet first-time founders sitting on real ideas,",
+          "Who need someone to actually build it. Not just talk about it."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. I turn founder ideas into running products."]
+      }
+    ]
+  },
+  {
+    "id": "02",
+    "title": "The Organic Engine",
+    "focus": "SEO & Discoverability",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "Every business owner wants free customers from Google.",
+          "Most never get them.",
+          "The site looks pretty. Google can't read it."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "A Bangalore interior designer came to me last year.",
+          "Beautiful portfolio. Invisible on search.",
+          "Zero organic traffic."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": ["I rebuilt her site for speed, structure, and search intent."]
+      },
+      {
+        "kind": "punch",
+        "lines": [
+          "4 months later, page one for her top three keywords.",
+          "Inquiries doubled. Ad spend dropped to zero."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet service businesses tired of renting customers from Google ads.",
+          "Build the asset once. It pays you for years."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Websites that earn their spot on Google."]
+      }
+    ]
+  },
+  {
+    "id": "03",
+    "title": "The Legacy Upgrade",
+    "focus": "Trust & Branding",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "In India, trust is everything.",
+          "But if your website looks like 2008,",
+          "Customers think your business is stuck there too."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "A 30-year-old family jewelry brand came to me last quarter.",
+          "Crore-level turnover. Website looked like a school project."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I rebuilt it with HD 3D product views and a secure appointment system."
+        ]
+      },
+      {
+        "kind": "punch",
+        "lines": [
+          "Within months, three international buyers reached out.",
+          "All of them named the website as the reason."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet legacy Indian brands doing serious business,",
+          "Who still look small online."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Make your website match your reputation."]
+      }
+    ]
+  },
+  {
+    "id": "04",
+    "title": "The Payment Specialist",
+    "focus": "FinTech / E-commerce",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "The biggest killer of Indian e-commerce isn't competition.",
+          "It's payment failure.",
+          "A clunky checkout loses the customer forever."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "A clothing brand asked me to audit their site last month.",
+          "They were losing 25% of sales at the payment screen alone.",
+          "1 in every 4 buyers. Gone."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I rebuilt the checkout.",
+          "One-click UPI. One-tap cards."
+        ]
+      },
+      {
+        "kind": "punch",
+        "lines": ["Success rate hit 98% the next day."]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "If you know a retailer staring at abandoned carts every morning,",
+          "Send them to me."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Smooth checkouts, better bottom lines."]
+      }
+    ]
+  },
+  {
+    "id": "05",
+    "title": "The Security Expert",
+    "focus": "Safety & Compliance",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "India's new Data Protection Act changed the game.",
+          "A leaky website isn't a tech glitch anymore.",
+          "It's a lawsuit waiting to happen."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "A Coimbatore healthcare clinic came to me 6 months back.",
+          "Their site was getting hammered by SQL injection attacks.",
+          "Patient records were one breach away from a national headline."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I rebuilt the site from the ground up.",
+          "Encrypted patient data. Hardened the server."
+        ]
+      },
+      {
+        "kind": "punch",
+        "lines": [
+          "Today their security audit reads 100%.",
+          "Their lawyers finally sleep at night."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet finance, health, and legal businesses",
+          "Who genuinely cannot afford a data leak."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. The most secure websites in India."]
+      }
+    ]
+  }
+]
