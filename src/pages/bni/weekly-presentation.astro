@@ -165,7 +165,13 @@ type Variant = {
   {variants.map((variant) => (
     <dialog id={`dialog-${variant.id}`} class="variant-dialog">
       <div class="dialog-inner">
-        <div class="dialog-header">
+        {/* Ambient Background Glows */}
+        <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <div class="absolute -top-[20%] -left-[10%] size-[60%] rounded-full bg-[#CF202E]/30 blur-[120px] animate-pulse"></div>
+          <div class="absolute -bottom-[20%] -right-[10%] size-[60%] rounded-full bg-[#CF202E]/20 blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="dialog-header relative z-10">
           <div class="flex-1 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em] min-w-0 pr-6 md:pr-12">
             <div class="flex items-center gap-4">
               <div class="flex items-center gap-2">
@@ -189,11 +195,16 @@ type Variant = {
         </div>
 
         {/* Progress Bar */}
-        <div class="h-1 bg-zinc-900 w-full overflow-hidden">
+        <div class="h-1 bg-zinc-900 w-full overflow-hidden relative z-10">
           <div class="progress-bar h-full bg-[#CF202E] w-0 transition-all duration-300"></div>
         </div>
 
-        <div class="dialog-body relative select-none" data-teleprompter data-duration="30">
+        <div class="dialog-body relative select-none z-10" data-teleprompter data-duration="30">
+          {/* Pre-roll Countdown Overlay */}
+          <div class="pre-roll-overlay absolute inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="pre-roll-number text-[12rem] md:text-[20rem] font-bold text-white italic animate-scale-in">3</div>
+          </div>
+
           {/* Dedicated Play Button (Bottom Right) */}
           <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center transition-all duration-500">
             <button 
@@ -330,6 +341,13 @@ type Variant = {
     .animate-spin-slow {
       animation: spin-slow 8s linear infinite;
     }
+    @keyframes scale-in {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-scale-in {
+      animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
     .full-bleed {
       width: 100vw;
       position: relative;
@@ -427,15 +445,17 @@ type Variant = {
         const words = container.querySelectorAll<HTMLElement>(".word");
         const progressBar = dialog.querySelector(".progress-bar") as HTMLElement;
         const progressRing = dialog.querySelector(".progress-ring-circle") as SVGCircleElement;
-        const startOverlay = dialog.querySelector(".start-overlay") as HTMLElement;
         const timerDisplay = dialog.querySelector(".timer-display") as HTMLElement;
         const statusIndicator = dialog.querySelector(".status-indicator") as HTMLElement;
         const playIcon = dialog.querySelector(".play-icon") as SVGElement;
         const resetIcon = dialog.querySelector(".reset-icon") as SVGElement;
         const readyLabel = dialog.querySelector(".ready-label") as HTMLElement;
         const readyLabelContainer = dialog.querySelector(".ready-label-container") as HTMLElement;
+        const startOverlay = dialog.querySelector(".start-overlay") as HTMLElement;
         const buttonWrapper = (startOverlay?.parentElement) as HTMLElement;
         const stopBtn = dialog.querySelector(".stop-btn") as HTMLButtonElement;
+        const preRollOverlay = dialog.querySelector(".pre-roll-overlay") as HTMLElement;
+        const preRollNumber = dialog.querySelector(".pre-roll-number") as HTMLElement;
         
         let currentIndex = -1;
         let isRunning = false;
@@ -444,6 +464,12 @@ type Variant = {
         const totalDurationSecs = parseInt(container.dataset.duration || "30");
         const totalDuration = totalDurationSecs * 1000;
         const wordInterval = totalDuration / words.length;
+
+        const haptic = (pattern: number | number[]) => {
+          if ('vibrate' in navigator) {
+            navigator.vibrate(pattern);
+          }
+        };
 
         const updateHighlight = () => {
           words.forEach((word, index) => {
@@ -497,6 +523,10 @@ type Variant = {
             stopBtn.style.opacity = "0";
             stopBtn.style.pointerEvents = "none";
           }
+          if (preRollOverlay) {
+            preRollOverlay.style.opacity = "0";
+            preRollOverlay.style.pointerEvents = "none";
+          }
           updateHighlight();
         };
 
@@ -532,11 +562,46 @@ type Variant = {
           updateHighlight();
         };
 
+        const startSession = () => {
+          currentIndex = 0;
+          updateHighlight();
+
+          if (progressRing) {
+            progressRing.style.transition = `stroke-dashoffset ${totalDurationSecs}s linear`;
+            progressRing.style.strokeDashoffset = "0";
+          }
+
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span> Presenting`;
+          }
+
+          let remaining = totalDurationSecs;
+          timerInterval = setInterval(() => {
+            remaining--;
+            if (timerDisplay) {
+              timerDisplay.innerText = `00:${remaining.toString().padStart(2, '0')}`;
+            }
+            if (remaining === 5) haptic([100, 50, 100]); // Haptic alert at 5s
+            if (remaining <= 0) {
+              stop();
+              haptic(200); // Long vibrate at finish
+            }
+          }, 1000);
+
+          teleInterval = setInterval(() => {
+            currentIndex++;
+            if (currentIndex >= words.length) {
+              stop();
+            } else {
+              updateHighlight();
+            }
+          }, wordInterval);
+        };
+
         const start = () => {
           if (isRunning) return;
           isRunning = true;
-          currentIndex = 0;
-
+          
           if (buttonWrapper) {
             buttonWrapper.style.opacity = "0";
             buttonWrapper.style.pointerEvents = "none";
@@ -549,39 +614,40 @@ type Variant = {
             stopBtn.style.pointerEvents = "auto";
           }
 
-          if (progressRing) {
-            progressRing.style.transition = `stroke-dashoffset ${totalDurationSecs}s linear`;
-            progressRing.style.strokeDashoffset = "0";
-          }
-
-          if (statusIndicator) {
-            statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span> Presenting`;
-          }
-
           if (readyLabel) readyLabel.classList.add("hidden");
           if (readyLabelContainer) readyLabelContainer.classList.add("hidden");
           if (playIcon) playIcon.classList.add("hidden");
           if (resetIcon) resetIcon.classList.add("hidden");
 
-          updateHighlight();
+          // Pre-roll Countdown Logic
+          if (preRollOverlay && preRollNumber) {
+            preRollOverlay.style.opacity = "1";
+            preRollOverlay.style.pointerEvents = "auto";
+            
+            let count = 3;
+            preRollNumber.innerText = count.toString();
+            haptic(50); // Initial tap feel
 
-          let remaining = totalDurationSecs;
-          timerInterval = setInterval(() => {
-            remaining--;
-            if (timerDisplay) {
-              timerDisplay.innerText = `00:${remaining.toString().padStart(2, '0')}`;
-            }
-            if (remaining <= 0) stop();
-          }, 1000);
-
-          teleInterval = setInterval(() => {
-            currentIndex++;
-            if (currentIndex >= words.length) {
-              stop();
-            } else {
-              updateHighlight();
-            }
-          }, wordInterval);
+            const preRollInterval = setInterval(() => {
+              count--;
+              if (count > 0) {
+                preRollNumber.innerText = count.toString();
+                haptic(50);
+                // Trigger animation restart
+                preRollNumber.style.animation = 'none';
+                preRollNumber.offsetHeight; // trigger reflow
+                preRollNumber.style.animation = '';
+              } else {
+                clearInterval(preRollInterval);
+                preRollOverlay.style.opacity = "0";
+                preRollOverlay.style.pointerEvents = "none";
+                haptic([100, 50, 100]); // Distinct start feel
+                startSession();
+              }
+            }, 1000);
+          } else {
+            startSession();
+          }
         };
 
         // Only start via the overlay button
