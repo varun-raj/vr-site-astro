@@ -123,7 +123,7 @@ type Variant = {
             <button
               type="button"
               data-variant-trigger={variant.id}
-              class="w-full mt-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-[10px] font-mono uppercase tracking-[0.2em] font-bold text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all"
+              class="w-full mt-6 py-3 rounded-xl bg-[#CF202E] border border-[#CF202E]/20 text-[10px] font-mono uppercase tracking-[0.2em] font-bold text-white hover:bg-[#b01b27] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-red-900/20"
             >
               Practice →
             </button>
@@ -194,7 +194,7 @@ type Variant = {
           <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center">
             <button 
               type="button"
-              class="start-overlay relative size-20 md:size-24 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center transition-all duration-500 hover:border-[#CF202E]/50 group"
+              class="start-overlay relative size-16 md:size-20 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center transition-all duration-500 hover:border-[#CF202E]/50 group"
             >
               {/* Progress Ring (SVG) */}
               <svg class="absolute inset-0 size-full -rotate-90" viewBox="0 0 100 100">
@@ -217,13 +217,13 @@ type Variant = {
               </svg>
 
               {/* Inner Red Core */}
-              <div class="size-14 md:size-16 rounded-full bg-[#CF202E] flex items-center justify-center shadow-[0_0_30px_rgba(207,32,46,0.3)] group-hover:shadow-[0_0_50px_rgba(207,32,46,0.5)] group-hover:scale-105 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white play-icon"><path d="m7 3 14 9-14 9V3z"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white hidden reset-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <div class="size-10 md:size-12 rounded-full bg-[#CF202E] flex items-center justify-center shadow-[0_0_20px_rgba(207,32,46,0.3)] group-hover:shadow-[0_0_40px_rgba(207,32,46,0.5)] group-hover:scale-105 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white play-icon"><path d="m7 3 14 9-14 9V3z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white hidden reset-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               </div>
 
               {/* Orbital Label (Static) */}
-              <div class="absolute -inset-4 pointer-events-none">
+              <div class="absolute -inset-4 pointer-events-none ready-label-container">
                 <div class="h-full w-full flex items-start justify-center">
                    <span class="text-[8px] font-mono font-bold tracking-[0.3em] text-[#CF202E] uppercase bg-black px-2 py-0.5 rounded-full border border-zinc-800 ready-label">PLAY</span>
                 </div>
@@ -597,12 +597,6 @@ type Variant = {
             btn.innerHTML = originalInner;
             btn.classList.remove('bg-green-600', 'text-white', 'border-green-500');
           }, 2000);
-        });
-      });
-    });
-  </script>
-</Main>
-  }, 2000);
         });
       });
     });
