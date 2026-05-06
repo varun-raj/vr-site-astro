@@ -7,12 +7,9 @@ import expressiveCode from "astro-expressive-code";
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindv4 from "@tailwindcss/vite";
 
-import cloudflare from "@astrojs/cloudflare";
-
 // https://astro.build/config
 export default defineConfig({
   site: "https://varunraj.in",
-
   integrations: [
     expressiveCode({
       plugins: [pluginLineNumbers()],
@@ -23,11 +20,9 @@ export default defineConfig({
     }),
     react(),
   ],
-
   vite: {
     plugins: [tailwindv4()],
   },
-
   markdown: {
     shikiConfig: {
       themes: {
@@ -36,6 +31,4 @@ export default defineConfig({
       },
     },
   },
-
-  adapter: cloudflare(),
 });
