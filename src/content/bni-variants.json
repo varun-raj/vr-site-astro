@@ -236,5 +236,173 @@
         "lines": ["Varun Raj. The most secure websites in India."]
       }
     ]
+  },
+  {
+    "id": "06",
+    "title": "The Speed Surgeon",
+    "focus": "Performance Optimization",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "In the time it takes you to blink, a user decides to leave your site.",
+          "A slow website is a 'closed' sign for your business."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "A popular lifestyle blog was losing 40% of their mobile traffic.",
+          "The site was heavy. It took 8 seconds to load on 4G."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": ["I performed a 'speed surgery'—optimized their code, images, and server architecture."]
+      },
+      {
+        "kind": "punch",
+        "lines": ["We brought the load time down to 1.2 seconds. Bounce rates dropped by half instantly."]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet high-traffic businesses whose websites feel sluggish.",
+          "Let's make your site as fast as your growth."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Websites that load in the blink of an eye."]
+      }
+    ]
+  },
+  {
+    "id": "07",
+    "title": "The Global Scaler",
+    "focus": "International Expansion",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "Selling in India is one thing. Selling to the world is another.",
+          "Different currencies, languages, and regional speeds kill global sales."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "An organic tea brand wanted to expand to the US and UK.",
+          "Their Indian site was too slow for international users and didn't support global payments."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": ["I built a multi-regional platform with localized checkout and global edge delivery."]
+      },
+      {
+        "kind": "punch",
+        "lines": ["International sales went from zero to 30% of their revenue in one quarter."]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet Indian D2C brands ready to go global,",
+          "Who need the technology to back that ambition."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Taking your business to the global stage."]
+      }
+    ]
+  },
+  {
+    "id": "08",
+    "title": "The Mobile Architect",
+    "focus": "Mobile-First UX",
+    "manual": true,
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "90% of your customers are looking at your business on a 6-inch screen.",
+          "If your website is just a 'shrunk down' desktop site, you're losing them."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "An ed-tech platform had great content but a clunky mobile interface.",
+          "Students were struggling to navigate courses on their phones."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": ["I redesigned their entire experience to be mobile-first, using app-like gestures and navigation."]
+      },
+      {
+        "kind": "punch",
+        "lines": ["Course completion rates went up by 65%. Students actually enjoyed using the site."]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet businesses whose mobile experience feels like an afterthought.",
+          "Let's build a web experience that feels like a native app."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Mobile experiences that convert."]
+      }
+    ]
+  },
+  {
+    "id": "09",
+    "title": "The Subscription Engine",
+    "focus": "Recurring Revenue",
+    "duration": "30 sec",
+    "blocks": [
+      { "kind": "para", "lines": ["I'm Varun Raj, from the Web Development category."] },
+      {
+        "kind": "para",
+        "lines": [
+          "The best way to sleep at night is to know your revenue is recurring.",
+          "But managing memberships and recurring billing is a technical nightmare."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "A fitness coach was manually tracking 500 subscriptions via Excel and WhatsApp.",
+          "He was spending more time on admin than on coaching."
+        ]
+      },
+      {
+        "kind": "para",
+        "lines": ["I built a custom membership portal with automated billing, renewals, and content access."]
+      },
+      {
+        "kind": "punch",
+        "lines": ["He saved 20 hours a week and eliminated subscription leakages entirely."]
+      },
+      {
+        "kind": "para",
+        "lines": [
+          "I want to meet experts and service providers looking to scale via subscriptions.",
+          "Let's automate your income."
+        ]
+      },
+      {
+        "kind": "signoff",
+        "lines": ["Varun Raj. Technology that builds predictable revenue."]
+      }
+    ]
   }
 ]
