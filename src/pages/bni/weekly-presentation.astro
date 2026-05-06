@@ -190,8 +190,8 @@ type Variant = {
             <div class="vertical-timer-bar w-full bg-[#CF202E] h-0 transition-all duration-1000 ease-linear"></div>
           </div>
 
-          {/* Dedicated Play Button (Bottom Right) — Upgraded */}
-          <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center">
+          {/* Dedicated Play Button (Bottom Right) */}
+          <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center transition-all duration-500">
             <button 
               type="button"
               class="start-overlay relative size-16 md:size-20 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center transition-all duration-500 hover:border-[#CF202E]/50 group"
@@ -235,10 +235,16 @@ type Variant = {
             <h2 class="text-3xl md:text-7xl font-bold tracking-tight text-zinc-100 italic leading-tight">
               {variant.focus}
             </h2>
-            <p class="text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-zinc-600 mt-4">
-              Tap red button to start 30s timer
-            </p>
           </div>
+
+          {/* Stop Button (Visible only during playback) */}
+          <button 
+            type="button"
+            class="stop-btn fixed bottom-8 right-8 z-50 size-14 rounded-full bg-zinc-900 border border-zinc-800 text-[#CF202E] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-zinc-800 shadow-2xl"
+            title="Stop Presentation"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2" ry="2"/></svg>
+          </button>
 
           <div class="space-y-8 md:space-y-16">
             {variant.blocks.map((block) => {
@@ -424,6 +430,8 @@ type Variant = {
         const playIcon = dialog.querySelector(".play-icon") as SVGElement;
         const resetIcon = dialog.querySelector(".reset-icon") as SVGElement;
         const readyLabel = dialog.querySelector(".ready-label") as HTMLElement;
+        const readyLabelContainer = dialog.querySelector(".ready-label-container") as HTMLElement;
+        const buttonWrapper = (startOverlay?.parentElement) as HTMLElement;
         
         let currentIndex = -1;
         let isRunning = false;
@@ -456,15 +464,6 @@ type Variant = {
           }
         };
 
-        const updateProgressRing = (remainingSecs: number) => {
-          if (progressRing) {
-            const total = totalDurationSecs;
-            const dashArray = 289;
-            const offset = dashArray - ((total - remainingSecs) / total) * dashArray;
-            progressRing.style.strokeDashoffset = offset.toString();
-          }
-        };
-
         const stop = () => {
           isRunning = false;
           if (timerInterval) clearInterval(timerInterval);
@@ -476,6 +475,12 @@ type Variant = {
           if (playIcon) playIcon.classList.add("hidden");
           if (resetIcon) resetIcon.classList.remove("hidden");
           if (readyLabel) readyLabel.classList.add("hidden");
+          if (readyLabelContainer) readyLabelContainer.classList.add("hidden");
+          if (buttonWrapper) {
+            buttonWrapper.style.opacity = "1";
+            buttonWrapper.style.pointerEvents = "auto";
+            buttonWrapper.style.transform = "scale(1)";
+          }
           updateHighlight();
         };
 
@@ -496,9 +501,15 @@ type Variant = {
             startOverlay.style.opacity = "1";
             startOverlay.style.pointerEvents = "auto";
           }
+          if (buttonWrapper) {
+            buttonWrapper.style.opacity = "1";
+            buttonWrapper.style.pointerEvents = "auto";
+            buttonWrapper.style.transform = "scale(1)";
+          }
           if (playIcon) playIcon.classList.remove("hidden");
           if (resetIcon) resetIcon.classList.add("hidden");
           if (readyLabel) readyLabel.classList.remove("hidden");
+          if (readyLabelContainer) readyLabelContainer.classList.remove("hidden");
           if (statusIndicator) {
             statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Ready`;
           }
@@ -509,6 +520,13 @@ type Variant = {
           if (isRunning) return;
           isRunning = true;
           currentIndex = 0;
+
+          if (buttonWrapper) {
+            buttonWrapper.style.opacity = "0";
+            buttonWrapper.style.pointerEvents = "none";
+            buttonWrapper.style.transform = "scale(0.8)";
+            buttonWrapper.style.transition = "all 0.5s ease";
+          }
 
           if (verticalTimerBar) {
             verticalTimerBar.style.transition = `height ${totalDurationSecs}s linear`;
@@ -525,6 +543,7 @@ type Variant = {
           }
 
           if (readyLabel) readyLabel.classList.add("hidden");
+          if (readyLabelContainer) readyLabelContainer.classList.add("hidden");
           if (playIcon) playIcon.classList.add("hidden");
           if (resetIcon) resetIcon.classList.add("hidden");
 
