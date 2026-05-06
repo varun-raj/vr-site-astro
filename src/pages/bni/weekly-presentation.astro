@@ -185,11 +185,6 @@ type Variant = {
         </div>
 
         <div class="dialog-body relative select-none" data-teleprompter data-duration="30">
-          {/* Vertical Timer Track */}
-          <div class="fixed left-2 md:left-4 top-1/4 bottom-1/4 w-1 bg-zinc-900 rounded-full overflow-hidden">
-            <div class="vertical-timer-bar w-full bg-[#CF202E] h-0 transition-all duration-1000 ease-linear"></div>
-          </div>
-
           {/* Dedicated Play Button (Bottom Right) */}
           <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center transition-all duration-500">
             <button 
@@ -423,7 +418,6 @@ type Variant = {
         const words = container.querySelectorAll<HTMLElement>(".word");
         const progressBar = dialog.querySelector(".progress-bar") as HTMLElement;
         const progressRing = dialog.querySelector(".progress-ring-circle") as SVGCircleElement;
-        const verticalTimerBar = dialog.querySelector(".vertical-timer-bar") as HTMLElement;
         const startOverlay = dialog.querySelector(".start-overlay") as HTMLElement;
         const timerDisplay = dialog.querySelector(".timer-display") as HTMLElement;
         const statusIndicator = dialog.querySelector(".status-indicator") as HTMLElement;
@@ -432,6 +426,7 @@ type Variant = {
         const readyLabel = dialog.querySelector(".ready-label") as HTMLElement;
         const readyLabelContainer = dialog.querySelector(".ready-label-container") as HTMLElement;
         const buttonWrapper = (startOverlay?.parentElement) as HTMLElement;
+        const stopBtn = dialog.querySelector(".stop-btn") as HTMLButtonElement;
         
         let currentIndex = -1;
         let isRunning = false;
@@ -464,6 +459,15 @@ type Variant = {
           }
         };
 
+        const updateProgressRing = (remainingSecs: number) => {
+          if (progressRing) {
+            const total = totalDurationSecs;
+            const dashArray = 289;
+            const offset = dashArray - ((total - remainingSecs) / total) * dashArray;
+            progressRing.style.strokeDashoffset = offset.toString();
+          }
+        };
+
         const stop = () => {
           isRunning = false;
           if (timerInterval) clearInterval(timerInterval);
@@ -471,7 +475,6 @@ type Variant = {
           if (statusIndicator) {
             statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Stopped`;
           }
-          if (verticalTimerBar) verticalTimerBar.style.height = "100%";
           if (playIcon) playIcon.classList.add("hidden");
           if (resetIcon) resetIcon.classList.remove("hidden");
           if (readyLabel) readyLabel.classList.add("hidden");
@@ -480,6 +483,10 @@ type Variant = {
             buttonWrapper.style.opacity = "1";
             buttonWrapper.style.pointerEvents = "auto";
             buttonWrapper.style.transform = "scale(1)";
+          }
+          if (stopBtn) {
+            stopBtn.style.opacity = "0";
+            stopBtn.style.pointerEvents = "none";
           }
           updateHighlight();
         };
@@ -492,10 +499,6 @@ type Variant = {
           if (progressRing) {
             progressRing.style.transition = "none";
             progressRing.style.strokeDashoffset = "289";
-          }
-          if (verticalTimerBar) {
-            verticalTimerBar.style.transition = "none";
-            verticalTimerBar.style.height = "0%";
           }
           if (startOverlay) {
             startOverlay.style.opacity = "1";
@@ -513,6 +516,10 @@ type Variant = {
           if (statusIndicator) {
             statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Ready`;
           }
+          if (stopBtn) {
+            stopBtn.style.opacity = "0";
+            stopBtn.style.pointerEvents = "none";
+          }
           updateHighlight();
         };
 
@@ -528,9 +535,9 @@ type Variant = {
             buttonWrapper.style.transition = "all 0.5s ease";
           }
 
-          if (verticalTimerBar) {
-            verticalTimerBar.style.transition = `height ${totalDurationSecs}s linear`;
-            verticalTimerBar.style.height = "100%";
+          if (stopBtn) {
+            stopBtn.style.opacity = "1";
+            stopBtn.style.pointerEvents = "auto";
           }
 
           if (progressRing) {
@@ -573,6 +580,13 @@ type Variant = {
           startOverlay.addEventListener("click", (e) => {
             e.stopPropagation();
             start();
+          });
+        }
+
+        if (stopBtn) {
+          stopBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            stop();
           });
         }
 
