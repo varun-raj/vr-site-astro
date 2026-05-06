@@ -157,10 +157,20 @@ type Variant = {
     <dialog id={`dialog-${variant.id}`} class="variant-dialog">
       <div class="dialog-inner">
         <div class="dialog-header">
-          <div class="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] min-w-0">
-            <span class="text-[#CF202E] font-bold">{variant.id}</span>
-            <span class="text-zinc-700">/</span>
-            <span class="text-zinc-500">{variant.duration}</span>
+          <div class="flex items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-[#CF202E] font-bold">{variant.id}</span>
+              <span class="text-zinc-700">/</span>
+              <span class="text-zinc-500">{variant.duration}</span>
+            </div>
+            <div class="h-4 w-px bg-zinc-800"></div>
+            <div class="flex items-center gap-3">
+              <div class="timer-display text-zinc-100 font-bold tabular-nums">00:30</div>
+              <div class="status-indicator text-zinc-600 flex items-center gap-2">
+                <span class="size-1.5 rounded-full bg-zinc-800"></span>
+                Ready
+              </div>
+            </div>
           </div>
           <button
             type="button"
@@ -172,14 +182,31 @@ type Variant = {
           </button>
         </div>
 
-        <div class="dialog-body" data-teleprompter>
+        {/* Progress Bar */}
+        <div class="h-1 bg-zinc-900 w-full overflow-hidden">
+          <div class="progress-bar h-full bg-[#CF202E] w-0 transition-all duration-300"></div>
+        </div>
+
+        <div class="dialog-body relative select-none" data-teleprompter data-duration="30">
+          {/* Vertical Timer Track */}
+          <div class="fixed left-4 top-1/4 bottom-1/4 w-1 bg-zinc-900 rounded-full overflow-hidden hidden md:block">
+            <div class="vertical-timer-bar w-full bg-[#CF202E] h-0 transition-all duration-1000 ease-linear"></div>
+          </div>
+
+          {/* Start Overlay */}
+          <div class="start-overlay absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+             <div class="text-center space-y-4 animate-bounce">
+                <div class="size-20 rounded-full border-2 border-white/20 flex items-center justify-center mx-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white"><path d="m7 3 14 9-14 9V3z"/></svg>
+                </div>
+                <p class="text-xl font-bold tracking-widest uppercase text-white">Tap to Start 30s</p>
+             </div>
+          </div>
+
           <div class="mb-12">
             <h2 class="text-4xl md:text-7xl font-bold tracking-tight text-zinc-100 italic">
               {variant.focus}
             </h2>
-            <p class="text-xs font-mono uppercase tracking-[0.2em] text-zinc-600 mt-4">
-              Tap anywhere to advance · Click ID to reset
-            </p>
           </div>
 
           <div class="space-y-12">
@@ -189,8 +216,11 @@ type Variant = {
                   <div class="space-y-2">
                     {block.lines.map((line) => (
                       <p class="text-2xl md:text-5xl italic font-medium leading-tight">
-                        {line.split(" ").map(word => (
-                          <span class="word text-zinc-100/20 transition-all duration-200 mr-[0.25em] inline-block">{word}</span>
+                        {line.split(" ").map((word, i, arr) => (
+                          <>
+                            <span class="word text-white/10 transition-all duration-200 inline-block">{word}</span>
+                            {i < arr.length - 1 && " "}
+                          </>
                         ))}
                       </p>
                     ))}
@@ -202,8 +232,11 @@ type Variant = {
                   <div class="pt-4 space-y-2">
                     {block.lines.map((line) => (
                       <p class="text-xl md:text-3xl font-bold leading-relaxed italic">
-                        {line.split(" ").map(word => (
-                          <span class="word text-zinc-100/20 transition-all duration-200 mr-[0.25em] inline-block">{word}</span>
+                        {line.split(" ").map((word, i, arr) => (
+                          <>
+                            <span class="word text-white/10 transition-all duration-200 inline-block">{word}</span>
+                            {i < arr.length - 1 && " "}
+                          </>
                         ))}
                       </p>
                     ))}
@@ -214,8 +247,11 @@ type Variant = {
                 <div class="space-y-2">
                   {block.lines.map((line) => (
                     <p class="text-xl md:text-4xl leading-relaxed font-medium">
-                      {line.split(" ").map(word => (
-                        <span class="word text-zinc-400/20 transition-all duration-200 mr-[0.25em] inline-block">{word}</span>
+                      {line.split(" ").map((word, i, arr) => (
+                        <>
+                          <span class="word text-white/10 transition-all duration-200 inline-block">{word}</span>
+                          {i < arr.length - 1 && " "}
+                        </>
                       ))}
                     </p>
                   ))}
@@ -229,6 +265,9 @@ type Variant = {
   ))}
 
   <style is:global>
+    .word {
+      transition: all 0.2s ease;
+    }
     .word.active {
       color: #fff !important;
       opacity: 1 !important;
@@ -236,7 +275,7 @@ type Variant = {
     }
     .word.past {
       color: #fff !important;
-      opacity: 0.4 !important;
+      opacity: 0.3 !important;
       transform: scale(1);
     }
     .full-bleed {
@@ -329,38 +368,125 @@ type Variant = {
     });
 
     // Teleprompter Logic
-    document.querySelectorAll<HTMLElement>("[data-teleprompter]").forEach((container) => {
-      const words = container.querySelectorAll<HTMLElement>(".word");
-      let currentIndex = -1;
+    function initTeleprompter() {
+      const containers = document.querySelectorAll<HTMLElement>("[data-teleprompter]");
+      
+      containers.forEach((container) => {
+        const dialog = container.closest("dialog") as HTMLDialogElement;
+        const words = container.querySelectorAll<HTMLElement>(".word");
+        const progressBar = dialog.querySelector(".progress-bar") as HTMLElement;
+        const verticalTimerBar = dialog.querySelector(".vertical-timer-bar") as HTMLElement;
+        const startOverlay = dialog.querySelector(".start-overlay") as HTMLElement;
+        const timerDisplay = dialog.querySelector(".timer-display") as HTMLElement;
+        const statusIndicator = dialog.querySelector(".status-indicator") as HTMLElement;
+        
+        let currentIndex = -1;
+        let isRunning = false;
+        let timerInterval: ReturnType<typeof setInterval> | null = null;
+        let teleInterval: ReturnType<typeof setInterval> | null = null;
+        const totalDurationSecs = parseInt(container.dataset.duration || "30");
+        const totalDuration = totalDurationSecs * 1000;
+        const wordInterval = totalDuration / words.length;
 
-      const updateHighlight = () => {
-        words.forEach((word, index) => {
-          word.classList.remove("active", "past");
-          if (index === currentIndex) {
-            word.classList.add("active");
-            word.scrollIntoView({ behavior: "smooth", block: "center" });
-          } else if (index < currentIndex) {
-            word.classList.add("past");
+        const updateHighlight = () => {
+          words.forEach((word, index) => {
+            word.classList.remove("active", "past");
+            if (index === currentIndex) {
+              word.classList.add("active");
+              word.scrollIntoView({ behavior: "smooth", block: "center" });
+            } else if (index < currentIndex) {
+              word.classList.add("past");
+            }
+          });
+
+          if (progressBar) {
+            const progress = ((currentIndex + 1) / words.length) * 100;
+            progressBar.style.width = `${progress}%`;
+          }
+        };
+
+        const stop = () => {
+          isRunning = false;
+          if (timerInterval) clearInterval(timerInterval);
+          if (teleInterval) clearInterval(teleInterval);
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Stopped`;
+          }
+          if (verticalTimerBar) verticalTimerBar.style.height = "100%";
+        };
+
+        const reset = () => {
+          stop();
+          currentIndex = -1;
+          updateHighlight();
+          if (timerDisplay) timerDisplay.innerText = `00:${container.dataset.duration}`;
+          if (progressBar) progressBar.style.width = "0%";
+          if (verticalTimerBar) {
+            verticalTimerBar.style.transition = "none";
+            verticalTimerBar.style.height = "0%";
+          }
+          if (startOverlay) startOverlay.style.opacity = "1";
+          if (startOverlay) startOverlay.style.pointerEvents = "auto";
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Ready`;
+          }
+        };
+
+        const start = () => {
+          if (isRunning) return;
+          isRunning = true;
+          currentIndex = 0;
+          updateHighlight();
+
+          if (startOverlay) {
+            startOverlay.style.opacity = "0";
+            startOverlay.style.pointerEvents = "none";
+          }
+
+          if (verticalTimerBar) {
+            verticalTimerBar.style.transition = `height ${totalDurationSecs}s linear`;
+            verticalTimerBar.style.height = "100%";
+          }
+
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span> Presenting`;
+          }
+
+          let remaining = totalDurationSecs;
+          timerInterval = setInterval(() => {
+            remaining--;
+            if (timerDisplay) {
+              timerDisplay.innerText = `00:${remaining.toString().padStart(2, '0')}`;
+            }
+            if (remaining <= 0) stop();
+          }, 1000);
+
+          teleInterval = setInterval(() => {
+            currentIndex++;
+            if (currentIndex >= words.length) {
+              stop();
+            } else {
+              updateHighlight();
+            }
+          }, wordInterval);
+        };
+
+        container.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (!isRunning) {
+            start();
           }
         });
-      };
 
-      container.addEventListener("click", (e) => {
-        // Don't advance if clicking a reset button or similar (though we don't have one inside dialog-body yet)
-        currentIndex++;
-        if (currentIndex >= words.length) {
-          currentIndex = -1; // Reset after end
-        }
-        updateHighlight();
+        dialog?.addEventListener("close", reset);
       });
+    }
 
-      // Reset when dialog opens
-      const dialog = container.closest("dialog");
-      dialog?.addEventListener("close", () => {
-        currentIndex = -1;
-        updateHighlight();
-      });
-    });
+    // Run on load
+    initTeleprompter();
+
+    // If using view transitions, run on swap
+    document.addEventListener("astro:after-swap", initTeleprompter);
 
     // Copy functionality
     const copyButtons = document.querySelectorAll<HTMLButtonElement>(".copy-btn");
