@@ -52,13 +52,28 @@ type Variant = {
             <span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span>
             Rotation Ready
           </div>
-          <button 
+          <button
             id="ai-builder-trigger"
             class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#CF202E]/10 border border-[#CF202E]/30 text-[10px] font-mono uppercase tracking-widest text-[#CF202E] hover:bg-[#CF202E] hover:text-white transition-all cursor-pointer group"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-12 transition-transform"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
             Create with AI
           </button>
+          <div
+            id="generated-flag"
+            class="hidden items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-mono uppercase tracking-widest text-emerald-400"
+          >
+            <span class="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Generated</span>
+            <button
+              type="button"
+              id="clear-generated"
+              class="ml-1 text-emerald-400/60 hover:text-emerald-300 cursor-pointer"
+              title="Clear saved pitch"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
         </div>
       </div>
       
@@ -377,16 +392,61 @@ type Variant = {
     });
 
     // AI Builder Logic
+    const PITCH_STORAGE_KEY = 'bni:weekly-pitch';
     const aiTrigger = document.getElementById('ai-builder-trigger');
     const aiDialog = document.getElementById('ai-builder-dialog') as HTMLDialogElement;
     const aiForm = document.getElementById('ai-builder-form') as HTMLFormElement;
     const aiResult = document.getElementById('ai-result');
     const aiPitchContent = document.getElementById('ai-pitch-content');
     const closeAiBtn = document.getElementById('close-ai-builder');
+    const generatedFlag = document.getElementById('generated-flag');
+    const clearGeneratedBtn = document.getElementById('clear-generated');
+
+    const loadStoredPitch = (): string | null => {
+      try {
+        return localStorage.getItem(PITCH_STORAGE_KEY);
+      } catch {
+        return null;
+      }
+    };
+
+    const saveStoredPitch = (pitch: string) => {
+      try {
+        localStorage.setItem(PITCH_STORAGE_KEY, pitch);
+      } catch {}
+    };
+
+    const clearStoredPitch = () => {
+      try {
+        localStorage.removeItem(PITCH_STORAGE_KEY);
+      } catch {}
+    };
+
+    const updateFlagVisibility = () => {
+      if (!generatedFlag) return;
+      const has = !!loadStoredPitch();
+      generatedFlag.classList.toggle('hidden', !has);
+      generatedFlag.classList.toggle('inline-flex', has);
+    };
+
+    updateFlagVisibility();
+
+    clearGeneratedBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      clearStoredPitch();
+      updateFlagVisibility();
+    });
 
     aiTrigger?.addEventListener('click', () => {
-      if (aiForm) aiForm.classList.remove('hidden');
-      if (aiResult) aiResult.classList.add('hidden');
+      const stored = loadStoredPitch();
+      if (stored && aiPitchContent && aiResult && aiForm) {
+        aiPitchContent.textContent = stored;
+        aiForm.classList.add('hidden');
+        aiResult.classList.remove('hidden');
+      } else {
+        if (aiForm) aiForm.classList.remove('hidden');
+        if (aiResult) aiResult.classList.add('hidden');
+      }
       aiDialog?.showModal();
     });
 
@@ -412,6 +472,8 @@ type Variant = {
 
         const data = await response.json();
         if (aiPitchContent) aiPitchContent.textContent = data.pitch;
+        saveStoredPitch(data.pitch);
+        updateFlagVisibility();
         aiResult?.classList.remove('hidden');
         aiForm.classList.add('hidden');
       } catch (err) {
