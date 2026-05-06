@@ -157,20 +157,17 @@ type Variant = {
     <dialog id={`dialog-${variant.id}`} class="variant-dialog">
       <div class="dialog-inner">
         <div class="dialog-header">
-          <div class="flex items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] min-w-0">
-            <div class="flex items-center gap-2">
-              <span class="text-[#CF202E] font-bold">{variant.id}</span>
-              <span class="text-zinc-700">/</span>
-              <span class="text-zinc-500">{variant.duration}</span>
-            </div>
-            <div class="h-4 w-px bg-zinc-800"></div>
-            <div class="flex items-center gap-3">
-              <div class="timer-display text-zinc-100 font-bold tabular-nums">00:30</div>
-              <div class="status-indicator text-zinc-600 flex items-center gap-2">
-                <span class="size-1.5 rounded-full bg-zinc-800"></span>
-                Ready
+          <div class="flex-1 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em] min-w-0 pr-6 md:pr-12">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2">
+                <span class="text-[#CF202E] font-bold">{variant.id}</span>
+                <span class="text-zinc-700">/</span>
+                <span class="text-zinc-500">{variant.duration}</span>
               </div>
+              <div class="h-4 w-px bg-zinc-800"></div>
+              <p class="text-[10px] text-zinc-500 hidden sm:block">Practice Mode</p>
             </div>
+            <div class="timer-display text-zinc-100 font-bold tabular-nums bg-zinc-900 px-3 py-1 rounded-md border border-zinc-800">00:30</div>
           </div>
           <button
             type="button"
@@ -193,15 +190,46 @@ type Variant = {
             <div class="vertical-timer-bar w-full bg-[#CF202E] h-0 transition-all duration-1000 ease-linear"></div>
           </div>
 
-          {/* Dedicated Play Button (Bottom Right) */}
-          <button 
-            type="button"
-            class="start-overlay fixed bottom-8 right-8 z-50 size-16 md:size-20 rounded-full bg-[#CF202E] shadow-2xl shadow-red-500/40 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white group-hover:scale-110 transition-transform"><path d="m7 3 14 9-14 9V3z"/></svg>
-            {/* Pulsing Ring */}
-            <span class="absolute inset-0 rounded-full border-4 border-[#CF202E] animate-ping opacity-20"></span>
-          </button>
+          {/* Dedicated Play Button (Bottom Right) — Upgraded */}
+          <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center">
+            <button 
+              type="button"
+              class="start-overlay relative size-20 md:size-24 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center transition-all duration-500 hover:border-[#CF202E]/50 group"
+            >
+              {/* Progress Ring (SVG) */}
+              <svg class="absolute inset-0 size-full -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  cx="50" cy="50" r="46"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="text-zinc-900"
+                />
+                <circle
+                  cx="50" cy="50" r="46"
+                  fill="none"
+                  stroke="#CF202E"
+                  stroke-width="3"
+                  stroke-dasharray="289"
+                  stroke-dashoffset="289"
+                  class="progress-ring-circle transition-all duration-1000 ease-linear"
+                />
+              </svg>
+
+              {/* Inner Red Core */}
+              <div class="size-14 md:size-16 rounded-full bg-[#CF202E] flex items-center justify-center shadow-[0_0_30px_rgba(207,32,46,0.3)] group-hover:shadow-[0_0_50px_rgba(207,32,46,0.5)] group-hover:scale-105 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white play-icon"><path d="m7 3 14 9-14 9V3z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white hidden reset-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </div>
+
+              {/* Orbital Label (Static) */}
+              <div class="absolute -inset-4 pointer-events-none">
+                <div class="h-full w-full flex items-start justify-center">
+                   <span class="text-[8px] font-mono font-bold tracking-[0.3em] text-zinc-500 uppercase bg-black px-2 py-0.5 rounded-full border border-zinc-800 ready-label">Ready</span>
+                </div>
+              </div>
+            </button>
+          </div>
 
           <div class="mb-10 md:mb-16">
             <h2 class="text-3xl md:text-7xl font-bold tracking-tight text-zinc-100 italic leading-tight">
@@ -284,6 +312,13 @@ type Variant = {
       color: #fff !important;
       opacity: 0.3 !important;
       transform: scale(1);
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spin-slow 8s linear infinite;
     }
     .full-bleed {
       width: 100vw;
@@ -381,10 +416,14 @@ type Variant = {
         const dialog = container.closest("dialog") as HTMLDialogElement;
         const words = container.querySelectorAll<HTMLElement>(".word");
         const progressBar = dialog.querySelector(".progress-bar") as HTMLElement;
+        const progressRing = dialog.querySelector(".progress-ring-circle") as SVGCircleElement;
         const verticalTimerBar = dialog.querySelector(".vertical-timer-bar") as HTMLElement;
         const startOverlay = dialog.querySelector(".start-overlay") as HTMLElement;
         const timerDisplay = dialog.querySelector(".timer-display") as HTMLElement;
         const statusIndicator = dialog.querySelector(".status-indicator") as HTMLElement;
+        const playIcon = dialog.querySelector(".play-icon") as SVGElement;
+        const resetIcon = dialog.querySelector(".reset-icon") as SVGElement;
+        const readyLabel = dialog.querySelector(".ready-label") as HTMLElement;
         
         let currentIndex = -1;
         let isRunning = false;
@@ -397,8 +436,7 @@ type Variant = {
         const updateHighlight = () => {
           words.forEach((word, index) => {
             word.classList.remove("active", "past", "idle");
-            if (!isRunning) {
-              // Before starting, words are just white (default state)
+            if (!isRunning && currentIndex === -1) {
               return;
             }
 
@@ -418,6 +456,15 @@ type Variant = {
           }
         };
 
+        const updateProgressRing = (remainingSecs: number) => {
+          if (progressRing) {
+            const total = totalDurationSecs;
+            const dashArray = 289;
+            const offset = dashArray - ((total - remainingSecs) / total) * dashArray;
+            progressRing.style.strokeDashoffset = offset.toString();
+          }
+        };
+
         const stop = () => {
           isRunning = false;
           if (timerInterval) clearInterval(timerInterval);
@@ -426,7 +473,10 @@ type Variant = {
             statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Stopped`;
           }
           if (verticalTimerBar) verticalTimerBar.style.height = "100%";
-          updateHighlight(); // Return to white state or past state
+          if (playIcon) playIcon.classList.add("hidden");
+          if (resetIcon) resetIcon.classList.remove("hidden");
+          if (readyLabel) readyLabel.classList.add("hidden");
+          updateHighlight();
         };
 
         const reset = () => {
@@ -434,12 +484,21 @@ type Variant = {
           currentIndex = -1;
           if (timerDisplay) timerDisplay.innerText = `00:${container.dataset.duration}`;
           if (progressBar) progressBar.style.width = "0%";
+          if (progressRing) {
+            progressRing.style.transition = "none";
+            progressRing.style.strokeDashoffset = "289";
+          }
           if (verticalTimerBar) {
             verticalTimerBar.style.transition = "none";
             verticalTimerBar.style.height = "0%";
           }
-          if (startOverlay) startOverlay.style.opacity = "1";
-          if (startOverlay) startOverlay.style.pointerEvents = "auto";
+          if (startOverlay) {
+            startOverlay.style.opacity = "1";
+            startOverlay.style.pointerEvents = "auto";
+          }
+          if (playIcon) playIcon.classList.remove("hidden");
+          if (resetIcon) resetIcon.classList.add("hidden");
+          if (readyLabel) readyLabel.classList.remove("hidden");
           if (statusIndicator) {
             statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-zinc-800"></span> Ready`;
           }
@@ -451,19 +510,23 @@ type Variant = {
           isRunning = true;
           currentIndex = 0;
 
-          if (startOverlay) {
-            startOverlay.style.opacity = "0";
-            startOverlay.style.pointerEvents = "none";
-          }
-
           if (verticalTimerBar) {
             verticalTimerBar.style.transition = `height ${totalDurationSecs}s linear`;
             verticalTimerBar.style.height = "100%";
           }
 
+          if (progressRing) {
+            progressRing.style.transition = `stroke-dashoffset ${totalDurationSecs}s linear`;
+            progressRing.style.strokeDashoffset = "0";
+          }
+
           if (statusIndicator) {
             statusIndicator.innerHTML = `<span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span> Presenting`;
           }
+
+          if (readyLabel) readyLabel.classList.add("hidden");
+          if (playIcon) playIcon.classList.add("hidden");
+          if (resetIcon) resetIcon.classList.add("hidden");
 
           updateHighlight();
 
@@ -534,6 +597,12 @@ type Variant = {
             btn.innerHTML = originalInner;
             btn.classList.remove('bg-green-600', 'text-white', 'border-green-500');
           }, 2000);
+        });
+      });
+    });
+  </script>
+</Main>
+  }, 2000);
         });
       });
     });
