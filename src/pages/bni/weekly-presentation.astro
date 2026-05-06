@@ -47,9 +47,18 @@ type Variant = {
           </p>
         </div>
 
-        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 inline-flex text-[10px] font-mono uppercase tracking-widest text-zinc-400">
-          <span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span>
-          Rotation Ready
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 inline-flex text-[10px] font-mono uppercase tracking-widest text-zinc-400">
+            <span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            Rotation Ready
+          </div>
+          <button 
+            id="ai-builder-trigger"
+            class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#CF202E]/10 border border-[#CF202E]/30 text-[10px] font-mono uppercase tracking-widest text-[#CF202E] hover:bg-[#CF202E] hover:text-white transition-all cursor-pointer group"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-12 transition-transform"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            Create with AI
+          </button>
         </div>
       </div>
       
@@ -161,160 +170,91 @@ type Variant = {
     </footer>
   </div>
 
-  {/* Modals */}
-  {variants.map((variant) => (
-    <dialog id={`dialog-${variant.id}`} class="variant-dialog">
-      <div class="dialog-inner">
-        {/* Ambient Background Glows */}
-        <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div class="absolute -top-[20%] -left-[10%] size-[60%] rounded-full bg-[#CF202E]/30 blur-[120px] animate-pulse"></div>
-          <div class="absolute -bottom-[20%] -right-[10%] size-[60%] rounded-full bg-[#CF202E]/20 blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+  {/* AI Builder Modal */}
+  <dialog id="ai-builder-dialog" class="variant-dialog">
+    <div class="dialog-inner">
+      <div class="dialog-header border-b border-zinc-900 px-6 py-6 md:px-12">
+        <div class="flex items-center gap-4">
+          <div class="size-8 rounded-full bg-[#CF202E] flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-white uppercase tracking-widest font-mono">AI Pitch Builder</h2>
         </div>
+        <button
+          type="button"
+          id="close-ai-builder"
+          class="size-10 rounded-full bg-zinc-900 border border-zinc-800 hover:border-[#CF202E] text-zinc-100 flex items-center justify-center transition-all cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
 
-        <div class="dialog-header relative z-10">
-          <div class="flex-1 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em] min-w-0 pr-6 md:pr-12">
-            <div class="flex items-center gap-4">
-              <div class="flex items-center gap-2">
-                <span class="text-[#CF202E] font-bold">{variant.id}</span>
-                <span class="text-zinc-700">/</span>
-                <span class="text-zinc-500">{variant.duration}</span>
-              </div>
-              <div class="h-4 w-px bg-zinc-800"></div>
-              <p class="text-[10px] text-zinc-500 hidden sm:block">Practice Mode</p>
+      <div class="dialog-body max-w-2xl mx-auto py-12 px-6">
+        <form id="ai-builder-form" class="space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-[0.2em] font-mono text-zinc-500 block">Your Name</label>
+              <input 
+                type="text" name="name" value={bniData.profile.name} required
+                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:border-[#CF202E] focus:ring-0 outline-none transition-all placeholder:text-zinc-700"
+              />
             </div>
-            <div class="timer-display text-zinc-100 font-bold tabular-nums bg-zinc-900 px-3 py-1 rounded-md border border-zinc-800">00:30</div>
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-[0.2em] font-mono text-zinc-500 block">Category</label>
+              <input 
+                type="text" name="category" value={bniData.profile.category} required
+                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:border-[#CF202E] focus:ring-0 outline-none transition-all placeholder:text-zinc-700"
+              />
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-[10px] uppercase tracking-[0.2em] font-mono text-zinc-500 block">Achievement This Week</label>
+            <textarea 
+              name="achievement" required rows="3"
+              placeholder="e.g., Delivered a multi-regional e-commerce site for a D2C tea brand in 4 weeks."
+              class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:border-[#CF202E] focus:ring-0 outline-none transition-all placeholder:text-zinc-700 resize-none"
+            ></textarea>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-[10px] uppercase tracking-[0.2em] font-mono text-zinc-500 block">Who You Are Looking For</label>
+            <textarea 
+              name="target" required rows="2"
+              placeholder="e.g., D2C founders looking to expand internationally."
+              class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:border-[#CF202E] focus:ring-0 outline-none transition-all placeholder:text-zinc-700 resize-none"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full py-4 rounded-2xl bg-[#CF202E] text-white font-bold uppercase tracking-[0.2em] text-sm hover:bg-[#b01b27] transition-all flex items-center justify-center gap-3 group"
+          >
+            <span class="submit-text">Generate 30s Pitch</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform loading-icon"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <div id="ai-result" class="hidden mt-12 space-y-8 animate-scale-in">
+          <div class="p-8 bg-zinc-900/50 border border-zinc-800 rounded-3xl space-y-6">
+            <div id="ai-pitch-content" class="text-xl md:text-2xl text-zinc-300 leading-relaxed font-medium"></div>
           </div>
           <button
             type="button"
-            data-dialog-close={variant.id}
-            aria-label="Close"
-            class="size-10 rounded-full bg-zinc-900 border border-zinc-800 hover:border-[#CF202E] text-zinc-100 flex items-center justify-center transition-all cursor-pointer"
+            id="practice-ai-pitch"
+            class="w-full py-4 rounded-2xl bg-white text-black font-bold uppercase tracking-[0.2em] text-sm hover:bg-zinc-200 transition-all flex items-center justify-center gap-3"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            Practice this pitch →
           </button>
-        </div>
-
-        {/* Progress Bar */}
-        <div class="h-1 bg-zinc-900 w-full overflow-hidden relative z-10">
-          <div class="progress-bar h-full bg-[#CF202E] w-0 transition-all duration-300"></div>
-        </div>
-
-        <div class="dialog-body relative select-none z-10" data-teleprompter data-duration="30">
-          {/* Pre-roll Countdown Overlay */}
-          <div class="pre-roll-overlay absolute inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="pre-roll-number text-[12rem] md:text-[20rem] font-bold text-white italic animate-scale-in">3</div>
-          </div>
-
-          {/* Dedicated Play Button (Bottom Right) */}
-          <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center transition-all duration-500">
-            <button 
-              type="button"
-              class="start-overlay relative size-16 md:size-20 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center transition-all duration-500 hover:border-[#CF202E]/50 group"
-            >
-              {/* Progress Ring (SVG) */}
-              <svg class="absolute inset-0 size-full -rotate-90" viewBox="0 0 100 100">
-                <circle
-                  cx="50" cy="50" r="46"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  class="text-zinc-900"
-                />
-                <circle
-                  cx="50" cy="50" r="46"
-                  fill="none"
-                  stroke="#CF202E"
-                  stroke-width="3"
-                  stroke-dasharray="289"
-                  stroke-dashoffset="289"
-                  class="progress-ring-circle transition-all duration-1000 ease-linear"
-                />
-              </svg>
-
-              {/* Inner Red Core */}
-              <div class="size-10 md:size-12 rounded-full bg-[#CF202E] flex items-center justify-center shadow-[0_0_20px_rgba(207,32,46,0.3)] group-hover:shadow-[0_0_40px_rgba(207,32,46,0.5)] group-hover:scale-105 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white play-icon"><path d="m7 3 14 9-14 9V3z"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white hidden reset-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              </div>
-
-              {/* Orbital Label (Static) */}
-              <div class="absolute -inset-4 pointer-events-none ready-label-container">
-                <div class="h-full w-full flex items-start justify-center">
-                   <span class="text-[8px] font-mono font-bold tracking-[0.3em] text-[#CF202E] uppercase bg-black px-2 py-0.5 rounded-full border border-zinc-800 ready-label">PLAY</span>
-                </div>
-              </div>
-            </button>
-          </div>
-
-          <div class="mb-10 md:mb-16">
-            <h2 class="text-3xl md:text-7xl font-bold tracking-tight text-zinc-100 italic leading-tight">
-              {variant.focus}
-            </h2>
-          </div>
-
-          {/* Stop Button (Visible only during playback) */}
-          <button 
-            type="button"
-            class="stop-btn fixed bottom-8 right-8 z-50 size-14 rounded-full bg-zinc-900 border border-zinc-800 text-[#CF202E] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-zinc-800 shadow-2xl"
-            title="Stop Presentation"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2" ry="2"/></svg>
-          </button>
-
-          <div class="space-y-8 md:space-y-16">
-            {variant.blocks.map((block) => {
-              if (block.kind === "punch") {
-                return (
-                  <div class="space-y-2">
-                    {block.lines.map((line) => (
-                      <p class="text-xl md:text-5xl italic font-medium leading-tight">
-                        {line.split(" ").map((word, i, arr) => (
-                          <>
-                            <span class="word text-white transition-all duration-200 inline-block">{word}</span>
-                            {i < arr.length - 1 && " "}
-                          </>
-                        ))}
-                      </p>
-                    ))}
-                  </div>
-                );
-              }
-              if (block.kind === "signoff") {
-                return (
-                  <div class="pt-4 space-y-2">
-                    {block.lines.map((line) => (
-                      <p class="text-lg md:text-3xl font-bold leading-relaxed italic">
-                        {line.split(" ").map((word, i, arr) => (
-                          <>
-                            <span class="word text-white transition-all duration-200 inline-block">{word}</span>
-                            {i < arr.length - 1 && " "}
-                          </>
-                        ))}
-                      </p>
-                    ))}
-                  </div>
-                );
-              }
-              return (
-                <div class="space-y-2">
-                  {block.lines.map((line) => (
-                    <p class="text-lg md:text-4xl leading-relaxed font-medium">
-                      {line.split(" ").map((word, i, arr) => (
-                        <>
-                          <span class="word text-white transition-all duration-200 inline-block">{word}</span>
-                          {i < arr.length - 1 && " "}
-                        </>
-                      ))}
-                    </p>
-                  ))}
-                </div>
-              );
-            })}
-          </div>
         </div>
       </div>
-    </dialog>
-  ))}
+    </div>
+  </dialog>
+
+  {/* Dynamic Teleprompter Modal (For AI Generated Pitch) */}
+  <dialog id="dynamic-teleprompter-dialog" class="variant-dialog">
+    {/* Will be populated dynamically */}
+  </dialog>
 
   <style is:global>
     .word {
@@ -436,11 +376,150 @@ type Variant = {
       });
     });
 
+    // AI Builder Logic
+    const aiTrigger = document.getElementById('ai-builder-trigger');
+    const aiDialog = document.getElementById('ai-builder-dialog') as HTMLDialogElement;
+    const aiForm = document.getElementById('ai-builder-form') as HTMLFormElement;
+    const aiResult = document.getElementById('ai-result');
+    const aiPitchContent = document.getElementById('ai-pitch-content');
+    const closeAiBtn = document.getElementById('close-ai-builder');
+
+    aiTrigger?.addEventListener('click', () => {
+      if (aiForm) aiForm.classList.remove('hidden');
+      if (aiResult) aiResult.classList.add('hidden');
+      aiDialog?.showModal();
+    });
+
+    closeAiBtn?.addEventListener('click', () => aiDialog?.close());
+
+    aiForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(aiForm);
+      const submitBtn = aiForm.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const submitText = submitBtn.querySelector('.submit-text');
+
+      if (submitText) submitText.textContent = 'Generating...';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/generate-pitch', {
+          method: 'POST',
+          body: JSON.stringify(Object.fromEntries(formData)),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) throw new Error('Failed to generate pitch');
+
+        const data = await response.json();
+        if (aiPitchContent) aiPitchContent.textContent = data.pitch;
+        aiResult?.classList.remove('hidden');
+        aiForm.classList.add('hidden');
+      } catch (err) {
+        alert('Error generating pitch. Please try again.');
+      } finally {
+        if (submitText) submitText.textContent = 'Generate 30s Pitch';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Practice AI Pitch Logic
+    const practiceAiBtn = document.getElementById('practice-ai-pitch');
+    practiceAiBtn?.addEventListener('click', () => {
+      const pitch = aiPitchContent?.textContent;
+      if (!pitch) return;
+
+      // Close builder
+      aiDialog.close();
+
+      // Setup dynamic teleprompter
+      const dynamicDialog = document.getElementById('dynamic-teleprompter-dialog') as HTMLDialogElement;
+      if (dynamicDialog) {
+        dynamicDialog.innerHTML = `
+          <div class="dialog-inner">
+            <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+              <div class="absolute -top-[20%] -left-[10%] size-[60%] rounded-full bg-[#CF202E]/30 blur-[120px] animate-pulse"></div>
+              <div class="absolute -bottom-[20%] -right-[10%] size-[60%] rounded-full bg-[#CF202E]/20 blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="dialog-header relative z-10">
+              <div class="flex-1 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em] min-w-0 pr-6 md:pr-12">
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#CF202E] font-bold">AI</span>
+                    <span class="text-zinc-700">/</span>
+                    <span class="text-zinc-500">30 sec</span>
+                  </div>
+                  <div class="h-4 w-px bg-zinc-800"></div>
+                  <p class="text-[10px] text-zinc-500 hidden sm:block">AI Rehearsal</p>
+                </div>
+                <div class="timer-display text-zinc-100 font-bold tabular-nums bg-zinc-900 px-3 py-1 rounded-md border border-zinc-800">00:30</div>
+              </div>
+              <button type="button" class="close-dynamic size-10 rounded-full bg-zinc-900 border border-zinc-800 hover:border-[#CF202E] text-zinc-100 flex items-center justify-center transition-all cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="h-1 bg-zinc-900 w-full overflow-hidden relative z-10">
+              <div class="progress-bar h-full bg-[#CF202E] w-0 transition-all duration-300"></div>
+            </div>
+
+            <div class="dialog-body relative select-none z-10" data-teleprompter data-duration="30">
+              <div class="pre-roll-overlay absolute inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+                <div class="pre-roll-number text-[12rem] md:text-[20rem] font-bold text-white italic animate-scale-in">3</div>
+              </div>
+
+              <div class="fixed bottom-8 right-8 z-50 flex items-center justify-center transition-all duration-500">
+                <button type="button" class="start-overlay relative size-16 md:size-20 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center transition-all duration-500 hover:border-[#CF202E]/50 group">
+                  <svg class="absolute inset-0 size-full -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-900" />
+                    <circle cx="50" cy="50" r="46" fill="none" stroke="#CF202E" stroke-width="3" stroke-dasharray="289" stroke-dashoffset="289" class="progress-ring-circle transition-all duration-1000 ease-linear" />
+                  </svg>
+                  <div class="size-10 md:size-12 rounded-full bg-[#CF202E] flex items-center justify-center shadow-[0_0_20px_rgba(207,32,46,0.3)] group-hover:shadow-[0_0_40px_rgba(207,32,46,0.5)] group-hover:scale-105 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white fill-white play-icon"><path d="m7 3 14 9-14 9V3z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white hidden reset-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  </div>
+                  <div class="absolute -inset-4 pointer-events-none ready-label-container">
+                    <div class="h-full w-full flex items-start justify-center">
+                       <span class="text-[8px] font-mono font-bold tracking-[0.3em] text-[#CF202E] uppercase bg-black px-2 py-0.5 rounded-full border border-zinc-800 ready-label">PLAY</span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              <div class="mb-10 md:mb-16">
+                <h2 class="text-3xl md:text-7xl font-bold tracking-tight text-zinc-100 italic leading-tight">AI Generated Pitch</h2>
+              </div>
+
+              <div class="space-y-8 md:space-y-16">
+                <div class="space-y-2">
+                  <p class="text-xl md:text-4xl leading-relaxed font-medium">
+                    ${pitch.split(" ").map((word, i, arr) => `
+                      <span class="word text-white transition-all duration-200 inline-block">${word}</span>${i < arr.length - 1 ? ' ' : ''}
+                    `).join("")}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="stop-btn fixed bottom-8 right-8 z-50 size-14 rounded-full bg-zinc-900 border border-zinc-800 text-[#CF202E] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-zinc-800 shadow-2xl">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2" ry="2"/></svg>
+            </button>
+          </div>
+        `;
+
+        dynamicDialog.showModal();
+        initTeleprompter(); // Re-initialize for new content
+
+        dynamicDialog.querySelector('.close-dynamic')?.addEventListener('click', () => dynamicDialog.close());
+      }
+    });
+
     // Teleprompter Logic
     function initTeleprompter() {
-      const containers = document.querySelectorAll<HTMLElement>("[data-teleprompter]");
+      const containers = document.querySelectorAll<HTMLElement>("[data-teleprompter]:not([data-initialized])");
       
       containers.forEach((container) => {
+        container.dataset.initialized = "true";
         const dialog = container.closest("dialog") as HTMLDialogElement;
         const words = container.querySelectorAll<HTMLElement>(".word");
         const progressBar = dialog.querySelector(".progress-bar") as HTMLElement;
